@@ -6,152 +6,156 @@ USE GD1C2016
 GO
 CREATE SCHEMA C_HASHTAG AUTHORIZATION gd
 
-
 CREATE TABLE Rol
 (
-Id_Rol PRIMARY KEY,
-Nombre_Rol,
-Habilitado
-);
-
-CREATE TABLE Funcionalidad_Rol
-(
-Id_Rol,
-Id_Funcionalidad
-);
+Id_Rol numeric(18,0) PRIMARY KEY,
+Nombre_Rol nvarchar(255),
+Habilitado bit 
+)
 
 CREATE TABLE Funcionalidad
 (
-Id_Funcionalidad PRIMARY KEY,
-Nombre_Funcionalidad
-);
+Id_Funcionalidad numeric(18,0) PRIMARY KEY,
+Nombre_Funcionalidad nvarchar(255) 
+)
+
+CREATE TABLE Funcionalidad_Rol
+(
+Id_Rol numeric(18,0) FOREIGN KEY REFERENCES Rol(Id_Rol),
+Id_Funcionalidad numeric(18,0) FOREIGN KEY REFERENCES Funcionalidad(Id_Funcionalidad) 
+)
 
 CREATE TABLE Cliente
 (
-Id_Cliente PRIMARY KEY,
-Nombre,
-Apellido,
-DNI,
-Tipo_Doc,
-Mail,
-Telefono,
-Direccion,
-Cod_Postal,
-Nacimiento,
-Creacion
-);
-
-CREATE TABLE Empresa
-(
-IdEmpresa PRIMARY KEY,
-RazonSocial,
-Mail,
-Telefono,
-Calle,
-Cod_Postal,
-Ciudad,
-Cuit,
-Nombre_Contacto,
-Rubro_Principal,
-Nro_Calle,
-Piso,
-Departamento
-);
+Id_Cliente numeric(18,0) PRIMARY KEY,
+Nombre nvarchar(255),
+Apellido nvarchar(255),
+DNI numeric(18,0),
+Tipo_Doc nvarchar(255),
+Mail nvarchar(255),
+Telefono numeric(18,0),
+--EN EL DER ESTA SOLO EL CAMPO DIRECCION (FALTA AGREGAR calle, nro piso, depto y localidad)
+Domicilio_Calle nvarchar(100),
+Nro_Calle numeric(18,0),
+Piso numeric(18,0),
+Departamento nvarchar(50),
+Cod_Postal nvarchar(50),
+Nacimiento datetime,
+Creacion datetime
+)
 
 CREATE TABLE Rubro
 (
-Id_Rubro PRIMARY KEY,
-Desc_Corta,
-Desc_Larga
-);
+Id_Rubro numeric(18,0) PRIMARY KEY,
+Desc_Corta nvarchar(50),
+Desc_Larga nvarchar(255)
+)
 
-CREATE TABLE Rubro_Publicacion
+CREATE TABLE Empresa
 (
-Id_Rubro (FK),
-Id_Publicacion (FK)
-);
+Id_Empresa numeric(18,0) PRIMARY KEY,
+Razon_Social nvarchar(255),
+Mail nvarchar(50),
+Telefono numeric(18,0),
+Calle nvarchar(100),
+Cod_Postal nvarchar(50),
+Ciudad nvarchar(255),
+Cuit nvarchar(50),
+Nombre_Contacto nvarchar(255),
+Rubro_Principal numeric(18,0) FOREIGN KEY REFERENCES Rubro(Id_Rubro),
+Nro_Calle numeric(18,0),
+Piso numeric(18,0),
+Departamento nvarchar(50)
+)
+
+CREATE TABLE Estado
+(
+Id_Estado numeric(18,0) PRIMARY KEY,
+Descripcion nvarchar(255) 
+)
+
+CREATE TABLE Visibilidad
+(
+Id_Visibilidad numeric(18,0) PRIMARY KEY,
+Comision_Prod_Vend numeric(18,2),
+Comision_Envio_Prod numeric(18,2),
+Comision_Tipo_Public numeric(18,2)
+--Importacia ?
+)
+
+CREATE TABLE Usuario
+(
+Id_User numeric(18,0) PRIMARY KEY,
+Username nvarchar(50),
+Password nvarchar(50),
+Intentos_Fallidos numeric(18,0),
+Estado bit,
+Id_Empresa numeric(18,0) FOREIGN KEY REFERENCES Empresa(Id_Empresa),
+Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES Cliente(Id_Cliente)
+)
+
+CREATE TABLE Publicacion
+(
+Id_Publicacion numeric(18,0) PRIMARY KEY,
+Monto numeric(18,2),
+Id_Visibilidad numeric(18,0) FOREIGN KEY REFERENCES Visibilidad(Id_Visibilidad),
+Id_User numeric(18,0) FOREIGN KEY REFERENCES Usuario(Id_User),
+Id_Estado numeric(18,0) FOREIGN KEY REFERENCES Estado(Id_Estado),
+Tipo nvarchar(255),
+Fecha_Inicial datetime,
+Fecha_Final datetime,
+Preguntas nvarchar(255),
+Stock numeric(18,0),
+Descripcion nvarchar(255)
+)
+
+CREATE TABLE Compra
+(
+Id_Compra numeric(18,0) PRIMARY KEY,
+Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES Cliente(Id_Cliente),
+Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion)
+)
+
+CREATE TABLE Factura
+(
+Id_Factura numeric(18,0) PRIMARY KEY,
+Monto numeric(18,2),
+Comision_Tipo numeric(18,2), 
+Comision_Producto numeric(18,2), 
+Comision_Envio numeric(18,2),
+Cantidad numeric(18,0),
+Nro_Factura numeric(18,0),
+Id_Compra numeric(18,0) FOREIGN KEY REFERENCES Compra(Id_Compra)
+)
+
+CREATE TABLE Calificacion
+(
+Id_Calificacion numeric(18,0) PRIMARY KEY,
+Cant_Estrellas numeric(18,0),
+Descripcion nvarchar(255),
+Id_Compra numeric(18,0) FOREIGN KEY REFERENCES Compra(Id_Compra)
+)
 
 CREATE TABLE Oferta
 (
 Id_Oferta numeric(18,0) PRIMARY KEY,
-Id_Publicacion numeric(18,0), 
-Id_Cliente numeric(18,0),
+Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion), 
+Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES Cliente(Id_Cliente),
 Monto_Ofertado numeric(18,2)
-);
+)
 
-CREATE TABLE Compra
+CREATE TABLE Rubro_Publicacion
 (
-Id_Compra PRIMARY KEY,
-Id_Cliente (FK),
-Id_Publicacion (FK)
-);
+Id_Rubro numeric(18,0) FOREIGN KEY REFERENCES Rubro(Id_Rubro),
+Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion)
+)
 
-CREATE TABLE Calificacion
-(
-Id_Calificacion PRIMARY KEY,
-Cant_Estrellas,
-Descripcion,
-Id_Compra (FK)
-);
-
-CREATE TABLE Factura
-(
-Id_Factura PRIMARY KEY,
-Monto,
-Comision_Tipo,
-Comision_Producto,
-Comision_Envio,
-Cantidad,
-Nro_Factura,
-Id_Compra (FK)
-);
-
-CREATE TABLE Estado
-(
-Id_Estado PRIMARY KEY,
-Descripcion
-);
-
-CREATE TABLE Publicacion
-(
-Id_Publicacion PRIMARY KEY,
-Monto,
-Id_Visibilidad (FK),
-Id_User (FK),
-Id_Estado (FK),
-Tipo,
-Fecha_Inicial,
-Fecha_Final,
-Preguntas,
-Stock,
-Descripcion
-);
-
-CREATE TABLE Visibilidad
-(
-Id_Visibilidad PRIMARY KEY,
-Comision_Prod_Vend,
-Comision_Envio_Prod,
-Comision_Tipo_Public,
-Importancia
-);
-
-CREATE TABLE Usuario
-(
-Id_User PRIMARY KEY,
-Username,
-Password,
-lntentos_Fallidos,
-Estado,
-Id_Empresa (FK),
-Id_Cliente (FK)
-);
 
 CREATE TABLE Rol_Usuario
 (
-Id_User (FK),
-Id_Rol (FK)
-);
+Id_User numeric(18,0) FOREIGN KEY REFERENCES Usuario(Id_User),
+Id_Rol numeric(18,0) FOREIGN KEY REFERENCES Rol(Id_Rol)
+)
 
 GO
 
