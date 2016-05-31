@@ -79,7 +79,7 @@ Id_Visibilidad numeric(18,0) PRIMARY KEY,
 Comision_Prod_Vend numeric(18,2),
 Comision_Envio_Prod numeric(18,2),
 Comision_Tipo_Public numeric(18,2)
---Importacia ?
+--Importacia ,								QUE SIGNIFICA IMPORTANCIA?
 )
 
 CREATE TABLE Usuario
@@ -93,6 +93,12 @@ Id_Empresa numeric(18,0) FOREIGN KEY REFERENCES Empresa(Id_Empresa),
 Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES Cliente(Id_Cliente)
 )
 
+CREATE TABLE Tipo
+(
+Id_Tipo numeric(18,0) PRIMARY KEY,
+Descripcion nvarchar(255) 
+)
+
 CREATE TABLE Publicacion
 (
 Id_Publicacion numeric(18,0) PRIMARY KEY,
@@ -100,6 +106,7 @@ Monto numeric(18,2),
 Id_Visibilidad numeric(18,0) FOREIGN KEY REFERENCES Visibilidad(Id_Visibilidad),
 Id_User numeric(18,0) FOREIGN KEY REFERENCES Usuario(Id_User),
 Id_Estado numeric(18,0) FOREIGN KEY REFERENCES Estado(Id_Estado),
+Id_Tipo numeric(18,0) FOREIGN KEY REFERENCES Tipo(Id_Tipo), 
 Tipo nvarchar(255),
 Fecha_Inicial datetime,
 Fecha_Final datetime,
@@ -108,29 +115,21 @@ Stock numeric(18,0),
 Descripcion nvarchar(255)
 )
 
-CREATE TABLE Tipo
-(
-Id_Tipo numeric(18,0) PRIMARY KEY,
-Descripcion nvarchar(255) 
-)
+
 
 CREATE TABLE Compra
 (
 Id_Compra numeric(18,0) PRIMARY KEY,
-Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES Cliente(Id_Cliente),
-Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion)
+Id_User numeric(18,0) FOREIGN KEY REFERENCES Usuario(Id_User),
+Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion),
+Monto numeric(18,2),
+Fecha datetime
 )
 
 CREATE TABLE Factura
 (
 Id_Factura numeric(18,0) PRIMARY KEY,
-Monto numeric(18,2),
-Comision_Tipo numeric(18,2), 
-Comision_Producto numeric(18,2), 
-Comision_Envio numeric(18,2),
-Cantidad numeric(18,0),
-Nro_Factura numeric(18,0),
-Id_Compra numeric(18,0) FOREIGN KEY REFERENCES Compra(Id_Compra)
+Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion)
 )
 
 CREATE TABLE Item
