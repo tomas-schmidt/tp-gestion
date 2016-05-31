@@ -34,7 +34,6 @@ DNI numeric(18,0),
 Tipo_Doc nvarchar(255),
 Mail nvarchar(255),
 Telefono numeric(18,0),
---EN EL DER ESTA SOLO EL CAMPO DIRECCION (FALTA AGREGAR calle, nro piso, depto y localidad)
 Domicilio_Calle nvarchar(100),
 Nro_Calle numeric(18,0),
 Piso numeric(18,0),
@@ -109,6 +108,12 @@ Stock numeric(18,0),
 Descripcion nvarchar(255)
 )
 
+CREATE TABLE Tipo
+(
+Id_Tipo numeric(18,0) PRIMARY KEY,
+Descripcion nvarchar(255) 
+)
+
 CREATE TABLE Compra
 (
 Id_Compra numeric(18,0) PRIMARY KEY,
@@ -128,6 +133,14 @@ Nro_Factura numeric(18,0),
 Id_Compra numeric(18,0) FOREIGN KEY REFERENCES Compra(Id_Compra)
 )
 
+CREATE TABLE Item
+(
+Id_Item numeric(18,0) PRIMARY KEY,
+Id_Factura numeric(18,0) FOREIGN KEY REFERENCES Factura(Id_Factura),
+Descripcion nvarchar(255),
+Monto numeric(18,2)
+)
+
 CREATE TABLE Calificacion
 (
 Id_Calificacion numeric(18,0) PRIMARY KEY,
@@ -140,8 +153,9 @@ CREATE TABLE Oferta
 (
 Id_Oferta numeric(18,0) PRIMARY KEY,
 Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES Publicacion(Id_Publicacion), 
-Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES Cliente(Id_Cliente),
-Monto_Ofertado numeric(18,2)
+Id_User numeric(18,0) FOREIGN KEY REFERENCES Usuario(Id_User),
+Monto_Ofertado numeric(18,2),
+Fecha datetime 
 )
 
 CREATE TABLE Rubro_Publicacion
