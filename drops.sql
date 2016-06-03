@@ -1,3 +1,4 @@
+--Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario
 DROP TABLE C_HASHTAG.Rubro_Publicacion
 DROP TABLE C_HASHTAG.Oferta
@@ -18,4 +19,5 @@ DROP TABLE C_HASHTAG.Funcionalidad_Rol
 DROP TABLE C_HASHTAG.Funcionalidad
 DROP TABLE C_HASHTAG.Rol
 
+--Drop esquema
 DROP SCHEMA C_HASHTAG
