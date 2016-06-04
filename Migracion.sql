@@ -41,7 +41,7 @@ CREATE TABLE C_HASHTAG.Funcionalidad_Rol
 (
 	Id_Rol numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rol(Id_Rol),
 	Id_Funcionalidad numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Funcionalidad(Id_Funcionalidad) 
-	CONSTRAINT PK_Funcionalidad_Rol PRIMARY KEY CLUSTERED 
+	CONSTRAINT PK_Funcionalidad_Rol PRIMARY KEY CLUSTERED (Id_Rol,Id_Funcionalidad)
 )
 
 /****************************************************************/
@@ -91,14 +91,14 @@ INSERT INTO C_HASHTAG.Cliente(
 	Cod_Postal,
 	Nacimiento,
 	Creacion 
-	)
+)
 	SELECT DISTINCT
 		Cli_Nombre,
 		Cli_Apeliido,
 		Cli_Dni,
-		1,
+		1, -- son todos DNI
 		Cli_Mail,
-		NULL,
+		NULL, -- no existe el campo telefono
 		Cli_Dom_Calle,
 		Cli_Nro_Calle,
 		Cli_Piso,
@@ -140,6 +140,38 @@ CREATE TABLE C_HASHTAG.Empresa
 	Departamento nvarchar(50)
 )
 
+INSERT INTO C_HASHTAG.Empresa
+(
+	Razon_Social, 
+	Mail,
+	Telefono,
+	Calle,
+	Cod_Postal,
+	Ciudad,
+	Cuit,
+	Nombre_Contacto,
+	Rubro_Principal,
+	Nro_Calle,
+	Piso,
+	Departamento
+)
+	SELECT DISTINCT
+		Publ_Empresa_Razon_Social,
+		Publ_Empresa_Mail,
+		NULL, -- no existe el campo telefono
+		Publ_Empresa_Dom_Calle,
+		Publ_Empresa_Cod_Postal,
+		NULL, -- no existe el campo ciudad
+		Publ_Empresa_Cuit,
+		NULL, -- falta nombre contacto
+		NULL, -- falta rubro principal
+		Publ_Cli_Nro_Calle,
+		Publ_Cli_Piso,
+		Publ_Cli_Depto
+		FROM gd_esquema.Maestra
+		where Publ_Empresa_Cuit IS NOT NULL
+
+
 /****************************************************************/
 --							Estado
 /****************************************************************/
@@ -149,17 +181,41 @@ CREATE TABLE C_HASHTAG.Estado
 	Descripcion nvarchar(255) 
 )
 
+INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Borrador')
+INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Activa')
+INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Pausada')
+INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Finalizada')
+
+
 /****************************************************************/
 --							Visibilidad
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Visibilidad
 (
-	Id_Visibilidad numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+	Id_Visibilidad numeric(18,0) IDENTITY (10002,1) PRIMARY KEY,
+	Visibilidad_Desc nvarchar(255),
 	Comision_Prod_Vend numeric(18,2),
 	Comision_Envio_Prod numeric(18,2),
 	Comision_Tipo_Public numeric(18,2)
-	--Importacia ,								QUE SIGNIFICA IMPORTANCIA?
 )
+
+-- FALTA AGREGAR BIEN LOS VALORES DE COMISIONES
+
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
+VALUES ('Platino', 0, 0, 0.10)
+
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
+VALUES ('Oro', 0, 0, 0.15)
+
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
+VALUES ('Plata', 0, 0, 0.20)
+
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
+VALUES ('Bronce',0, 0, 0.30)
+
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
+VALUES ('Gratis', 0, 0, 0)
+
 
 /****************************************************************/
 --							Usuario
@@ -176,13 +232,15 @@ CREATE TABLE C_HASHTAG.Usuario
 )
 
 /****************************************************************/
---							Tipo
+--							Tipo Publicacion
 /****************************************************************/
-CREATE TABLE C_HASHTAG.Tipo
+CREATE TABLE C_HASHTAG.Tipo_Public
 (
-	Id_Tipo numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+	Id_Tipo_Public numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Descripcion nvarchar(255) 
 )
+INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Compra Inmediata')
+INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Subasta')
 
 /****************************************************************/
 --							Publicacion
@@ -194,14 +252,43 @@ CREATE TABLE C_HASHTAG.Publicacion
 	Id_Visibilidad numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Visibilidad(Id_Visibilidad),
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
 	Id_Estado numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Estado(Id_Estado),
-	Id_Tipo numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Tipo(Id_Tipo), 
-	Tipo nvarchar(255),
+	Id_Tipo_Public numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Tipo_Public(Id_Tipo_Public), 
 	Fecha_Inicial datetime,
 	Fecha_Final datetime,
 	Preguntas nvarchar(255),
 	Stock numeric(18,0),
 	Descripcion nvarchar(255)
 )
+
+INSERT INTO C_HASHTAG.Publicacion
+(
+	Id_Publicacion,
+	Monto,
+	Id_Visibilidad,
+	Id_User,
+	Id_Estado,
+	Id_Tipo_Public, 
+	Fecha_Inicial,
+	Fecha_Final,
+	Preguntas,
+	Stock,
+	Descripcion
+)
+	SELECT DISTINCT
+		Publicacion_Cod,
+		Publicacion_Precio,
+		Publicacion_Visibilidad_Cod,
+		NULL, --Falta id user,
+		2, -- estan todas activas
+		(SELECT t.Id_Tipo_Public  
+			FROM C_HASHTAG.Tipo_Public t JOIN gd_esquema.Maestra m
+			ON (t.Descripcion = m.Publicacion_Estado)),-- no se porque no funciona y las pone en null
+		Publicacion_Fecha,
+		Publicacion_Fecha_Venc,
+		'Si', -- supongo que todas aceptan preguntas
+		Publicacion_Stock,
+		Publicacion_Descripcion
+		FROM gd_esquema.Maestra
 
 /****************************************************************/
 --							Compra
@@ -265,8 +352,8 @@ CREATE TABLE C_HASHTAG.Oferta
 CREATE TABLE C_HASHTAG.Rubro_Publicacion
 (
 	Id_Rubro numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rubro(Id_Rubro),
-	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion)
-	CONSTRAINT PK_Rubro_Publicacion PRIMARY KEY CLUSTERED
+	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
+	CONSTRAINT PK_Rubro_Publicacion PRIMARY KEY CLUSTERED (Id_Rubro, Id_Publicacion)
 )
 
 /****************************************************************/
@@ -275,9 +362,6 @@ CREATE TABLE C_HASHTAG.Rubro_Publicacion
 CREATE TABLE C_HASHTAG.Rol_Usuario
 (
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
-	Id_Rol numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rol(Id_Rol)
-	CONSTRAINT PK_Rol_Usuario PRIMARY KEY CLUSTERED
+	Id_Rol numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rol(Id_Rol),
+	CONSTRAINT PK_Rol_Usuario PRIMARY KEY CLUSTERED(Id_User, Id_Rol)
 )
-
-
-
