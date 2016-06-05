@@ -57,6 +57,27 @@ INSERT INTO C_HASHTAG.Tipo_Doc(Doc_Desc) VALUES ('Cedula')
 
 
 /****************************************************************/
+--							Usuario
+/****************************************************************/
+CREATE TABLE C_HASHTAG.Usuario
+(
+	Id_User numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+	Username nvarchar(50),
+	Password nvarchar(50),
+	Intentos_Fallidos numeric(18,0),
+	Habilitado nvarchar (50)
+)
+
+/*INSERT INTO C_HASHTAG.Usuario
+(
+	Username,
+	Password,
+	Intentos_Fallidos,
+	Habilitado
+)
+*/
+
+/****************************************************************/
 --							Cliente
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Cliente
@@ -74,7 +95,8 @@ CREATE TABLE C_HASHTAG.Cliente
 	Departamento nvarchar(50),
 	Cod_Postal nvarchar(50),
 	Nacimiento datetime,
-	Creacion datetime
+	Creacion datetime,
+	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
 )
 
 INSERT INTO C_HASHTAG.Cliente(
@@ -90,7 +112,8 @@ INSERT INTO C_HASHTAG.Cliente(
 	Departamento,
 	Cod_Postal,
 	Nacimiento,
-	Creacion 
+	Creacion ,
+	Id_User
 )
 	SELECT DISTINCT
 		Cli_Nombre,
@@ -105,10 +128,12 @@ INSERT INTO C_HASHTAG.Cliente(
 		Cli_Depto,
 		Cli_Cod_Postal,
 		Cli_Fecha_Nac,
-		NULL -- falta obtener la fecha de creacion
+		NULL, -- falta obtener la fecha de creacion
+		NULL --falta id_user
 		FROM gd_esquema.Maestra
 		where Cli_Nombre IS NOT NULL
-		
+
+-- faltan ingresar clientes de publi_cli
 
 /****************************************************************/
 --							Rubro
@@ -119,6 +144,17 @@ CREATE TABLE C_HASHTAG.Rubro
 	Desc_Corta nvarchar(50),
 	Desc_Larga nvarchar(255)
 )
+
+INSERT INTO C_HASHTAG.Rubro
+(
+	Desc_Corta,
+	Desc_Larga
+)
+	SELECT DISTINCT
+		Publicacion_Rubro_Descripcion,
+		NULL -- falta descripcion larga
+		FROM gd_esquema.Maestra
+
 
 /****************************************************************/
 --							Empresa
@@ -137,7 +173,8 @@ CREATE TABLE C_HASHTAG.Empresa
 	Rubro_Principal numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rubro(Id_Rubro),
 	Nro_Calle numeric(18,0),
 	Piso numeric(18,0),
-	Departamento nvarchar(50)
+	Departamento nvarchar(50),
+	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
 )
 
 INSERT INTO C_HASHTAG.Empresa
@@ -153,7 +190,8 @@ INSERT INTO C_HASHTAG.Empresa
 	Rubro_Principal,
 	Nro_Calle,
 	Piso,
-	Departamento
+	Departamento,
+	Id_User
 )
 	SELECT DISTINCT
 		Publ_Empresa_Razon_Social,
@@ -167,10 +205,10 @@ INSERT INTO C_HASHTAG.Empresa
 		NULL, -- falta rubro principal
 		Publ_Cli_Nro_Calle,
 		Publ_Cli_Piso,
-		Publ_Cli_Depto
+		Publ_Cli_Depto,
+		NULL --falta id_user
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
-
 
 /****************************************************************/
 --							Estado
@@ -216,20 +254,6 @@ VALUES ('Bronce',0, 0, 0.30)
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
 VALUES ('Gratis', 0, 0, 0)
 
-
-/****************************************************************/
---							Usuario
-/****************************************************************/
-CREATE TABLE C_HASHTAG.Usuario
-(
-	Id_User numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Username nvarchar(50),
-	Password nvarchar(50),
-	Intentos_Fallidos numeric(18,0),
-	Estado bit,
-	Id_Empresa numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Empresa(Id_Empresa),
-	Id_Cliente numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Cliente(Id_Cliente)
-)
 
 /****************************************************************/
 --							Tipo Publicacion
@@ -299,8 +323,25 @@ CREATE TABLE C_HASHTAG.Compra
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
 	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
 	Monto numeric(18,2),
+	Cantidad numeric(18,0),
 	Fecha datetime
 )
+
+INSERT INTO C_HASHTAG.Compra
+(
+	Id_User,
+	Id_Publicacion,
+	Monto,
+	Cantidad,
+	Fecha
+)
+	SELECT 
+		NULL, --Falta Id user
+		Publicacion_Cod,
+		Publicacion_Precio,
+		Compra_Cantidad,
+		Compra_Fecha
+		FROM gd_esquema.Maestra
 
 /****************************************************************/
 --							Factura
@@ -308,8 +349,24 @@ CREATE TABLE C_HASHTAG.Compra
 CREATE TABLE C_HASHTAG.Factura
 (
 	Id_Factura numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion)
+	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
+	Numero numeric(18,0),
+	Fecha datetime,
+	Total numeric(18,0),
 )
+INSERT INTO C_HASHTAG.Factura
+(
+	Id_Publicacion,
+	Numero,
+	Fecha,
+	Total
+)
+	SELECT
+		Publicacion_Cod,
+		Factura_Nro,
+		Factura_Fecha,
+		Factura_Total
+		FROM gd_esquema.Maestra
 
 /****************************************************************/
 --							Item
@@ -319,20 +376,49 @@ CREATE TABLE C_HASHTAG.Item
 	Id_Item numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Id_Factura numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Factura(Id_Factura),
 	Descripcion nvarchar(255),
-	Monto numeric(18,2)
+	Monto numeric(18,0),
+	Cantidad numeric(18,0)
 )
 
+INSERT INTO C_HASHTAG.Item
+(
+	Id_Factura,
+	Descripcion,
+	Monto,
+	Cantidad
+)
+	SELECT
+		NULL, -- falta id_factura, agregar id_publicacion?
+		NULL, -- falta descripcion
+		Item_Factura_Monto,
+		Item_Factura_Cantidad
+		FROM gd_esquema.Maestra
 
 /****************************************************************/
 --							Calificacion
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Calificacion
 (
-	Id_Calificacion numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+	Id_Calificacion numeric(18,0) PRIMARY KEY,
 	Cant_Estrellas numeric(18,0),
 	Descripcion nvarchar(255),
 	Id_Compra numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Compra(Id_Compra)
 )
+
+INSERT INTO C_HASHTAG.Calificacion
+(
+	Id_Calificacion,
+	Cant_Estrellas,
+	Descripcion,
+	Id_Compra
+)
+	SELECT
+		Calificacion_Codigo,
+		Calificacion_Cant_Estrellas,
+		Calificacion_Descripcion,
+		NULL --falta id compra
+		FROM gd_esquema.Maestra
+		WHERE Calificacion_Codigo IS NOT NULL
 
 /****************************************************************/
 --							Oferta
@@ -345,6 +431,20 @@ CREATE TABLE C_HASHTAG.Oferta
 	Monto_Ofertado numeric(18,2),
 	Fecha datetime 
 )
+
+INSERT INTO C_HASHTAG.Oferta
+(
+	Id_Publicacion,
+	Id_User,
+	Monto_Ofertado,
+	Fecha
+)
+	SELECT
+		NULL, -- falta  id publicacion
+		NULL, -- falta id user
+		Oferta_Monto,
+		Oferta_Fecha
+		FROM gd_esquema.Maestra
 
 /****************************************************************/
 --							Rubro_Publicacion
