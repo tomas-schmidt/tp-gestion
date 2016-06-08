@@ -45,7 +45,7 @@ CREATE TABLE C_HASHTAG.Funcionalidad_Rol
 )
 
 /****************************************************************/
---						DOCUMENTO
+--					TIPO DOCUMENTO	
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Tipo_Doc(
 	Doc_Codigo numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
@@ -63,19 +63,43 @@ CREATE TABLE C_HASHTAG.Usuario
 (
 	Id_User numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Username nvarchar(50),
-	Password nvarchar(50),
+	Password varchar(255),
 	Intentos_Fallidos numeric(18,0),
-	Habilitado nvarchar (50)
+	Habilitado char (1)
 )
 
-/*INSERT INTO C_HASHTAG.Usuario
+INSERT INTO C_HASHTAG.Usuario
 (
 	Username,
 	Password,
 	Intentos_Fallidos,
 	Habilitado
 )
-*/
+	SELECT DISTINCT
+		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18),
+		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+		0,
+		's'
+		FROM gd_esquema.Maestra
+		where Cli_Dni IS NOT NULL
+	UNION
+		SELECT DISTINCT
+		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18),
+		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+		0,
+		's'
+		FROM gd_esquema.Maestra
+		where Publ_Cli_Dni IS NOT NULL
+
+	UNION
+	SELECT DISTINCT
+		'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18),
+		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+		0,
+		's'
+		FROM gd_esquema.Maestra
+		where Publ_Empresa_Cuit IS NOT NULL
+
 
 /****************************************************************/
 --							Cliente
@@ -129,11 +153,32 @@ INSERT INTO C_HASHTAG.Cliente(
 		Cli_Cod_Postal,
 		Cli_Fecha_Nac,
 		NULL, -- falta obtener la fecha de creacion
-		NULL --falta id_user
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_DNI),18))
 		FROM gd_esquema.Maestra
 		where Cli_Nombre IS NOT NULL
+	UNION
+	SELECT DISTINCT
+		Publ_Cli_Nombre,
+		Publ_Cli_Apeliido,
+		Publ_Cli_Dni,
+		1, -- son todos DNI
+		Publ_Cli_Mail,
+		NULL, -- no existe el campo telefono
+		Publ_Cli_Dom_Calle,
+		Publ_Cli_Nro_Calle,
+		Publ_Cli_Piso,
+		Publ_Cli_Depto,
+		Publ_Cli_Cod_Postal,
+		Publ_Cli_Fecha_Nac,
+		NULL, -- falta obtener la fecha de creacion
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18))
+		FROM gd_esquema.Maestra
+		where Publ_Cli_Nombre IS NOT NULL
 
--- faltan ingresar clientes de publi_cli
 
 /****************************************************************/
 --							Rubro
@@ -206,7 +251,9 @@ INSERT INTO C_HASHTAG.Empresa
 		Publ_Cli_Nro_Calle,
 		Publ_Cli_Piso,
 		Publ_Cli_Depto,
-		NULL --falta id_user
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18))		
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
 
@@ -302,17 +349,53 @@ INSERT INTO C_HASHTAG.Publicacion
 		Publicacion_Cod,
 		Publicacion_Precio,
 		Publicacion_Visibilidad_Cod,
-		NULL, --Falta id user,
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18)),
 		2, -- estan todas activas
-		(SELECT t.Id_Tipo_Public  
-			FROM C_HASHTAG.Tipo_Public t JOIN gd_esquema.Maestra m
-			ON (t.Descripcion = m.Publicacion_Estado)),-- no se porque no funciona y las pone en null
+		(SELECT Id_Tipo_Public  
+			FROM C_HASHTAG.Tipo_Public
+			where Descripcion = Publicacion_Estado),  -- arreglar, no funciona, los pone en null
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
 		Publicacion_Descripcion
 		FROM gd_esquema.Maestra
+		WHERE Publ_Empresa_Cuit IS NOT NULL
+
+INSERT INTO C_HASHTAG.Publicacion
+(
+	Id_Publicacion,
+	Monto,
+	Id_Visibilidad,
+	Id_User,
+	Id_Estado,
+	Id_Tipo_Public, 
+	Fecha_Inicial,
+	Fecha_Final,
+	Preguntas,
+	Stock,
+	Descripcion 
+)
+	SELECT DISTINCT
+		Publicacion_Cod,
+		Publicacion_Precio,
+		Publicacion_Visibilidad_Cod,
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18) ),
+		2, -- estan todas activas
+		(SELECT Id_Tipo_Public  
+			FROM C_HASHTAG.Tipo_Public
+			where Descripcion = Publicacion_Estado),  -- arreglar, no funciona, los pone en null
+		Publicacion_Fecha,
+		Publicacion_Fecha_Venc,
+		'Si', -- supongo que todas aceptan preguntas
+		Publicacion_Stock,
+		Publicacion_Descripcion
+		FROM gd_esquema.Maestra
+		WHERE Publ_Cli_Dni IS NOT NULL
 
 /****************************************************************/
 --							Compra
@@ -336,12 +419,15 @@ INSERT INTO C_HASHTAG.Compra
 	Fecha
 )
 	SELECT 
-		NULL, --Falta Id user
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18)),
 		Publicacion_Cod,
 		Publicacion_Precio,
 		Compra_Cantidad,
 		Compra_Fecha
 		FROM gd_esquema.Maestra
+		WHERE Compra_Cantidad IS NOT NULL -- ME PONIA COMPRAS CON LA CANT Y FECHA EN NULL
 
 /****************************************************************/
 --							Factura
@@ -412,12 +498,16 @@ INSERT INTO C_HASHTAG.Calificacion
 	Descripcion,
 	Id_Compra
 )
-	SELECT
-		Calificacion_Codigo,
-		Calificacion_Cant_Estrellas,
-		Calificacion_Descripcion,
-		NULL --falta id compra
-		FROM gd_esquema.Maestra
+	SELECT DISTINCT
+		g2.Calificacion_Codigo,
+		g2.Calificacion_Cant_Estrellas,
+		g2.Calificacion_Descripcion,
+		NULL /* no funciona la query
+			(SELECT DISTINCT Id_Compra
+			FROM C_HASHTAG.Compra JOIN gd_esquema.Maestra m
+			ON (Id_Publicacion = Publicacion_Cod )
+			WHERE m.Calificacion_Codigo = g2.Calificacion_Codigo)*/
+		FROM gd_esquema.Maestra g2
 		WHERE Calificacion_Codigo IS NOT NULL
 
 /****************************************************************/
@@ -440,11 +530,14 @@ INSERT INTO C_HASHTAG.Oferta
 	Fecha
 )
 	SELECT
-		NULL, -- falta  id publicacion
-		NULL, -- falta id user
+		Publicacion_Cod,
+		(SELECT Id_User
+			FROM C_HASHTAG.Usuario
+			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18)),
 		Oferta_Monto,
 		Oferta_Fecha
 		FROM gd_esquema.Maestra
+		WHERE Compra_Cantidad is null AND Oferta_Monto IS NOT NULL
 
 /****************************************************************/
 --							Rubro_Publicacion
@@ -455,6 +548,18 @@ CREATE TABLE C_HASHTAG.Rubro_Publicacion
 	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
 	CONSTRAINT PK_Rubro_Publicacion PRIMARY KEY CLUSTERED (Id_Rubro, Id_Publicacion)
 )
+
+INSERT INTO C_HASHTAG.Rubro_Publicacion
+(
+	Id_Rubro,
+	Id_Publicacion
+)
+
+SELECT DISTINCT Id_Rubro, Id_Publicacion
+	FROM C_HASHTAG.Publicacion p JOIN gd_esquema.Maestra m
+	ON (p.Id_Publicacion = m.Publicacion_Cod)
+	JOIN C_HASHTAG.Rubro r
+	ON (r.Desc_Corta = m.Publicacion_Rubro_Descripcion)
 
 /****************************************************************/
 --							Rol_Usuario
