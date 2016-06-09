@@ -355,7 +355,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		2, -- estan todas activas
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Tipo),  -- arreglar, no funciona, los pone en null
+			where Descripcion = Publicacion_Estado),  -- ARREGLADO Era Publicacion_Estado, no Publicacion_Tipo
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
@@ -388,7 +388,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		2, -- estan todas activas
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Estado),  -- Era Publicacion_Estado, no Publicacion_Tipo
+			where Descripcion = Publicacion_Estado),  -- ARREGLADO Era Publicacion_Estado, no Publicacion_Tipo
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
