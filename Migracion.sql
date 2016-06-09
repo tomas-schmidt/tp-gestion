@@ -287,19 +287,19 @@ CREATE TABLE C_HASHTAG.Visibilidad
 -- FALTA AGREGAR BIEN LOS VALORES DE COMISIONES
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Platino', 0, 0, 0.10)
+VALUES ('Platino', 180.00, 10.00, 0.10)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Oro', 0, 0, 0.15)
+VALUES ('Oro', 140.00, 10.00, 0.15)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Plata', 0, 0, 0.20)
+VALUES ('Plata', 100.00, 10.00, 0.20)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Bronce',0, 0, 0.30)
+VALUES ('Bronce', 60.00, 10.00, 0.30)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Gratis', 0, 0, 0)
+VALUES ('Gratis', 0.00, NULL, 0) --No se si va NULL o 0.00, porque dice que no provee servicio de envio
 
 
 /****************************************************************/
@@ -355,7 +355,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		2, -- estan todas activas
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Estado),  -- arreglar, no funciona, los pone en null
+			where Descripcion = Publicacion_Tipo),  -- arreglar, no funciona, los pone en null
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
@@ -388,7 +388,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		2, -- estan todas activas
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Estado),  -- arreglar, no funciona, los pone en null
+			where Descripcion = Publicacion_Estado),  -- Era Publicacion_Estado, no Publicacion_Tipo
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
