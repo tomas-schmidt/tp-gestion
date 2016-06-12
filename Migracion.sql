@@ -30,7 +30,7 @@ CREATE TABLE C_HASHTAG.Rol
 CREATE TABLE C_HASHTAG.Funcionalidad
 (
 	Id_Funcionalidad numeric(18,0)IDENTITY(1,1) PRIMARY KEY,
-	Nombre_Funcionalidad nvarchar(255) 
+	Nombre_Funcionalidad nvarchar(255) unique 
 )
 
 
@@ -49,7 +49,7 @@ CREATE TABLE C_HASHTAG.Funcionalidad_Rol
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Tipo_Doc(
 	Doc_Codigo numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Doc_Desc varchar(255) NOT NULL
+	Doc_Desc varchar(255) UNIQUE NOT NULL
 )
 		
 INSERT INTO C_HASHTAG.Tipo_Doc(Doc_Desc) VALUES ('DNI')
@@ -62,8 +62,8 @@ INSERT INTO C_HASHTAG.Tipo_Doc(Doc_Desc) VALUES ('Cedula')
 CREATE TABLE C_HASHTAG.Usuario
 (
 	Id_User numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Username nvarchar(50),
-	Password varchar(255),
+	Username nvarchar(50) UNIQUE,
+	Contraseña varchar(255),
 	Intentos_Fallidos numeric(18,0),
 	Habilitado char (1)
 )
@@ -71,7 +71,7 @@ CREATE TABLE C_HASHTAG.Usuario
 INSERT INTO C_HASHTAG.Usuario
 (
 	Username,
-	Password,
+	Contraseña,
 	Intentos_Fallidos,
 	Habilitado
 )
@@ -120,7 +120,11 @@ CREATE TABLE C_HASHTAG.Cliente
 	Cod_Postal nvarchar(50),
 	Nacimiento datetime,
 	Creacion datetime,
-	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
+	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
+	CONSTRAINT Doc UNIQUE
+    (
+        Tipo_Doc, Nro_Doc
+    )
 )
 
 INSERT INTO C_HASHTAG.Cliente(
@@ -207,13 +211,13 @@ INSERT INTO C_HASHTAG.Rubro
 CREATE TABLE C_HASHTAG.Empresa
 (
 	Id_Empresa numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Razon_Social nvarchar(255),
+	Razon_Social nvarchar(255) UNIQUE,
 	Mail nvarchar(50),
 	Telefono numeric(18,0),
 	Calle nvarchar(100),
 	Cod_Postal nvarchar(50),
 	Ciudad nvarchar(255),
-	Cuit nvarchar(50),
+	Cuit nvarchar(50) UNIQUE,
 	Nombre_Contacto nvarchar(255),
 	Rubro_Principal numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rubro(Id_Rubro),
 	Nro_Calle numeric(18,0),
@@ -221,6 +225,7 @@ CREATE TABLE C_HASHTAG.Empresa
 	Departamento nvarchar(50),
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
 )
+
 
 INSERT INTO C_HASHTAG.Empresa
 (
@@ -285,6 +290,11 @@ CREATE TABLE C_HASHTAG.Visibilidad
 )
 
 -- FALTA AGREGAR BIEN LOS VALORES DE COMISIONES
+/*Gratis no provee servicio de envío.
+Para las restantes publicaciones independientemente de cual sea su visibilidad, se
+debe elegir si dicha publicación brindará o no el servicio de envío sobre el producto
+comprado.*/
+
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
 VALUES ('Platino', 180.00, 10.00, 0.10)
@@ -299,8 +309,16 @@ INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comisio
 VALUES ('Bronce', 60.00, 10.00, 0.30)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Gratis', 0.00, NULL, 0) --No se si va NULL o 0.00, porque dice que no provee servicio de envio
+VALUES ('Gratis', 0.00, 0.00, 0) --No se si en Comision_Envio_Prod va NULL o 0.00, porque dice que no provee servicio de envio
 
+/*
+HAY QUE IMPLEMENTAR:
+todo usuario nuevo en la plataforma (aquellos agregados post-migración)
+tendrán el beneficio de tener por única vez una publicación sin
+costo de comisión de publicación (aplicable para aquellas que no sean
+gratuitas), la cual corresponderá a la primera publicación que registren en
+la plataforma. Esta característica no es aplicable a los datos migrados.
+*/
 
 /****************************************************************/
 --							Tipo Publicacion
@@ -318,7 +336,7 @@ INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Subasta')
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Publicacion
 (
-	Id_Publicacion numeric(18,0) PRIMARY KEY,
+	Id_Publicacion numeric(18,0) PRIMARY KEY,--auto numerico y consecutivo entre publicaciones
 	Monto numeric(18,2),
 	Id_Visibilidad numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Visibilidad(Id_Visibilidad),
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
@@ -488,7 +506,7 @@ CREATE TABLE C_HASHTAG.Calificacion
 	Id_Calificacion numeric(18,0) PRIMARY KEY,
 	Cant_Estrellas numeric(18,0),
 	Descripcion nvarchar(255),
-	Id_Compra numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Compra(Id_Compra)
+	Id_Compra numeric(18,0) UNIQUE FOREIGN KEY REFERENCES C_HASHTAG.Compra(Id_Compra)
 )
 
 INSERT INTO C_HASHTAG.Calificacion
@@ -505,7 +523,7 @@ INSERT INTO C_HASHTAG.Calificacion
 		NULL /* no funciona la query
 			(SELECT DISTINCT Id_Compra
 			FROM C_HASHTAG.Compra JOIN gd_esquema.Maestra m
-			ON (Id_Publicacion = Publicacion_Cod )
+			ON (g2.Id_Publicacion = m.Publicacion_Cod )
 			WHERE m.Calificacion_Codigo = g2.Calificacion_Codigo)*/
 		FROM gd_esquema.Maestra g2
 		WHERE Calificacion_Codigo IS NOT NULL
