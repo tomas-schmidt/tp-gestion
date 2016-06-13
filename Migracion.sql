@@ -24,6 +24,24 @@ CREATE TABLE C_HASHTAG.Rol
 	Habilitado bit 
 )
 
+CREATE TRIGGER Rol_Inhabilitado
+ON  C_HASHTAG.Rol
+AFTER UPDATE
+AS 
+BEGIN TRAN
+SET NOCOUNT ON;
+      If Update(Habilitado)
+      Begin
+           DELETE ru
+		   FROM C_HASHTAG.Rol_Usuario ru
+			INNER JOIN C_HASHTAG.Rol r
+			ON r.Id_Rol = ru.Id_Rol
+		   WHERE  r.Habilitado=0
+      End
+SET NOCOUNT OFF
+COMMIT TRAN
+GO
+
 /****************************************************************/
 --							Funcionalidad
 /****************************************************************/
@@ -65,7 +83,7 @@ CREATE TABLE C_HASHTAG.Usuario
 	Username nvarchar(50) UNIQUE,
 	Contraseña varchar(255),
 	Intentos_Fallidos numeric(18,0),
-	Habilitado char (1)
+	Habilitado bit
 )
 
 INSERT INTO C_HASHTAG.Usuario
