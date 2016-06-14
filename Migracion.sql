@@ -466,15 +466,21 @@ INSERT INTO C_HASHTAG.Empresa
 		NULL, -- no existe el campo ciudad
 		Publ_Empresa_Cuit,
 		NULL, -- falta nombre contacto
-		NULL, -- falta rubro principal
-		Publ_Cli_Nro_Calle,
-		Publ_Cli_Piso,
-		Publ_Cli_Depto,
+		(SELECT Id_Rubro
+		FROM C_HASHTAG.Rubro r
+		WHERE r.Desc_Corta = (  SELECT TOP 1 Publicacion_Rubro_Descripcion
+								FROM gd_esquema.Maestra g2
+								where g2.Publ_Empresa_Cuit = g1.Publ_Empresa_Cuit
+								GROUP BY Publicacion_Rubro_Descripcion
+								ORDER BY COUNT (*) DESC)), -- ELIJO EL RUBRO QUE APARECE EN MAS PUBLICACIONES
+		Publ_Empresa_Nro_Calle,
+		Publ_Empresa_Piso,
+		Publ_Empresa_Depto,
 		NULL, -- falta fecha de creacion
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18))		
-		FROM gd_esquema.Maestra
+		FROM gd_esquema.Maestra g1
 		where Publ_Empresa_Cuit IS NOT NULL
 
 /****************************************************************/
@@ -738,11 +744,14 @@ INSERT INTO C_HASHTAG.Item
 	Cantidad
 )
 	SELECT
-		NULL, -- falta id_factura, agregar id_publicacion?
+		(SELECT Id_Factura
+			FROM C_HASHTAG.Factura
+			WHERE Factura_Nro = Numero),
 		NULL, -- falta descripcion
 		Item_Factura_Monto,
 		Item_Factura_Cantidad
 		FROM gd_esquema.Maestra
+		where Item_Factura_Cantidad IS NOT NULL -- no se si poner la restriccion de que el monto tampoco sea null
 
 
 /****************************************************************/
