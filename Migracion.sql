@@ -7,6 +7,158 @@ GO
 
 /***********************************************************************
  *
+ *						STORED PROCEDURES y FUNCIONES
+ *
+ ***********************************************************************/
+
+
+/****************************************************************
+ *						crearRol
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.crearRol
+	@Nombre varchar(255),
+	@Habilitado bit
+AS
+	BEGIN TRY
+		INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES (@Nombre, @Habilitado)
+		-- Devuelvo el id del rol
+		SELECT Id_Rol FROM C_HASHTAG.Rol WHERE Nombre_Rol = @Nombre
+	END TRY
+	BEGIN CATCH
+		DECLARE @MensajeError varchar(255)
+		SET @MensajeError = 'El nombre "' + @Nombre + '" ya esta en uso'
+		RAISERROR(@MensajeError, 16, 1)
+	END CATCH
+GO
+
+
+/****************************************************************
+ *							ObtenerRoles
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerRoles
+AS
+	SELECT Id_Rol, Nombre_Rol, Habilitado
+		FROM Rol
+GO
+
+/****************************************************************
+ *					obtenerFuncionalides
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerFuncionalidades
+AS
+	SELECT * FROM C_HASHTAG.Funcionalidad
+GO
+
+/****************************************************************
+ *							bajaRol
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.bajaRol
+	@Id_Rol int
+AS
+	UPDATE C_HASHTAG.Rol
+		SET Habilitado = 0
+		WHERE Id_Rol = @Id_Rol
+GO
+
+/****************************************************************
+ *						agregarFuncionalidadARol
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.agregarFuncionalidadARol
+	@Id_Rol int,
+	@Id_Funcionalidad int
+AS
+	INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad)
+		VALUES (@Id_Rol, @Id_Funcionalidad)
+GO
+
+/****************************************************************
+ *				actualizarYBorrarFuncionalidadesRol
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.actualizarYBorrarFuncionalidadesRol
+	@Id_Rol int,
+    @Nombre varchar(255),
+    @Habilitado bit
+AS
+	UPDATE C_HASHTAG.Rol
+		SET Nombre_Rol = @Nombre, Habilitado = @Habilitado
+		WHERE Id_Rol = @Id_Rol
+		
+	DELETE C_HASHTAG.Funcionalidad_Rol
+		WHERE Id_Rol = @Id_Rol
+GO
+
+/****************************************************************
+ *							LOGIN
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.Login
+	@Username varchar(255),
+	@Contraseña varchar(255)
+AS
+	-- Verifico si las credenciales son correctas
+	IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username AND Contraseña = @Contraseña) = 1
+	BEGIN
+		-- Verifico si el usuario esta lockeado
+		IF (SELECT Intentos_Fallidos FROM Usuario WHERE Username = @Username) >= 3
+		BEGIN
+			RAISERROR('El usuario se encuentra bloqueado por acumulacion de intentos fallidos', 16, 1)
+			RETURN
+		END
+		-- login satisfactorio
+		-- Borro intentos fallidos
+			UPDATE Usuario SET Intentos_Fallidos = 0
+				FROM Usuario u
+				WHERE u.Username = @Username
+
+		-- Devuelvo Id_User
+		SELECT Id_User
+			FROM Usuario
+			WHERE Username = @Username AND Contraseña = @Contraseña
+	END
+	ELSE
+	BEGIN
+		-- Verifico si existe el usuario
+		IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username) = 1
+		BEGIN
+			-- Si existe incremento intentos fallidos
+			UPDATE Usuario 
+				SET Intentos_Fallidos=
+					(SELECT Intentos_Fallidos + 1
+						FROM Usuario u
+						WHERE u.Username = @Username)
+				WHERE Username = @Username
+		END
+		RAISERROR('Username y/o password incorrectos', 16, 1)
+	END
+GO
+
+/****************************************************************
+ *							obtenerRolesDeUsuario
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerRolesDeUsuario
+	@Id_User int
+AS
+	SELECT R.Id_Rol, Nombre_Rol, Habilitado
+		FROM Rol R, Rol_Usuario UR
+		WHERE UR.Id_User = @Id_User
+			AND UR.Id_Rol = R.Id_Rol
+GO
+
+/****************************************************************
+ *					obtenerFuncionalidadesDeRol
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerFuncionalidadesDeRol
+	@Id_Rol int
+AS
+	SELECT f.Id_Funcionalidad as Id_Funcionalidad, Nombre_Funcionalidad
+		FROM Funcionalidad f, Funcionalidad_Rol fr, Rol r
+		WHERE f.Id_Funcionalidad = fr.Id_Funcionalidad
+			AND fr.Id_Rol = r.Id_Rol
+			AND r.Id_Rol = @Id_Rol
+GO
+
+
+/***********************************************************************
+ *
  *						MIGRACION DE DATOS
  *
  ***********************************************************************/
@@ -24,7 +176,10 @@ CREATE TABLE C_HASHTAG.Rol
 	Habilitado bit 
 )
 GO
-CREATE TRIGGER Rol_Inhabilitado
+
+/*TRIGGER*/
+
+CREATE TRIGGER C_HASHTAG.Rol_Inhabilitado
 ON  C_HASHTAG.Rol
 AFTER UPDATE
 AS 
@@ -48,7 +203,7 @@ GO
 CREATE TABLE C_HASHTAG.Funcionalidad
 (
 	Id_Funcionalidad numeric(18,0)IDENTITY(1,1) PRIMARY KEY,
-	Nombre_Funcionalidad nvarchar(255) unique 
+	Nombre_Funcionalidad nvarchar(255) unique
 )
 
 
@@ -137,6 +292,7 @@ CREATE TABLE C_HASHTAG.Cliente
 	Departamento nvarchar(50),
 	Cod_Postal nvarchar(50),
 	Nacimiento datetime,
+	Localidad varchar (255),
 	Creacion datetime,
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
 	CONSTRAINT Doc UNIQUE
@@ -158,6 +314,7 @@ INSERT INTO C_HASHTAG.Cliente(
 	Departamento,
 	Cod_Postal,
 	Nacimiento,
+	Localidad,
 	Creacion ,
 	Id_User
 )
@@ -174,6 +331,7 @@ INSERT INTO C_HASHTAG.Cliente(
 		Cli_Depto,
 		Cli_Cod_Postal,
 		Cli_Fecha_Nac,
+		NULL, -- no hay localidad en la maestra
 		NULL, -- falta obtener la fecha de creacion
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
@@ -194,6 +352,7 @@ INSERT INTO C_HASHTAG.Cliente(
 		Publ_Cli_Depto,
 		Publ_Cli_Cod_Postal,
 		Publ_Cli_Fecha_Nac,
+		NULL, -- no hay localidad en la maestra
 		NULL, -- falta obtener la fecha de creacion
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
@@ -241,6 +400,7 @@ CREATE TABLE C_HASHTAG.Empresa
 	Nro_Calle numeric(18,0),
 	Piso numeric(18,0),
 	Departamento nvarchar(50),
+	Creacion DateTime,
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
 )
 
@@ -259,6 +419,7 @@ INSERT INTO C_HASHTAG.Empresa
 	Nro_Calle,
 	Piso,
 	Departamento,
+	Creacion,
 	Id_User
 )
 	SELECT DISTINCT
@@ -274,6 +435,7 @@ INSERT INTO C_HASHTAG.Empresa
 		Publ_Cli_Nro_Calle,
 		Publ_Cli_Piso,
 		Publ_Cli_Depto,
+		NULL, -- falta fecha de creacion
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18))		
