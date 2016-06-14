@@ -10,6 +10,23 @@ GO
  *						STORED PROCEDURES y FUNCIONES
  *
  ***********************************************************************/
+ 
+ /****************************************************************
+ *							FECHA
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.SetFecha
+	@Fecha DateTime
+AS
+	TRUNCATE TABLE C_HASHTAG.FECHA_DEL_SISTEMA
+	INSERT INTO C_HASHTAG.FECHA_DEL_SISTEMA ([Fecha]) VALUES (@Fecha)
+GO
+
+CREATE FUNCTION C_HASHTAG.obtenerFecha () RETURNS DateTime
+AS
+BEGIN
+	RETURN(SELECT TOP(1) * FROM C_HASHTAG.FECHA_DEL_SISTEMA)
+END
+GO
 
 
 /****************************************************************
@@ -164,6 +181,20 @@ GO
  ***********************************************************************/
 
 USE GD1C2016
+
+/****************************************************************/
+--							FECHA_DEL_SISTEMA
+/****************************************************************/
+CREATE TABLE C_HASHTAG.[FECHA_DEL_SISTEMA](
+	[Fecha][DateTime] PRIMARY KEY
+)
+
+-- Cargo la fecha en la que inicia el sistema
+DECLARE @fecha datetime
+SET @fecha = CAST('20150101' AS datetime)
+EXEC C_HASHTAG.SetFecha @fecha
+GO
+
 
 
 /****************************************************************/
@@ -367,7 +398,7 @@ INSERT INTO C_HASHTAG.Cliente(
 		Cli_Cod_Postal,
 		Cli_Fecha_Nac,
 		NULL, -- no hay localidad en la maestra
-		NULL, -- falta obtener la fecha de creacion
+		C_HASHTAG.obtenerFecha(),
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_DNI),18))
@@ -388,7 +419,7 @@ INSERT INTO C_HASHTAG.Cliente(
 		Publ_Cli_Cod_Postal,
 		Publ_Cli_Fecha_Nac,
 		NULL, -- no hay localidad en la maestra
-		NULL, -- falta obtener la fecha de creacion
+		C_HASHTAG.obtenerFecha(),
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18))
@@ -465,7 +496,7 @@ INSERT INTO C_HASHTAG.Empresa
 		Publ_Empresa_Cod_Postal,
 		NULL, -- no existe el campo ciudad
 		Publ_Empresa_Cuit,
-		NULL, -- falta nombre contacto
+		NULL, -- no poseen nombre contacto
 		(SELECT Id_Rubro
 		FROM C_HASHTAG.Rubro r
 		WHERE r.Desc_Corta = (  SELECT TOP 1 Publicacion_Rubro_Descripcion
@@ -476,7 +507,7 @@ INSERT INTO C_HASHTAG.Empresa
 		Publ_Empresa_Nro_Calle,
 		Publ_Empresa_Piso,
 		Publ_Empresa_Depto,
-		NULL, -- falta fecha de creacion
+		C_HASHTAG.obtenerFecha(),
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18))		
@@ -517,19 +548,19 @@ comprado.*/
 
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Platino', 180.00, 10.00, 0.10)
+	VALUES ('Platino', 180.00, 10.00, 0.10)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Oro', 140.00, 10.00, 0.15)
+	VALUES ('Oro', 140.00, 10.00, 0.15)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Plata', 100.00, 10.00, 0.20)
+	VALUES ('Plata', 100.00, 10.00, 0.20)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Bronce', 60.00, 10.00, 0.30)
+	VALUES ('Bronce', 60.00, 10.00, 0.30)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Gratis', 0.00, 0.00, 0) 
+	VALUES ('Gratis', 0.00, 0.00, 0) 
 
 /*
 HAY QUE IMPLEMENTAR:
@@ -747,7 +778,7 @@ INSERT INTO C_HASHTAG.Item
 		(SELECT Id_Factura
 			FROM C_HASHTAG.Factura
 			WHERE Factura_Nro = Numero),
-		NULL, -- falta descripcion
+		'Sin descripcion', -- falta descripcion
 		Item_Factura_Monto,
 		Item_Factura_Cantidad
 		FROM gd_esquema.Maestra
