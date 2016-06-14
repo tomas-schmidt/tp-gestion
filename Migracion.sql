@@ -177,7 +177,11 @@ CREATE TABLE C_HASHTAG.Rol
 )
 GO
 
-/*TRIGGER*/
+INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Administrador', 1)
+INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Cliente', 1)
+INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Empresa', 1)
+
+/*TRIGGER
 
 CREATE TRIGGER C_HASHTAG.Rol_Inhabilitado
 ON  C_HASHTAG.Rol
@@ -196,6 +200,7 @@ SET NOCOUNT ON;
 SET NOCOUNT OFF
 COMMIT TRAN
 GO
+*/
 
 /****************************************************************/
 --							Funcionalidad
@@ -206,6 +211,14 @@ CREATE TABLE C_HASHTAG.Funcionalidad
 	Nombre_Funcionalidad nvarchar(255) unique
 )
 
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ABMRol')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ABMUsuario')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ABMVisibilidad')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('GenerarPublicacion')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('Comprar/Ofertar')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ObtenerHistorial')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('Calificar')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ObtenerListadoEstadistico')
 
 /****************************************************************/
 --							Funcionalidad_Rol
@@ -216,6 +229,20 @@ CREATE TABLE C_HASHTAG.Funcionalidad_Rol
 	Id_Funcionalidad numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Funcionalidad(Id_Funcionalidad) 
 	CONSTRAINT PK_Funcionalidad_Rol PRIMARY KEY CLUSTERED (Id_Rol,Id_Funcionalidad)
 )
+
+--Inserto funcionalidades del administrador
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,1)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,2)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,3)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,8)
+
+--Inserto funcionalidades del cliente
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,5)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,6)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,7)
+
+--Inserto funcionalidades de la empresa
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,4)
 
 /****************************************************************/
 --					TIPO DOCUMENTO	
@@ -240,6 +267,15 @@ CREATE TABLE C_HASHTAG.Usuario
 	Intentos_Fallidos numeric(18,0),
 	Habilitado bit
 )
+
+--Creo administrador con Id_User:1, username:admin1 y password:administrador (hasheada)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
+	('admin1', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1)
+
+
+--Creo administrador con Id_User:2, username:admin2 y password:administrador (hasheada)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
+	('admin2', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1)
 
 INSERT INTO C_HASHTAG.Usuario
 (
@@ -272,7 +308,6 @@ INSERT INTO C_HASHTAG.Usuario
 		1
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
-
 
 /****************************************************************/
 --							Cliente
@@ -469,7 +504,6 @@ CREATE TABLE C_HASHTAG.Visibilidad
 	Comision_Tipo_Public numeric(18,2)
 )
 
--- FALTA AGREGAR BIEN LOS VALORES DE COMISIONES
 /*Gratis no provee servicio de envío.
 Para las restantes publicaciones independientemente de cual sea su visibilidad, se
 debe elegir si dicha publicación brindará o no el servicio de envío sobre el producto
@@ -489,7 +523,7 @@ INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comisio
 VALUES ('Bronce', 60.00, 10.00, 0.30)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-VALUES ('Gratis', 0.00, 0.00, 0) --No se si en Comision_Envio_Prod va NULL o 0.00, porque dice que no provee servicio de envio
+VALUES ('Gratis', 0.00, 0.00, 0) 
 
 /*
 HAY QUE IMPLEMENTAR:
@@ -773,3 +807,23 @@ CREATE TABLE C_HASHTAG.Rol_Usuario
 	Id_Rol numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rol(Id_Rol),
 	CONSTRAINT PK_Rol_Usuario PRIMARY KEY CLUSTERED(Id_User, Id_Rol)
 )
+
+-- Cargo rol de administrador a usuarios administradores (Id_Rol = 1)
+INSERT INTO C_HASHTAG.Rol_Usuario(Id_User, Id_Rol) VALUES
+	(1,1)
+INSERT INTO C_HASHTAG.Rol_Usuario(Id_User, Id_Rol) VALUES
+	(2,1)
+
+--Cargo Rol de cliente a usuarios clientes (Id_Rol = 2)
+INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
+	SELECT u.Id_User, 2
+		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Cliente c
+		ON (u.Id_User = c.Id_User)
+
+--Cargo Rol de empresa a usuarios empresas (Id_Rol = 3)
+INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
+	SELECT u.Id_User, 3
+		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
+		ON (u.Id_User = e.Id_User)
+
+	
