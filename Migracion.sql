@@ -23,7 +23,7 @@ CREATE TABLE C_HASHTAG.Rol
 	Nombre_Rol nvarchar(255),
 	Habilitado bit 
 )
-
+GO
 CREATE TRIGGER Rol_Inhabilitado
 ON  C_HASHTAG.Rol
 AFTER UPDATE
@@ -97,7 +97,7 @@ INSERT INTO C_HASHTAG.Usuario
 		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
-		's'
+		1
 		FROM gd_esquema.Maestra
 		where Cli_Dni IS NOT NULL
 	UNION
@@ -105,7 +105,7 @@ INSERT INTO C_HASHTAG.Usuario
 		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
-		's'
+		1
 		FROM gd_esquema.Maestra
 		where Publ_Cli_Dni IS NOT NULL
 
@@ -114,7 +114,7 @@ INSERT INTO C_HASHTAG.Usuario
 		'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
-		's'
+		1
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
 
@@ -434,17 +434,47 @@ INSERT INTO C_HASHTAG.Publicacion
 		WHERE Publ_Cli_Dni IS NOT NULL
 
 /****************************************************************/
+--							Calificacion
+/****************************************************************/
+CREATE TABLE C_HASHTAG.Calificacion
+(
+	Id_Calificacion numeric(18,0) PRIMARY KEY,
+	Cant_Estrellas numeric(18,0),
+	Descripcion nvarchar(255)
+)
+
+INSERT INTO C_HASHTAG.Calificacion
+(
+	Id_Calificacion,
+	Cant_Estrellas,
+	Descripcion
+)
+	SELECT DISTINCT
+		g2.Calificacion_Codigo,
+		g2.Calificacion_Cant_Estrellas,
+		g2.Calificacion_Descripcion
+	FROM gd_esquema.Maestra g2	
+	WHERE Calificacion_Codigo IS NOT NULL
+
+
+/****************************************************************/
 --							Compra
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Compra
 (
 	Id_Compra numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
-	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
+	ID_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
 	Monto numeric(18,2),
 	Cantidad numeric(18,0),
-	Fecha datetime
+	Fecha datetime,
+	Id_Calif numeric(18,0)FOREIGN KEY REFERENCES C_HASHTAG.Calificacion(Id_Calificacion)
 )
+
+/*permitir la repeticion de valores no null, pero si null*/
+CREATE UNIQUE NONCLUSTERED INDEX Id_Calif_NotNull 
+ON C_HASHTAG.Compra(Id_Calif)
+WHERE Id_Calif IS NOT NULL;
 
 INSERT INTO C_HASHTAG.Compra
 (
@@ -452,16 +482,18 @@ INSERT INTO C_HASHTAG.Compra
 	Id_Publicacion,
 	Monto,
 	Cantidad,
-	Fecha
+	Fecha,
+	Id_Calif
 )
-	SELECT 
+	SELECT DISTINCT
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18)),
 		Publicacion_Cod,
 		Publicacion_Precio,
 		Compra_Cantidad,
-		Compra_Fecha
+		Compra_Fecha,
+		Calificacion_Codigo
 		FROM gd_esquema.Maestra
 		WHERE Compra_Cantidad IS NOT NULL -- ME PONIA COMPRAS CON LA CANT Y FECHA EN NULL
 
@@ -483,7 +515,7 @@ INSERT INTO C_HASHTAG.Factura
 	Fecha,
 	Total
 )
-	SELECT
+	SELECT DISTINCT
 		Publicacion_Cod,
 		Factura_Nro,
 		Factura_Fecha,
@@ -516,40 +548,13 @@ INSERT INTO C_HASHTAG.Item
 		Item_Factura_Cantidad
 		FROM gd_esquema.Maestra
 
-/****************************************************************/
---							Calificacion
-/****************************************************************/
-CREATE TABLE C_HASHTAG.Calificacion
-(
-	Id_Calificacion numeric(18,0) PRIMARY KEY,
-	Cant_Estrellas numeric(18,0),
-	Descripcion nvarchar(255),
-	Id_Compra numeric(18,0) UNIQUE FOREIGN KEY REFERENCES C_HASHTAG.Compra(Id_Compra)
-)
-
-INSERT INTO C_HASHTAG.Calificacion
-(
-	Id_Calificacion,
-	Cant_Estrellas,
-	Descripcion,
-	Id_Compra
-)
-	SELECT DISTINCT
-		g2.Calificacion_Codigo,
-		g2.Calificacion_Cant_Estrellas,
-		g2.Calificacion_Descripcion,
-		NULL /* no funciona la query
-			(SELECT DISTINCT Id_Compra
-			FROM C_HASHTAG.Compra JOIN gd_esquema.Maestra m
-			ON (g2.Id_Publicacion = m.Publicacion_Cod )
-			WHERE m.Calificacion_Codigo = g2.Calificacion_Codigo)*/
-		FROM gd_esquema.Maestra g2
-		WHERE Calificacion_Codigo IS NOT NULL
 
 /****************************************************************/
 --							Oferta
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Oferta
+
+
 (
 	Id_Oferta numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion), 
