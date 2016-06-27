@@ -173,6 +173,15 @@ AS
 			AND r.Id_Rol = @Id_Rol
 GO
 
+/****************************************************************
+ *					obtenerTiposDocumento
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerTiposDocumento
+AS
+	SELECT * FROM C_HASHTAG.Tipo_Doc
+		ORDER BY Doc_Desc
+GO
+
 
 /***********************************************************************
  *

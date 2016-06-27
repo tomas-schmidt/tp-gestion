@@ -16,7 +16,8 @@ namespace WindowsFormsApplication1.ConexionBD
 
         public BaseDeDatos()
         {
-            /*parametrosConexionDB = "Server=" + System.Configuration.ConfigurationManager.AppSettings["server"] + ";"
+            /*No funcionaba. arreglar
+             * parametrosConexionDB = "Server=" + System.Configuration.ConfigurationManager.AppSettings["server"] + ";"
                 + "Database=" + System.Configuration.ConfigurationManager.AppSettings["database"] + ";"
                 + "User ID=" + System.Configuration.ConfigurationManager.AppSettings["id"] + ";"
                 + "Password=" + System.Configuration.ConfigurationManager.AppSettings["password"];*/

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WindowsFormsApplication1.ABM_Rol;
+using WindowsFormsApplication1.ABM_Usuario;
 using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1
@@ -54,6 +55,11 @@ namespace WindowsFormsApplication1
                 {
                     ABMRol abmrol = new ABMRol();
                     abmrol.Show();
+                }
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "ABMUsuario")
+                {
+                    ABMUsuario abmusuario = new ABMUsuario();
+                    abmusuario.Show();
                 }
 
             }

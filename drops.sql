@@ -10,6 +10,7 @@ DROP PROCEDURE C_HASHTAG.agregarFuncionalidadARol
 DROP PROCEDURE C_HASHTAG.Login
 DROP PROCEDURE C_HASHTAG.obtenerRolesDeUsuario
 DROP PROCEDURE C_HASHTAG.obtenerFuncionalidadesDeRol
+DROP PROCEDURE C_HASHTAG.obtenerTiposDocumento
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario

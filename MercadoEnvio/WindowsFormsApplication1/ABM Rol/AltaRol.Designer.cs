@@ -89,7 +89,7 @@
             this.Column3});
             this.dataGridView_funcionalidades.Location = new System.Drawing.Point(22, 93);
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
-            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(343, 150);
+            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(383, 150);
             this.dataGridView_funcionalidades.TabIndex = 5;
             this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -106,6 +106,7 @@
             // 
             // Column3
             // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column3.HeaderText = "Nombre_Funcionalidad";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;

@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    public partial class Form1 : Form
+    public partial class ABMUsuario : Form
     {
-        public Form1()
+        public ABMUsuario()
         {
             InitializeComponent();
         }
@@ -19,6 +19,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_crearCliente_Click(object sender, EventArgs e)
+        {
+            CrearCliente crearCli = new CrearCliente();
+            crearCli.Show();
         }
     }
 }
