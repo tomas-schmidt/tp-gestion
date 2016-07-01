@@ -120,6 +120,12 @@ AS
 			RAISERROR('El usuario se encuentra bloqueado por acumulacion de intentos fallidos', 16, 1)
 			RETURN
 		END
+		
+		IF (SELECT Habilitado FROM Usuario WHERE Username = @Username) = 0
+		BEGIN
+			RAISERROR('El usuario se encuentra deshabilitado', 16, 1)
+			RETURN
+		END
 		-- login satisfactorio
 		-- Borro intentos fallidos
 			UPDATE Usuario SET Intentos_Fallidos = 0
@@ -158,6 +164,7 @@ AS
 		FROM Rol R, Rol_Usuario UR
 		WHERE UR.Id_User = @Id_User
 			AND UR.Id_Rol = R.Id_Rol
+			AND R.Habilitado = 1
 GO
 
 /****************************************************************
@@ -211,6 +218,8 @@ BEGIN TRANSACTION
 															where Doc_Desc = @Nombre_Tipo_Doc),
 					@Mail, @Telefono, @Domicilio_Calle, @Nro_Calle,
 					@Piso, @Departamento, @Cod_Postal, @Nacimiento, @Localidad, C_HASHTAG.obtenerFecha(), @Id_User)
+		INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)	
+			Values (@Id_User, 2)
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
@@ -274,6 +283,8 @@ BEGIN TRANSACTION
 					(SELECT TOP 1 Id_Rubro FROM C_HASHTAG.Rubro
 					where Desc_Corta = @Rubro_Principal),
 					@Nro_Calle, @Piso, @Departamento, C_HASHTAG.obtenerFecha(), @Id_User)
+		INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)	
+			Values (@Id_User, 3)
 	END TRY
 	BEGIN CATCH
 		ROLLBACK

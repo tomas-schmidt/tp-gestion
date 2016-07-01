@@ -32,5 +32,10 @@ namespace WindowsFormsApplication1.ABM_Usuario
             CrearEmpresa crearEmpresa = new CrearEmpresa();
             crearEmpresa.Show();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

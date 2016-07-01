@@ -95,11 +95,17 @@
     <Compile Include="ABM Usuario\CrearEmpresa.Designer.cs">
       <DependentUpon>CrearEmpresa.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Visibilidad\Form1.cs">
+    <Compile Include="ABM Usuario\ListarEmpresas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABM Visibilidad\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ABM Usuario\ListarEmpresas.Designer.cs">
+      <DependentUpon>ListarEmpresas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Visibilidad\ABMVisiblidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Visibilidad\ABMVisiblidad.Designer.cs">
+      <DependentUpon>ABMVisiblidad.cs</DependentUpon>
     </Compile>
     <Compile Include="Calificar\Form1.cs">
       <SubType>Form</SubType>
@@ -189,8 +195,8 @@
     <EmbeddedResource Include="ABM Usuario\CrearEmpresa.resx">
       <DependentUpon>CrearEmpresa.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Visibilidad\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Visibilidad\ABMVisiblidad.resx">
+      <DependentUpon>ABMVisiblidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Calificar\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

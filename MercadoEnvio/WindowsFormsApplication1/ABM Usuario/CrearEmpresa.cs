@@ -66,7 +66,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             {
                 string rubro = reader[1].ToString();
                 comboBox1.Items.Add(rubro);
-            }
+            } 
         }
     }
 }
