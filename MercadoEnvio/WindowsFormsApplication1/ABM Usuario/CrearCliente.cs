@@ -11,9 +11,9 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    public partial class btn_crearCliente : Form
+    public partial class CrearCliente : Form
     {
-        public btn_crearCliente()
+        public CrearCliente()
         {
             InitializeComponent();
         }

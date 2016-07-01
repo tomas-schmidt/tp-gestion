@@ -40,6 +40,7 @@
             this.btn_crearEmpresa.TabIndex = 0;
             this.btn_crearEmpresa.Text = "Crear empresa";
             this.btn_crearEmpresa.UseVisualStyleBackColor = true;
+            this.btn_crearEmpresa.Click += new System.EventHandler(this.btn_crearEmpresa_Click);
             // 
             // btn_crearCliente
             // 

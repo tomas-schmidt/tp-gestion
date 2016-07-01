@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApplication1.ABM_Usuario
 {
-    partial class btn_crearCliente
+    partial class CrearCliente
     {
         /// <summary>
         /// Required designer variable.

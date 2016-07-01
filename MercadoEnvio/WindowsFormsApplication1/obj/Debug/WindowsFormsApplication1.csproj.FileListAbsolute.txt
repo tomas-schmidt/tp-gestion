@@ -45,5 +45,5 @@ C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsAppl
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.ABMUsuario.resources
-C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.btn_crearCliente.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.CrearEmpresa.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.CrearCliente.resources

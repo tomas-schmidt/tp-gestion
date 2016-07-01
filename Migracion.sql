@@ -230,7 +230,7 @@ GO
 CREATE PROCEDURE C_HASHTAG.obtenerRubros
 AS
 	SELECT * FROM C_HASHTAG.Rubro
-		ORDER BY Doc_Desc
+		ORDER BY Desc_Corta
 GO
 
 /****************************************************************
@@ -248,7 +248,7 @@ CREATE PROCEDURE C_HASHTAG.crearUsuarioYEmpresa
 	@Localidad nvarchar(255),
 	@Cuit nvarchar(255),
 	@Nombre_Contacto nvarchar(255),
-	@Rubro_Principal numeric(18,0),
+	@Rubro_Principal nvarchar(255),
 	@Nro_Calle numeric(18,0),
 	@Piso numeric(18,0),
 	@Departamento nvarchar(50)
@@ -281,9 +281,9 @@ BEGIN TRANSACTION
 		RETURN
 	END CATCH
 	
-	SELECT TOP 1 Id_Cliente, Id_User
-		FROM C_HASHTAG.Cliente
-		ORDER BY Id_Cliente DESC
+	SELECT TOP 1 Id_Empresa, Id_User
+		FROM C_HASHTAG.Empresa
+		ORDER BY Id_Empresa DESC
 COMMIT
 GO
 
@@ -984,3 +984,6 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 	SELECT u.Id_User, 3
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
+
+
+select * from C_HASHTAG.Empresa

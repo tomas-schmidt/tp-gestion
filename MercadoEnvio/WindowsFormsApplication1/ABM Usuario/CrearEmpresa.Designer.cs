@@ -58,7 +58,7 @@
             this.txt_razonSocial = new System.Windows.Forms.TextBox();
             this.txt_password = new System.Windows.Forms.TextBox();
             this.txt_username = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txt_nombreContacto = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label15
@@ -85,6 +85,7 @@
             this.btn_crearEmpesa.TabIndex = 60;
             this.btn_crearEmpesa.Text = "Crear empresa";
             this.btn_crearEmpesa.UseVisualStyleBackColor = true;
+            this.btn_crearEmpesa.Click += new System.EventHandler(this.btn_crearEmpesa_Click);
             // 
             // label14
             // 
@@ -268,6 +269,7 @@
             this.txt_calle.Name = "txt_calle";
             this.txt_calle.Size = new System.Drawing.Size(100, 20);
             this.txt_calle.TabIndex = 39;
+            this.txt_calle.TextChanged += new System.EventHandler(this.txt_calle_TextChanged);
             // 
             // txt_cuit
             // 
@@ -304,19 +306,19 @@
             this.txt_username.Size = new System.Drawing.Size(100, 20);
             this.txt_username.TabIndex = 31;
             // 
-            // textBox1
+            // txt_nombreContacto
             // 
-            this.textBox1.Location = new System.Drawing.Point(357, 216);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 62;
+            this.txt_nombreContacto.Location = new System.Drawing.Point(357, 216);
+            this.txt_nombreContacto.Name = "txt_nombreContacto";
+            this.txt_nombreContacto.Size = new System.Drawing.Size(100, 20);
+            this.txt_nombreContacto.TabIndex = 62;
             // 
             // CrearEmpresa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(521, 297);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txt_nombreContacto);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.txt_nroCalle);
             this.Controls.Add(this.btn_crearEmpesa);
@@ -349,6 +351,7 @@
             this.Controls.Add(this.txt_username);
             this.Name = "CrearEmpresa";
             this.Text = "CrearEmpresa";
+            this.Load += new System.EventHandler(this.CrearEmpresa_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -386,6 +389,6 @@
         private System.Windows.Forms.TextBox txt_razonSocial;
         private System.Windows.Forms.TextBox txt_password;
         private System.Windows.Forms.TextBox txt_username;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txt_nombreContacto;
     }
 }
