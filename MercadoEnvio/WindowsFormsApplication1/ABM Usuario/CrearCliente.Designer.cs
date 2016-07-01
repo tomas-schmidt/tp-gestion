@@ -101,7 +101,7 @@
             this.txt_calle.Location = new System.Drawing.Point(340, 45);
             this.txt_calle.Name = "txt_calle";
             this.txt_calle.Size = new System.Drawing.Size(100, 20);
-            this.txt_calle.TabIndex = 5;
+            this.txt_calle.TabIndex = 8;
             // 
             // txt_mail
             // 
@@ -122,21 +122,21 @@
             this.txt_nroPiso.Location = new System.Drawing.Point(340, 102);
             this.txt_nroPiso.Name = "txt_nroPiso";
             this.txt_nroPiso.Size = new System.Drawing.Size(100, 20);
-            this.txt_nroPiso.TabIndex = 8;
+            this.txt_nroPiso.TabIndex = 10;
             // 
             // txt_depto
             // 
             this.txt_depto.Location = new System.Drawing.Point(340, 128);
             this.txt_depto.Name = "txt_depto";
             this.txt_depto.Size = new System.Drawing.Size(100, 20);
-            this.txt_depto.TabIndex = 9;
+            this.txt_depto.TabIndex = 11;
             // 
             // txt_localidad
             // 
             this.txt_localidad.Location = new System.Drawing.Point(340, 159);
             this.txt_localidad.Name = "txt_localidad";
             this.txt_localidad.Size = new System.Drawing.Size(100, 20);
-            this.txt_localidad.TabIndex = 10;
+            this.txt_localidad.TabIndex = 12;
             this.txt_localidad.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
             // 
             // txt_codPostal
@@ -144,7 +144,7 @@
             this.txt_codPostal.Location = new System.Drawing.Point(340, 188);
             this.txt_codPostal.Name = "txt_codPostal";
             this.txt_codPostal.Size = new System.Drawing.Size(100, 20);
-            this.txt_codPostal.TabIndex = 11;
+            this.txt_codPostal.TabIndex = 13;
             // 
             // label1
             // 
@@ -271,7 +271,7 @@
             this.comboBox1.Location = new System.Drawing.Point(122, 178);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 25;
+            this.comboBox1.TabIndex = 5;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // dateTimePicker1
@@ -279,7 +279,7 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(269, 244);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 26;
+            this.dateTimePicker1.TabIndex = 14;
             // 
             // label14
             // 
@@ -315,7 +315,7 @@
             this.txt_nroCalle.Location = new System.Drawing.Point(340, 73);
             this.txt_nroCalle.Name = "txt_nroCalle";
             this.txt_nroCalle.Size = new System.Drawing.Size(100, 20);
-            this.txt_nroCalle.TabIndex = 29;
+            this.txt_nroCalle.TabIndex = 9;
             this.txt_nroCalle.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // btn_crearCliente

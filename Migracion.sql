@@ -224,6 +224,70 @@ BEGIN TRANSACTION
 COMMIT
 GO
 
+/****************************************************************
+ *					obtenerRubros
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerRubros
+AS
+	SELECT * FROM C_HASHTAG.Rubro
+		ORDER BY Doc_Desc
+GO
+
+/****************************************************************
+ *					crearUsuarioYEmpresa
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.crearUsuarioYEmpresa
+	@Username nvarchar(255),
+	@Contraseña nvarchar(255),
+	@Razon_Social nvarchar(255),
+	@Mail nvarchar(50),
+	@Telefono numeric(18,0),
+	@Calle nvarchar(100),
+	@Cod_Postal nvarchar(50),
+	@Ciudad nvarchar(255),
+	@Localidad nvarchar(255),
+	@Cuit nvarchar(255),
+	@Nombre_Contacto nvarchar(255),
+	@Rubro_Principal numeric(18,0),
+	@Nro_Calle numeric(18,0),
+	@Piso numeric(18,0),
+	@Departamento nvarchar(50)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado) VALUES 
+		(@Username, @Contraseña, 0, 1)
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('El username ya se encuentra en uso', 16, 1)
+		RETURN
+	END CATCH
+	
+	BEGIN TRY
+		DECLARE @Id_User int;
+		SET @Id_User = (SELECT Id_User FROM C_HASHTAG.Usuario WHERE Username = @Username)
+		INSERT INTO C_HASHTAG.Empresa
+			(Razon_Social, Mail, Telefono, Calle, Cod_Postal,
+			Ciudad, Localidad, Cuit, Nombre_Contacto, Rubro_Principal, Nro_Calle, Piso, Departamento, Creacion, Id_User)
+			VALUES (@Razon_Social, @Mail, @Telefono, @Calle, @Cod_Postal, @Ciudad, @Localidad, @Cuit, @Nombre_Contacto,
+					(SELECT TOP 1 Id_Rubro FROM C_HASHTAG.Rubro
+					where Desc_Corta = @Rubro_Principal),
+					@Nro_Calle, @Piso, @Departamento, C_HASHTAG.obtenerFecha(), @Id_User)
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('Ya existe una empresa con esa razon social, y/o CUIT, y/o email', 16, 1)
+		RETURN
+	END CATCH
+	
+	SELECT TOP 1 Id_Cliente, Id_User
+		FROM C_HASHTAG.Cliente
+		ORDER BY Id_Cliente DESC
+COMMIT
+GO
+
+
 
 
 /***********************************************************************
@@ -512,7 +576,8 @@ CREATE TABLE C_HASHTAG.Empresa
 	Calle nvarchar(100),
 	Cod_Postal nvarchar(50),
 	Ciudad nvarchar(255),
-	Cuit nvarchar(50) UNIQUE,
+	Localidad nvarchar(255),
+	Cuit nvarchar(255) UNIQUE,
 	Nombre_Contacto nvarchar(255),
 	Rubro_Principal numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rubro(Id_Rubro),
 	Nro_Calle numeric(18,0),
@@ -531,6 +596,7 @@ INSERT INTO C_HASHTAG.Empresa
 	Calle,
 	Cod_Postal,
 	Ciudad,
+	Localidad,
 	Cuit,
 	Nombre_Contacto,
 	Rubro_Principal,
@@ -547,6 +613,7 @@ INSERT INTO C_HASHTAG.Empresa
 		Publ_Empresa_Dom_Calle,
 		Publ_Empresa_Cod_Postal,
 		NULL, -- no existe el campo ciudad
+		NULL, -- no existe el campo localidad
 		Publ_Empresa_Cuit,
 		NULL, -- no poseen nombre contacto
 		(SELECT Id_Rubro
