@@ -68,5 +68,10 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 comboBox1.Items.Add(rubro);
             } 
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -52,6 +52,7 @@
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
             this.dataGridView_funcionalidades.Size = new System.Drawing.Size(343, 150);
             this.dataGridView_funcionalidades.TabIndex = 10;
+            this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_funcionalidades_CellContentClick);
             // 
             // Column1
             // 

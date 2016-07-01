@@ -82,5 +82,10 @@ namespace WindowsFormsApplication1.ABM_Rol
             }
         
         }
+
+        private void dataGridView_funcionalidades_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

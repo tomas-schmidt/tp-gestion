@@ -310,6 +310,28 @@ AS
 		where e.Id_Empresa = @Id_Empresa
 GO
 
+/****************************************************************
+ *							ObtenerEmpresaYUsername
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.ObtenerEmpresaYUsername @Id_Empresa int
+AS
+select top 1 u.Username, e.* from
+	C_HASHTAG.Empresa e join C_HASHTAG.Usuario u
+	on (e.Id_User = u.Id_User)
+	where e.Id_Empresa = @Id_Empresa
+GO
+
+/****************************************************************
+ *							ObtenerRubroDeEmpresa
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerRubroDeEmpresa @Id_Empresa int
+AS
+	SELECT * FROM C_HASHTAG.Rubro r
+		join C_HASHTAG.Empresa e
+		on (r.Id_Rubro = e.Rubro_Principal)
+		where e.Id_Empresa = @Id_Empresa
+		ORDER BY Desc_Corta
+GO
 
 
 

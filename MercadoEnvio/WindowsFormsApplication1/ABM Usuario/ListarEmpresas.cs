@@ -29,10 +29,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 spcambiarEstadoEmpresa.Connection.Close();
                 MessageBox.Show("La empresa fue dada de baja/alta");
             }
-            /*if (e.ColumnIndex == 5)
+            if (e.ColumnIndex == 6)
             {
-
-            }*/
+                ModificarEmpresa mr = new ModificarEmpresa(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                mr.Show();
+            }
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -83,6 +84,13 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 dataGridView1.Rows[n].Cells[6].Value = "Modificar";
 
             }
+        }
+
+        private void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            txt_Cuit.Clear();
+            txt_Email.Clear();
+            txt_razonSocial.Clear();
         }
     }
 }
