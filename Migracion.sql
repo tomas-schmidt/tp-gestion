@@ -984,6 +984,3 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 	SELECT u.Id_User, 3
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
-
-
-select * from C_HASHTAG.Empresa
