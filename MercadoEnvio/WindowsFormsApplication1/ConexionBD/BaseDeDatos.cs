@@ -38,6 +38,14 @@ namespace WindowsFormsApplication1.ConexionBD
             return sp;
         }
 
+        public SqlCommand obtenerConsulta(String consulta)
+        {
+            SqlConnection conexion = new SqlConnection(parametrosConexionDB);
+            conexion.Open();
+            SqlCommand sp = new SqlCommand(consulta, conexion);
+            return sp;
+        }
+
 
 
     }

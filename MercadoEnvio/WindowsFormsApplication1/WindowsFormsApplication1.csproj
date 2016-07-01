@@ -195,6 +195,9 @@
     <EmbeddedResource Include="ABM Usuario\CrearEmpresa.resx">
       <DependentUpon>CrearEmpresa.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Usuario\ListarEmpresas.resx">
+      <DependentUpon>ListarEmpresas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Visibilidad\ABMVisiblidad.resx">
       <DependentUpon>ABMVisiblidad.cs</DependentUpon>
     </EmbeddedResource>
