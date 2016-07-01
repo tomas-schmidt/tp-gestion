@@ -14,7 +14,7 @@ DROP PROCEDURE C_HASHTAG.obtenerTiposDocumento
 DROP PROCEDURE C_HASHTAG.crearUsuarioYCliente
 DROP PROCEDURE C_HASHTAG.crearUsuarioYEmpresa
 DROP PROCEDURE C_HASHTAG.obtenerRubros
-
+DROP PROCEDURE C_HASHTAG.cambiarEstadoEmpresa
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario

@@ -20,7 +20,19 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.ColumnIndex == 5)
+            {
+                BaseDeDatos bd = new BaseDeDatos();
+                var spcambiarEstadoEmpresa = bd.obtenerStoredProcedure("cambiarEstadoEmpresa");
+                spcambiarEstadoEmpresa.Parameters.Add("@Id_Empresa", SqlDbType.VarChar).Value = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
+                spcambiarEstadoEmpresa.ExecuteNonQuery();
+                spcambiarEstadoEmpresa.Connection.Close();
+                MessageBox.Show("La empresa fue dada de baja/alta");
+            }
+            /*if (e.ColumnIndex == 5)
+            {
 
+            }*/
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -36,7 +48,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void btn_buscar_Click(object sender, EventArgs e)
         {
             string consulta;
-            consulta = "select * from C_HASHTAG.Empresa where Id_Empresa is not null";
+            consulta = "select e.*, Habilitado from C_HASHTAG.Empresa e JOIN C_HASHTAG.Usuario u ON (u.Id_User = e.Id_User) where Id_Empresa is not null";
 
             if (txt_Cuit.Text != "")
             {
@@ -66,8 +78,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 dataGridView1.Rows[n].Cells[1].Value = item["Razon_Social"].ToString();
                 dataGridView1.Rows[n].Cells[2].Value = item["Cuit"].ToString();
                 dataGridView1.Rows[n].Cells[3].Value = item["Mail"].ToString();
-                dataGridView1.Rows[n].Cells[4].Value = "Dar de baja";
-                dataGridView1.Rows[n].Cells[5].Value = "Modificar";
+                dataGridView1.Rows[n].Cells[4].Value = item["Habilitado"].ToString();
+                dataGridView1.Rows[n].Cells[5].Value = "Baja/Alta";
+                dataGridView1.Rows[n].Cells[6].Value = "Modificar";
 
             }
         }

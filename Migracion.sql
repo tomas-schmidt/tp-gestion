@@ -298,6 +298,18 @@ BEGIN TRANSACTION
 COMMIT
 GO
 
+/****************************************************************
+ *							cambiarEstadoEmpresa
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.cambiarEstadoEmpresa
+	@Id_Empresa int
+AS
+	UPDATE u SET u.Habilitado = ~(u.Habilitado)
+		from C_HASHTAG.Usuario u join C_HASHTAG.Empresa e
+		ON e.Id_User = u.Id_User
+		where e.Id_Empresa = @Id_Empresa
+GO
+
 
 
 
@@ -995,3 +1007,6 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 	SELECT u.Id_User, 3
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
+
+
+select * from C_HASHTAG.Usuario
