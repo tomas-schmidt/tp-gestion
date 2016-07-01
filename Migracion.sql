@@ -182,6 +182,49 @@ AS
 		ORDER BY Doc_Desc
 GO
 
+/****************************************************************
+ *					crearUsuarioYCliente
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.crearUsuarioYCliente
+	@Username varchar(255), @Contraseña varchar(255),
+	@Nombre varchar(255), @Apellido varchar(255), @NroDocumento numeric(18,0),
+	@Nombre_Tipo_Doc varchar(255), @Mail varchar(255),  @Telefono numeric(18,0), @Domicilio_Calle nvarchar(255), @Nro_Calle numeric(18,0),
+	@Piso numeric(18,0), @Departamento nvarchar(50), @Cod_Postal numeric(18,0), @Nacimiento datetime, @Localidad nvarchar(50)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado) VALUES 
+		(@Username, @Contraseña, 0, 1)
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('El username ya se encuentra en uso', 16, 1)
+		RETURN
+	END CATCH
+	
+	BEGIN TRY
+		DECLARE @Id_User int;
+		SET @Id_User = (SELECT Id_User FROM C_HASHTAG.Usuario WHERE Username = @Username)
+		INSERT INTO C_HASHTAG.Cliente(Nombre, Apellido, Nro_Doc, Tipo_Doc, Mail,
+				Telefono, Domicilio_Calle, Nro_Calle, Piso, Departamento, Cod_Postal, Nacimiento, Localidad, Creacion , Id_User)
+			VALUES (@Nombre, @Apellido, @NroDocumento, 	(SELECT TOP 1 Doc_Codigo FROM C_HASHTAG.Tipo_Doc
+															where Doc_Desc = @Nombre_Tipo_Doc),
+					@Mail, @Telefono, @Domicilio_Calle, @Nro_Calle,
+					@Piso, @Departamento, @Cod_Postal, @Nacimiento, @Localidad, C_HASHTAG.obtenerFecha(), @Id_User)
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('Ya existe un cliente con esa identificacion y/o email', 16, 1)
+		RETURN
+	END CATCH
+	
+	SELECT TOP 1 Id_Cliente, Id_User
+		FROM C_HASHTAG.Cliente
+		ORDER BY Id_Cliente DESC
+COMMIT
+GO
+
+
 
 /***********************************************************************
  *
@@ -359,7 +402,7 @@ CREATE TABLE C_HASHTAG.Cliente
 	Apellido nvarchar(255),
 	Nro_Doc numeric(18,0),
 	Tipo_Doc numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Tipo_doc(Doc_Codigo),
-	Mail nvarchar(255),
+	Mail nvarchar(255) unique,
 	Telefono numeric(18,0),
 	Domicilio_Calle nvarchar(100),
 	Nro_Calle numeric(18,0),
@@ -874,5 +917,3 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 	SELECT u.Id_User, 3
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
-
-	

@@ -23,7 +23,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void btn_crearCliente_Click(object sender, EventArgs e)
         {
-            CrearCliente crearCli = new CrearCliente();
+            btn_crearCliente crearCli = new btn_crearCliente();
             crearCli.Show();
         }
     }
