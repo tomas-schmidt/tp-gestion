@@ -16,7 +16,7 @@ DROP PROCEDURE C_HASHTAG.crearUsuarioYEmpresa
 DROP PROCEDURE C_HASHTAG.obtenerRubros
 DROP PROCEDURE C_HASHTAG.cambiarEstadoEmpresa
 DROP PROCEDURE C_HASHTAG.obtenerRubroDeEmpresa
-DROP PROCEDURE C_HASHTAG.cambiarEmpresaYUsername
+DROP PROCEDURE C_HASHTAG.obtenerEmpresaYUsername
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario

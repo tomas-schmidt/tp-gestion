@@ -291,6 +291,7 @@
             // 
             this.txt_username.Location = new System.Drawing.Point(150, 45);
             this.txt_username.Name = "txt_username";
+            this.txt_username.ReadOnly = true;
             this.txt_username.Size = new System.Drawing.Size(100, 20);
             this.txt_username.TabIndex = 63;
             // 
