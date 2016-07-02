@@ -177,6 +177,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SHA256.cs" />
+    <Compile Include="ValidacionException.cs" />
+    <Compile Include="Validador.cs" />
     <EmbeddedResource Include="ABM Rol\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </EmbeddedResource>

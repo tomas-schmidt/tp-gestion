@@ -333,6 +333,49 @@ AS
 		ORDER BY Desc_Corta
 GO
 
+/****************************************************************
+ *					modificarEmpresa
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.modificarEmpresa
+	@Username nvarchar(255),
+	@Razon_Social nvarchar(255),
+	@Mail nvarchar(50),
+	@Telefono numeric(18,0),
+	@Calle nvarchar(100),
+	@Cod_Postal nvarchar(50),
+	@Ciudad nvarchar(255),
+	@Localidad nvarchar(255),
+	@Cuit nvarchar(255),
+	@Nombre_Contacto nvarchar(255),
+	@Rubro_Principal nvarchar(255),
+	@Nro_Calle numeric(18,0),
+	@Piso numeric(18,0),
+	@Departamento nvarchar(50)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+		DECLARE @Id_User int;
+		SET @Id_User = (SELECT Id_User FROM C_HASHTAG.Usuario WHERE Username = @Username)
+		UPDATE e set
+			Razon_Social = @Razon_Social, Mail =  @Mail, Telefono = @Telefono, Calle = @Calle, Cod_Postal = @Cod_Postal,
+			Ciudad = @Ciudad, Localidad = @Localidad, Cuit = @Cuit, Nombre_Contacto = @Nombre_Contacto,
+			Rubro_Principal = (SELECT TOP 1 Id_Rubro FROM C_HASHTAG.Rubro
+								where Desc_Corta = @Rubro_Principal), Nro_Calle = @Nro_Calle, Piso = @Piso, Departamento = @Departamento
+			from C_HASHTAG.Empresa e join C_HASHTAG.Usuario u
+			on(e.Id_User = u.Id_User)
+			where e.Id_User = @Id_User
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('Ya existe una empresa con esa razon social, y/o CUIT, y/o email', 16, 1)
+		RETURN
+	END CATCH
+	
+	SELECT TOP 1 Id_Empresa, Id_User
+		FROM C_HASHTAG.Empresa
+		ORDER BY Id_Empresa DESC
+COMMIT
+GO
 
 
 /***********************************************************************
@@ -1030,5 +1073,3 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
 
-
-select * from C_HASHTAG.Usuario

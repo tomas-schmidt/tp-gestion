@@ -13,6 +13,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 {
     public partial class ModificarEmpresa : Form
     {
+        private Validador validador = new Validador();
         private int idamodificar;
 
         public ModificarEmpresa(string idempresa)
@@ -23,6 +24,30 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void ModificarEmpresa_Load(object sender, EventArgs e)
         {
+            validador.textBoxsNoVacios(new List<TextBox>(new[] {
+                txt_calle,
+                txt_Ciudad,
+                txt_codPostal,
+                txt_cuit,
+                txt_localidad,
+                txt_mail,
+                txt_nombreContacto,
+                txt_telefono,
+                txt_razonSocial,
+                txt_nroCalle
+            }));
+
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_codPostal,
+                txt_telefono,
+                txt_nroCalle,
+                txt_nroPiso
+            }));
+
+
+
+
+
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerRubros = bd.obtenerStoredProcedure("obtenerRubros");
             var reader = spObtenerRubros.ExecuteReader();
@@ -64,7 +89,42 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void btn_crearEmpesa_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                validador.validar();
+                try
+                {
+                    BaseDeDatos bd = new BaseDeDatos();
+                    int si = comboBox1.SelectedIndex;
+                    var spModificarEmpresa = bd.obtenerStoredProcedure("modificarEmpresa");
+                    spModificarEmpresa.Parameters.Add("@Username", SqlDbType.VarChar).Value = txt_username.Text;
+                    spModificarEmpresa.Parameters.Add("@Razon_Social", SqlDbType.VarChar).Value = txt_razonSocial.Text;
+                    spModificarEmpresa.Parameters.Add("@Ciudad", SqlDbType.VarChar).Value = txt_Ciudad.Text;
+                    spModificarEmpresa.Parameters.Add("@Cuit", SqlDbType.VarChar).Value = txt_cuit.Text;
+                    spModificarEmpresa.Parameters.Add("@Mail", SqlDbType.VarChar).Value = txt_mail.Text;
+                    spModificarEmpresa.Parameters.Add("@Telefono", SqlDbType.Int).Value = Convert.ToInt32(txt_telefono.Text);
+                    spModificarEmpresa.Parameters.Add("@Calle", SqlDbType.VarChar).Value = txt_calle.Text;
+                    spModificarEmpresa.Parameters.Add("@Nro_Calle", SqlDbType.Int).Value = Convert.ToInt32(txt_nroCalle.Text);
+                    spModificarEmpresa.Parameters.Add("@Piso", SqlDbType.Int).Value = Convert.ToInt32(txt_nroPiso.Text);
+                    spModificarEmpresa.Parameters.Add("@Localidad", SqlDbType.VarChar).Value = txt_localidad.Text;
+                    spModificarEmpresa.Parameters.Add("@Departamento", SqlDbType.VarChar).Value = txt_depto.Text;
+                    spModificarEmpresa.Parameters.Add("@Cod_Postal", SqlDbType.Int).Value = Convert.ToInt32(txt_codPostal.Text);
+                    spModificarEmpresa.Parameters.Add("@Rubro_Principal", SqlDbType.VarChar).Value = (string)comboBox1.Items[si];
+                    spModificarEmpresa.Parameters.Add("@Nombre_Contacto", SqlDbType.VarChar).Value = txt_nombreContacto.Text;
+                    var reader = spModificarEmpresa.ExecuteReader();
+                    reader.Read();
+                    spModificarEmpresa.Connection.Close();
+                    MessageBox.Show("Campos actualizados exitosamente");
+                }
+                catch (SqlException excepcion)
+                {
+                    MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                }
+            }
+            catch (ValidacionException ve)
+            {
+                MessageBox.Show(ve.Message);
+            }
         }
     }
 }

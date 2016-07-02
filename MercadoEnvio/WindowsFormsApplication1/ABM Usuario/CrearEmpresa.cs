@@ -34,7 +34,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 spcrearUsuarioYEmpresa.Parameters.Add("@Contraseña", SqlDbType.VarChar).Value = SHA256.GetSHA256(txt_password.Text);
                 spcrearUsuarioYEmpresa.Parameters.Add("@Razon_Social", SqlDbType.VarChar).Value = txt_razonSocial.Text;
                 spcrearUsuarioYEmpresa.Parameters.Add("@Ciudad", SqlDbType.VarChar).Value = txt_Ciudad.Text;
-                spcrearUsuarioYEmpresa.Parameters.Add("@Cuit", SqlDbType.Int).Value = Convert.ToInt32(txt_cuit.Text);
+                spcrearUsuarioYEmpresa.Parameters.Add("@Cuit", SqlDbType.VarChar).Value = txt_cuit.Text;
                 spcrearUsuarioYEmpresa.Parameters.Add("@Mail", SqlDbType.VarChar).Value = txt_mail.Text;
                 spcrearUsuarioYEmpresa.Parameters.Add("@Telefono", SqlDbType.Int).Value = Convert.ToInt32(txt_telefono.Text);
                 spcrearUsuarioYEmpresa.Parameters.Add("@Calle", SqlDbType.VarChar).Value = txt_calle.Text;
