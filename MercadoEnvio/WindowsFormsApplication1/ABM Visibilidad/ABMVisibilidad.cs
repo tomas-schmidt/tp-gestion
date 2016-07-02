@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1.ABM_Visibilidad
 {
-    public partial class ABMVisiblidad : Form
+    public partial class ABMVisibilidad : Form
     {
-        public ABMVisiblidad()
+        public ABMVisibilidad()
         {
             InitializeComponent();
         }
@@ -19,6 +19,12 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_altaVisibilidad_Click(object sender, EventArgs e)
+        {
+            AltaVisibilidad av = new AltaVisibilidad();
+            av.Show();
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using WindowsFormsApplication1.ABM_Rol;
 using WindowsFormsApplication1.ABM_Usuario;
+using WindowsFormsApplication1.ABM_Visibilidad;
 using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1
@@ -60,6 +61,11 @@ namespace WindowsFormsApplication1
                 {
                     ABMUsuario abmusuario = new ABMUsuario();
                     abmusuario.Show();
+                }
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "ABMVisibilidad")
+                {
+                    ABMVisibilidad abmVisibilidad = new ABMVisibilidad();
+                    abmVisibilidad.Show();
                 }
 
             }

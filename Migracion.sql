@@ -468,8 +468,28 @@ BEGIN TRANSACTION
 COMMIT
 GO
 
-
-
+/****************************************************************
+ *						crearVisibilidad
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.crearVisibilidad
+	@Visibilidad_Desc nvarchar(255),
+	@Comision_Prod_Vend numeric(18,2),
+	@Comision_Envio_Prod numeric(18,2),
+	@Comision_Tipo_Public numeric(18,2),
+	@Habilitado bit
+AS
+	BEGIN TRY
+		INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc,Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
+		VALUES (@Visibilidad_Desc, @Comision_Prod_Vend, @Comision_Envio_Prod, @Comision_Tipo_Public, @Habilitado)
+		-- Devuelvo el id de la visibilidad
+		SELECT Id_Visibilidad FROM C_HASHTAG.Visibilidad WHERE Visibilidad_Desc = @Visibilidad_Desc
+	END TRY
+	BEGIN CATCH
+		DECLARE @MensajeError varchar(255)
+		SET @MensajeError = 'El nombre "' + @Visibilidad_Desc + '" ya esta en uso'
+		RAISERROR(@MensajeError, 16, 1)
+	END CATCH
+GO
 
 /***********************************************************************
  *
@@ -730,7 +750,7 @@ INSERT INTO C_HASHTAG.Cliente(
 CREATE TABLE C_HASHTAG.Rubro
 (
 	Id_Rubro numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Desc_Corta nvarchar(50),
+	Desc_Corta nvarchar(50) unique,
 	Desc_Larga nvarchar(255)
 )
 
@@ -835,11 +855,11 @@ INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Finalizada')
 CREATE TABLE C_HASHTAG.Visibilidad
 (
 	Id_Visibilidad numeric(18,0) IDENTITY (10002,1) PRIMARY KEY,
-	Visibilidad_Desc nvarchar(255),
+	Visibilidad_Desc nvarchar(255)unique,
 	Comision_Prod_Vend numeric(18,2),
 	Comision_Envio_Prod numeric(18,2),
 	Comision_Tipo_Public numeric(18,2),
-	Habilitado bit,
+	Habilitado bit
 )
 
 /*Gratis no provee servicio de envío.
@@ -848,19 +868,19 @@ debe elegir si dicha publicación brindará o no el servicio de envío sobre el pro
 comprado.*/
 
 
-INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Platino', 180.00, 10.00, 0.10, 1)
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
+	VALUES ('Platino', 0.10, 10.00, 180.00, 1)
 
-INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Oro', 140.00, 10.00, 0.15, 1)
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
+	VALUES ('Oro', 0.15, 20.00, 140.00, 1)
 
-INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Plata', 100.00, 10.00, 0.20, 1)
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
+	VALUES ('Plata', 0.20, 30.00, 100.00, 1)
 
-INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Bronce', 60.00, 10.00, 0.30, 1)
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
+	VALUES ('Bronce', 0.30, 40.00, 60.00, 1)
 
-INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
+INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
 	VALUES ('Gratis', 0.00, 0.00, 0, 1) 
 
 /*
@@ -1166,4 +1186,3 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 	SELECT u.Id_User, 3
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
-

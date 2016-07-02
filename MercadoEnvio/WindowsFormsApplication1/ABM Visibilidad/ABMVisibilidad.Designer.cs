@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApplication1.ABM_Visibilidad
 {
-    partial class ABMVisiblidad
+    partial class ABMVisibilidad
     {
         /// <summary>
         /// Required designer variable.
@@ -39,14 +39,15 @@
             this.btn_altaVisibilidad.TabIndex = 0;
             this.btn_altaVisibilidad.Text = "Alta visibilidad";
             this.btn_altaVisibilidad.UseVisualStyleBackColor = true;
+            this.btn_altaVisibilidad.Click += new System.EventHandler(this.btn_altaVisibilidad_Click);
             // 
-            // ABMVisiblidad
+            // ABMVisibilidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.btn_altaVisibilidad);
-            this.Name = "ABMVisiblidad";
+            this.Name = "ABMVisibilidad";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
