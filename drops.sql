@@ -18,6 +18,10 @@ DROP PROCEDURE C_HASHTAG.cambiarEstadoEmpresa
 DROP PROCEDURE C_HASHTAG.obtenerRubroDeEmpresa
 DROP PROCEDURE C_HASHTAG.obtenerEmpresaYUsername
 DROP PROCEDURE C_HASHTAG.modificarEmpresa
+DROP PROCEDURE C_HASHTAG.cambiarEstadoCliente
+DROP PROCEDURE C_HASHTAG.obtenerClienteYUsername
+DROP PROCEDURE C_HASHTAG.obtenerDocDeCliente
+DROP PROCEDURE C_HASHTAG.modificarCliente
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario
@@ -43,4 +47,3 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 
 --Drop esquema
 DROP SCHEMA C_HASHTAG
-

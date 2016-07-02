@@ -303,11 +303,17 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.cambiarEstadoEmpresa
 	@Id_Empresa int
-AS
-	UPDATE u SET u.Habilitado = ~(u.Habilitado)
+AS 
+		UPDATE u SET u.Habilitado = ~(u.Habilitado)
 		from C_HASHTAG.Usuario u join C_HASHTAG.Empresa e
 		ON e.Id_User = u.Id_User
 		where e.Id_Empresa = @Id_Empresa
+		--if (u.Habilitado == 1) 
+
+		--else
+
+		-- FALTA AGREGAR LOGICA DE COMO HABILITARLO/deshabilitarlo
+
 GO
 
 /****************************************************************
@@ -376,6 +382,93 @@ BEGIN TRANSACTION
 		ORDER BY Id_Empresa DESC
 COMMIT
 GO
+
+
+/****************************************************************
+ *							ObtenerClienteYUsername
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerClienteYUsername @Id_Cliente int
+AS
+select top 1 u.Username, c.* from
+	C_HASHTAG.Cliente c join C_HASHTAG.Usuario u
+	on (c.Id_User = u.Id_User)
+	where c.Id_Cliente = @Id_Cliente
+GO
+
+/****************************************************************
+ *							cambiarEstadoCliente
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.cambiarEstadoCliente
+	@Id_Cliente int
+AS 
+		UPDATE u SET u.Habilitado = ~(u.Habilitado)
+		from C_HASHTAG.Usuario u join C_HASHTAG.Cliente c
+		on(u.Id_User = c.Id_User)
+		where c.Id_Cliente = @Id_Cliente
+		--if (u.Habilitado == 1) 
+
+		--else
+
+		-- FALTA AGREGAR LOGICA DE COMO HABILITARLO/deshabilitarlo
+
+GO
+
+/****************************************************************
+ *							ObtenerDocDeCliente
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerDocDeCliente @Id_Cliente int
+AS
+	SELECT * FROM C_HASHTAG.Tipo_Doc t
+		join C_HASHTAG.Cliente c
+		on (t.Doc_Codigo = c.Tipo_Doc)
+		where c.Id_Cliente = @Id_Cliente
+GO
+
+/****************************************************************
+ *					modificarCliente
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.modificarCliente
+	@Username nvarchar(255),
+	@Nombre nvarchar(255),
+	@Mail nvarchar(50),
+	@Telefono numeric(18,0),
+	@Domicilio_Calle nvarchar(100),
+	@Cod_Postal nvarchar(50),
+	@Apellido nvarchar(255),
+	@Localidad nvarchar(255),
+	@Nro_Doc nvarchar(255),
+	@Tipo_Doc nvarchar(255),
+	@Nro_Calle numeric(18,0),
+	@Piso numeric(18,0),
+	@Departamento nvarchar(50),
+	@Nacimiento datetime
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+		DECLARE @Id_User int;
+		SET @Id_User = (SELECT Id_User FROM C_HASHTAG.Usuario WHERE Username = @Username)
+		UPDATE c set
+				Nombre = @Nombre, Mail = @Mail, Telefono = @Telefono, Domicilio_Calle = @Domicilio_Calle, Cod_Postal = @Cod_Postal, Apellido = @Apellido,Localidad = @Localidad,
+				Nro_Doc = @Nro_Doc, Tipo_Doc = (SELECT TOP 1 Doc_Codigo FROM C_HASHTAG.Tipo_Doc
+															where Doc_Desc = @Tipo_Doc),
+				Nro_Calle = @Nro_Calle, Piso = @Piso,Departamento = @Departamento, Nacimiento = @Nacimiento
+			from C_HASHTAG.Cliente c join C_HASHTAG.Usuario u
+			on(c.Id_User = u.Id_User)
+			where c.Id_User = @Id_User
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('Ya existe un cliente con ese documento y/o email', 16, 1)
+		RETURN
+	END CATCH
+	
+	SELECT TOP 1 Id_Cliente Id_User
+		FROM C_HASHTAG.Cliente
+		ORDER BY Id_Cliente DESC
+COMMIT
+GO
+
+
 
 
 /***********************************************************************

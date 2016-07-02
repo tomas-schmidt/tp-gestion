@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-    public abstract partial  class FormMaestro : Form
+    public partial  class FormMaestro : Form
     {
         protected Validador validador = new Validador();
 
@@ -33,7 +33,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        protected abstract void interactuar();
+        protected virtual void interactuar() { }
 
     }
 }

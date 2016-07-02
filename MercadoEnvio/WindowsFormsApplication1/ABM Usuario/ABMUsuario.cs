@@ -38,5 +38,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
             ListarEmpresas listarEmpresas = new ListarEmpresas();
             listarEmpresas.Show();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ListarClientes listarCli = new ListarClientes();
+            listarCli.Show();
+
+        }
     }
 }

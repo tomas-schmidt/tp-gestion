@@ -95,11 +95,23 @@
     <Compile Include="ABM Usuario\CrearEmpresa.Designer.cs">
       <DependentUpon>CrearEmpresa.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Usuario\ListarClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Usuario\ListarClientes.Designer.cs">
+      <DependentUpon>ListarClientes.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Usuario\ListarEmpresas.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ABM Usuario\ListarEmpresas.Designer.cs">
       <DependentUpon>ListarEmpresas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Usuario\ModificarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Usuario\ModificarCliente.Designer.cs">
+      <DependentUpon>ModificarCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Usuario\ModificarEmpresa.cs">
       <SubType>Form</SubType>
@@ -203,8 +215,14 @@
     <EmbeddedResource Include="ABM Usuario\CrearEmpresa.resx">
       <DependentUpon>CrearEmpresa.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Usuario\ListarClientes.resx">
+      <DependentUpon>ListarClientes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Usuario\ListarEmpresas.resx">
       <DependentUpon>ListarEmpresas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Usuario\ModificarCliente.resx">
+      <DependentUpon>ModificarCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Usuario\ModificarEmpresa.resx">
       <DependentUpon>ModificarEmpresa.cs</DependentUpon>
