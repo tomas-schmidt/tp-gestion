@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_altaVisibilidad = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btn_altaVisibilidad
             // 
-            this.button1.Location = new System.Drawing.Point(79, 47);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(119, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Nueva visibilidad";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_altaVisibilidad.Location = new System.Drawing.Point(79, 47);
+            this.btn_altaVisibilidad.Name = "btn_altaVisibilidad";
+            this.btn_altaVisibilidad.Size = new System.Drawing.Size(119, 23);
+            this.btn_altaVisibilidad.TabIndex = 0;
+            this.btn_altaVisibilidad.Text = "Alta visibilidad";
+            this.btn_altaVisibilidad.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // ABMVisiblidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Controls.Add(this.btn_altaVisibilidad);
+            this.Name = "ABMVisiblidad";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -55,6 +55,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_altaVisibilidad;
     }
 }

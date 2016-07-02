@@ -838,7 +838,8 @@ CREATE TABLE C_HASHTAG.Visibilidad
 	Visibilidad_Desc nvarchar(255),
 	Comision_Prod_Vend numeric(18,2),
 	Comision_Envio_Prod numeric(18,2),
-	Comision_Tipo_Public numeric(18,2)
+	Comision_Tipo_Public numeric(18,2),
+	Habilitado bit,
 )
 
 /*Gratis no provee servicio de envío.
@@ -848,19 +849,19 @@ comprado.*/
 
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Platino', 180.00, 10.00, 0.10)
+	VALUES ('Platino', 180.00, 10.00, 0.10, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Oro', 140.00, 10.00, 0.15)
+	VALUES ('Oro', 140.00, 10.00, 0.15, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Plata', 100.00, 10.00, 0.20)
+	VALUES ('Plata', 100.00, 10.00, 0.20, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Bronce', 60.00, 10.00, 0.30)
+	VALUES ('Bronce', 60.00, 10.00, 0.30, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public)
-	VALUES ('Gratis', 0.00, 0.00, 0) 
+	VALUES ('Gratis', 0.00, 0.00, 0, 1) 
 
 /*
 HAY QUE IMPLEMENTAR:
