@@ -36,7 +36,6 @@ C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsAppl
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Calificar.Form1.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ElegirFuncionalidad.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Facturas.Form1.resources
-C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.RolesUsuario.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Historial_Cliente.Form1.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Listado_Estadistico.Form1.resources

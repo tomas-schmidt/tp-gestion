@@ -138,11 +138,11 @@
     <Compile Include="Facturas\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="FormMaestro.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FormMaestro.Designer.cs">
+      <DependentUpon>FormMaestro.cs</DependentUpon>
     </Compile>
     <Compile Include="RolesUsuario.cs">
       <SubType>Form</SubType>
@@ -219,9 +219,6 @@
       <DependentUpon>ElegirFuncionalidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturas\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RolesUsuario.resx">

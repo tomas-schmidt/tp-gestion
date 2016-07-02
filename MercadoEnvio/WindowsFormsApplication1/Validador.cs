@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-    class Validador
+    public class Validador
 
     {
-        List<TextBox> textBoxNoVacios;
-        List<TextBox> textBoxNumericos;
+        List<TextBox> textBoxNoVacios = new List<TextBox>();
+        List<TextBox> textBoxNumericos = new List<TextBox>();
         
         public void textBoxsNoVacios(List<TextBox> listaTxtBox)
         {
