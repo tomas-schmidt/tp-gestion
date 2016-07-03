@@ -550,15 +550,73 @@ GO
 /****************************************************************
  *						generarCompra
  ****************************************************************/
-/*CREATE PROCEDURE C_HASHTAG.generarCompra
+CREATE PROCEDURE C_HASHTAG.generarCompra
 	@Monto numeric(18,2),
 	@Visibilidad nvarchar(255),
 	@Id_User numeric(18,0),
-	@Preguntas nvarchar(255),
+	@Preguntas bit,
 	@Stock numeric(18,0),
-	Descripcion nvarchar(255)
-	*/
+	@Descripcion nvarchar(255)
+as
+	begin try
+		INSERT INTO C_HASHTAG.Publicacion
+		(
+			Monto,
+			Id_Visibilidad,
+			Id_User,
+			Id_Estado,
+			Id_Tipo_Public, 
+			Fecha_Inicial,
+			Fecha_Final,
+			Preguntas,
+			Stock,
+			Descripcion
+		)	
+		values
+			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
+			@Id_User, 2 /*activa*/, 1 /*Compra inmediata*/, NULL, NULL, @Preguntas, @Stock, @Descripcion)
+	end try
+	begin catch
+		DECLARE @MensajeError varchar(255)
+		SET @MensajeError = 'No se pudo crear la publicacion'
+		RAISERROR(@MensajeError, 16, 1)
+	end catch
+go
 
+/****************************************************************
+ *						generarSubasta
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.generarSubasta
+	@Monto numeric(18,2),
+	@Visibilidad nvarchar(255),
+	@Id_User numeric(18,0),
+	@Preguntas bit,
+	@Descripcion nvarchar(255)
+as
+	begin try
+		INSERT INTO C_HASHTAG.Publicacion
+		(
+			Monto,
+			Id_Visibilidad,
+			Id_User,
+			Id_Estado,
+			Id_Tipo_Public, 
+			Fecha_Inicial,
+			Fecha_Final,
+			Preguntas,
+			Stock,
+			Descripcion
+		)	
+		values
+			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
+			@Id_User, 2 /*activa*/, 2 /*subasta*/, NULL, NULL, @Preguntas, 1, @Descripcion)
+	end try
+	begin catch
+		DECLARE @MensajeError varchar(255)
+		SET @MensajeError = 'No se pudo crear la publicacion'
+		RAISERROR(@MensajeError, 16, 1)
+	end catch
+go
 
 /***********************************************************************
  *
@@ -1001,7 +1059,7 @@ CREATE TABLE C_HASHTAG.Publicacion
 	Id_Tipo_Public numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Tipo_Public(Id_Tipo_Public), 
 	Fecha_Inicial datetime,
 	Fecha_Final datetime,
-	Preguntas nvarchar(255),
+	Preguntas bit,
 	Stock numeric(18,0),
 	Descripcion nvarchar(255)
 )
@@ -1035,7 +1093,7 @@ INSERT INTO C_HASHTAG.Publicacion
 			where Descripcion = Publicacion_Tipo),
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
-		'Si', -- supongo que todas aceptan preguntas
+		1, -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
 		Publicacion_Descripcion
 		FROM gd_esquema.Maestra
@@ -1068,7 +1126,7 @@ INSERT INTO C_HASHTAG.Publicacion
 			where Descripcion = Publicacion_Tipo), 
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
-		'Si', -- supongo que todas aceptan preguntas
+		1, -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
 		Publicacion_Descripcion
 		FROM gd_esquema.Maestra
