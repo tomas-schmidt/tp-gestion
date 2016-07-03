@@ -18,11 +18,13 @@ namespace WindowsFormsApplication1
     public partial class ElegirFuncionalidad : Form
     {
         private int idrol;
+        private int idUser;
 
-        public ElegirFuncionalidad(int idrol)
+        public ElegirFuncionalidad(int idrol, int idUser)
         {
             InitializeComponent();
             this.idrol = idrol;
+            this.idUser = idUser;
         }
 
         private void ElegirFuncionalidad_Load(object sender, EventArgs e)
@@ -70,7 +72,7 @@ namespace WindowsFormsApplication1
                 }
                 if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "GenerarPublicacion")
                 {
-                    GenerarPublicacion gp = new GenerarPublicacion();
+                    GenerarPublicacion gp = new GenerarPublicacion(idUser);
                     gp.Show();
                 }
 

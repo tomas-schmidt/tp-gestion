@@ -60,7 +60,7 @@ namespace WindowsFormsApplication1
                 spObtenerRolesDeUsuario.Parameters.Add("@Id_User", SqlDbType.VarChar).Value = iduser;
                 var reader = spObtenerRolesDeUsuario.ExecuteReader();
                 reader.Read();
-                ElegirFuncionalidad ef = new ElegirFuncionalidad(Convert.ToInt32(reader[0]));
+                ElegirFuncionalidad ef = new ElegirFuncionalidad(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[3]));
                 ef.Show();
             }
         }

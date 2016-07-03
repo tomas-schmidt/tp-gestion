@@ -35,5 +35,10 @@ namespace WindowsFormsApplication1
 
         protected virtual void interactuar() { }
 
+        private void FormMaestro_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

@@ -11,21 +11,29 @@ namespace WindowsFormsApplication1.Generar_Publicación
 {
     public partial class GenerarPublicacion : Form
     {
-        public GenerarPublicacion()
+        private int idUser;
+
+        public GenerarPublicacion(int idUser)
         {
             InitializeComponent();
+            this.idUser = idUser;
         }
 
         private void btn_generarCompra_Click(object sender, EventArgs e)
         {
-            GenerarCompra gp = new GenerarCompra();
+            GenerarCompra gp = new GenerarCompra(idUser);
             gp.Show();
         }
 
         private void btn_generarSubasta_Click(object sender, EventArgs e)
         {
-            GenerarSubasta gs = new GenerarSubasta();
+            GenerarSubasta gs = new GenerarSubasta(idUser);
             gs.Show();
+        }
+
+        private void GenerarPublicacion_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -160,7 +160,7 @@ GO
 CREATE PROCEDURE C_HASHTAG.obtenerRolesDeUsuario
 	@Id_User int
 AS
-	SELECT R.Id_Rol, Nombre_Rol, Habilitado
+	SELECT R.Id_Rol, Nombre_Rol, Habilitado, UR.Id_User
 		FROM Rol R, Rol_Usuario UR
 		WHERE UR.Id_User = @Id_User
 			AND UR.Id_Rol = R.Id_Rol
@@ -578,6 +578,11 @@ as
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
 			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 1 /*compra inmediata*/ , @fecha , dateadd(month, 1, @fecha), @Preguntas, @Stock, @Descripcion)
+		
+		select top 1 Id_Publicacion
+			from C_HASHTAG.Publicacion
+			order by Id_Publicacion desc
+
 	end try
 	begin catch
 		DECLARE @MensajeError varchar(255)
@@ -598,6 +603,8 @@ CREATE PROCEDURE C_HASHTAG.generarSubasta
 	@Descripcion nvarchar(255)
 as
 	begin try
+		declare @fecha datetime
+		set @fecha = C_HASHTAG.obtenerFecha()
 		INSERT INTO C_HASHTAG.Publicacion
 		(
 			Monto,
@@ -613,7 +620,12 @@ as
 		)	
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
-			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 2 /*subasta*/, NULL, NULL, @Preguntas, 1, @Descripcion)
+			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 2 /*subasta*/, @fecha , dateadd(month, 1, @fecha), @Preguntas, 1, @Descripcion)
+	
+			select top 1 Id_Publicacion
+			from C_HASHTAG.Publicacion
+			order by Id_Publicacion desc
+
 	end try
 	begin catch
 		DECLARE @MensajeError varchar(255)
@@ -630,6 +642,18 @@ AS
 	SELECT *
 		FROM C_HASHTAG.Estado e
 		where e.Descripcion like 'Activa' or e.Descripcion like 'Borrador'
+GO
+
+/****************************************************************
+ *							agregarRubroAPublicacion
+ ****************************************************************/
+
+CREATE PROCEDURE C_HASHTAG.agregarRubroAPublicacion
+	@Id_Publicacion int,
+	@Rubro nvarchar(255)
+AS
+	INSERT INTO C_HASHTAG.Rubro_Publicacion(Id_Publicacion, Id_Rubro)
+		VALUES (@Id_Publicacion, (select top 1 Id_Rubro from C_HASHTAG.Rubro where Desc_Corta = @Rubro))
 GO
 
 /***********************************************************************
@@ -1137,7 +1161,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		2, -- estan todas activas
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Tipo), 
+			where Descripcion = Publicacion_Tipo),
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		1, -- supongo que todas aceptan preguntas

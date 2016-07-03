@@ -278,6 +278,9 @@
     <EmbeddedResource Include="Facturas\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormMaestro.resx">
+      <DependentUpon>FormMaestro.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicación\GenerarCompra.resx">
       <DependentUpon>GenerarCompra.cs</DependentUpon>
     </EmbeddedResource>

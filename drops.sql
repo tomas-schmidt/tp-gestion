@@ -30,6 +30,7 @@ DROP PROCEDURE C_HASHTAG.modificarVisibilidad
 DROP PROCEDURE C_HASHTAG.generarCompra
 DROP PROCEDURE C_HASHTAG.generarSubasta
 DROP PROCEDURE C_HASHTAG.obtenerEstadosElegibles
+DROP PROCEDURE C_HASHTAG.agregarRubroAPublicacion
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario

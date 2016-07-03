@@ -40,6 +40,11 @@
             this.btn_generarCompra = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label6 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -73,7 +78,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(29, 219);
+            this.label4.Location = new System.Drawing.Point(29, 388);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 3;
@@ -95,7 +100,7 @@
             // 
             // txt_descripcion
             // 
-            this.txt_descripcion.Location = new System.Drawing.Point(98, 212);
+            this.txt_descripcion.Location = new System.Drawing.Point(98, 381);
             this.txt_descripcion.Multiline = true;
             this.txt_descripcion.Name = "txt_descripcion";
             this.txt_descripcion.Size = new System.Drawing.Size(395, 44);
@@ -104,7 +109,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(32, 281);
+            this.checkBox1.Location = new System.Drawing.Point(32, 450);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(114, 17);
             this.checkBox1.TabIndex = 8;
@@ -123,7 +128,7 @@
             // 
             // btn_generarCompra
             // 
-            this.btn_generarCompra.Location = new System.Drawing.Point(119, 323);
+            this.btn_generarCompra.Location = new System.Drawing.Point(119, 492);
             this.btn_generarCompra.Name = "btn_generarCompra";
             this.btn_generarCompra.Size = new System.Drawing.Size(293, 23);
             this.btn_generarCompra.TabIndex = 10;
@@ -135,7 +140,7 @@
             // 
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(117, 163);
+            this.comboBox2.Location = new System.Drawing.Point(117, 154);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 21);
             this.comboBox2.TabIndex = 12;
@@ -143,17 +148,55 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(29, 163);
+            this.label5.Location = new System.Drawing.Point(29, 154);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(68, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "Elegir estado";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
+            this.dataGridView1.Location = new System.Drawing.Point(119, 197);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(349, 150);
+            this.dataGridView1.TabIndex = 13;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Seleccionar";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column2.HeaderText = "Rubros";
+            this.Column2.Name = "Column2";
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(32, 197);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Elegir rubros";
+            // 
             // GenerarCompra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 370);
+            this.ClientSize = new System.Drawing.Size(561, 560);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btn_generarCompra);
@@ -169,6 +212,7 @@
             this.Name = "GenerarCompra";
             this.Text = "GenerarCompra";
             this.Load += new System.EventHandler(this.GenerarCompra_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,5 +232,9 @@
         private System.Windows.Forms.Button btn_generarCompra;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.Label label6;
     }
 }

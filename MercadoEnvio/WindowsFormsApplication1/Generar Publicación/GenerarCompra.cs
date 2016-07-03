@@ -13,9 +13,12 @@ namespace WindowsFormsApplication1.Generar_Publicación
 {
     public partial class GenerarCompra : FormMaestro
     {
-        public GenerarCompra()
+        private int idUser;
+
+        public GenerarCompra(int idUser)
         {
             InitializeComponent();
+            this.idUser = idUser;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -27,7 +30,8 @@ namespace WindowsFormsApplication1.Generar_Publicación
         {
             validador.textBoxsNoVacios(new List<TextBox>(new[] {
                 txt_monto,
-                txt_Stock
+                txt_Stock,
+                txt_descripcion
             }));
 
             validador.textBoxsNumericos(new List<TextBox>(new[] {
@@ -50,6 +54,20 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 string estado = reader2[1].ToString();
                 comboBox2.Items.Add(estado);
             }
+
+            var spObtenerRubros = bd.obtenerStoredProcedure("obtenerRubros");
+
+            SqlDataAdapter sda = new SqlDataAdapter();
+            sda.SelectCommand = spObtenerRubros;
+            DataTable dbdataset = new DataTable();
+            sda.Fill(dbdataset);
+            foreach (DataRow item in dbdataset.Rows)
+            {
+                int n = dataGridView1.Rows.Add();
+                dataGridView1.Rows[n].Cells[0].Value = "false";
+                dataGridView1.Rows[n].Cells[1].Value = item["Desc_Corta"].ToString();
+            }
+
         }
 
         protected override void interactuar()
@@ -60,14 +78,28 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 int si2 = comboBox2.SelectedIndex;
                 BaseDeDatos bd = new BaseDeDatos();
                 var spGenerarPublicacion = bd.obtenerStoredProcedure("generarCompra");
-                spGenerarPublicacion.Parameters.Add("@Id_User", SqlDbType.Int).Value = 1; // falta id user
+                spGenerarPublicacion.Parameters.Add("@Id_User", SqlDbType.Int).Value = this.idUser;
                 spGenerarPublicacion.Parameters.Add("@Monto", SqlDbType.Float).Value = txt_monto.Text;
                 spGenerarPublicacion.Parameters.Add("@Stock", SqlDbType.Int).Value = Convert.ToDouble(txt_Stock.Text);
                 spGenerarPublicacion.Parameters.Add("@Visibilidad", SqlDbType.VarChar).Value = (string)comboBox1.Items[si1];
                 spGenerarPublicacion.Parameters.Add("@Preguntas", SqlDbType.Bit).Value = checkBox1.CheckState;
                 spGenerarPublicacion.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = txt_descripcion.Text;
                 spGenerarPublicacion.Parameters.Add("@Estado", SqlDbType.VarChar).Value = (string)comboBox2.Items[si2];
-                spGenerarPublicacion.ExecuteNonQuery();
+                var reader = spGenerarPublicacion.ExecuteReader();
+                reader.Read();
+                
+
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    if (bool.Parse(item.Cells[0].Value.ToString()))
+                    {
+                        var spAgregarRubroAPublicacion = bd.obtenerStoredProcedure("agregarRubroAPublicacion");
+                        spAgregarRubroAPublicacion.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = item.Cells[1].Value.ToString();
+                        spAgregarRubroAPublicacion.Parameters.Add("@Id_Publicacion", SqlDbType.Int).Value = reader[0];
+                        spAgregarRubroAPublicacion.ExecuteNonQuery();
+                        spAgregarRubroAPublicacion.Connection.Close();
+                    }
+                }
                 spGenerarPublicacion.Connection.Close();
                 MessageBox.Show("Nueva publicacion generada");
             }
@@ -83,6 +115,11 @@ namespace WindowsFormsApplication1.Generar_Publicación
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

@@ -61,6 +61,7 @@
             this.Controls.Add(this.btn_generarCompra);
             this.Name = "GenerarPublicacion";
             this.Text = "Generar Publicacion";
+            this.Load += new System.EventHandler(this.GenerarPublicacion_Load);
             this.ResumeLayout(false);
 
         }
