@@ -57,12 +57,12 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
                 MessageBox.Show("La visibilidad fue dada de baja/alta");
                 this.cargarTabla();
             }
-            /*if (e.ColumnIndex == 4)
+            if (e.ColumnIndex == 4)
             {
-                ModificarRol mr = new ModificarRol(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                mr.Show();
+                ModificarVisibilidad mv = new ModificarVisibilidad(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                mv.Show();
 
-            }*/
+            }
         }
 
 

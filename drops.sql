@@ -25,6 +25,8 @@ DROP PROCEDURE C_HASHTAG.modificarCliente
 DROP PROCEDURE C_HASHTAG.crearVisibilidad
 DROP PROCEDURE C_HASHTAG.obtenerVisibilidades
 DROP PROCEDURE C_HASHTAG.cambiarEstadoVisibilidad
+DROP PROCEDURE C_HASHTAG.obtenerVisibilidad
+DROP PROCEDURE C_HASHTAG.modificarVisibilidad
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario

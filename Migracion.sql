@@ -511,6 +511,41 @@ AS
 		where Id_Visibilidad = @Id_Visibilidad
 GO
 
+/****************************************************************
+ *							ObtenerVisibilidad
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerVisibilidad @Id_Visibilidad int
+AS
+	SELECT * FROM Visibilidad
+	where Id_Visibilidad = @Id_Visibilidad
+GO
+
+/****************************************************************
+ *						modificarVisibilidad
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.modificarVisibilidad
+	@Id_Visibilidad numeric (18,0),
+	@Visibilidad_Desc nvarchar(255),
+	@Comision_Prod_Vend numeric(18,2),
+	@Comision_Envio_Prod numeric(18,2),
+	@Comision_Tipo_Public numeric(18,2),
+	@Habilitado bit
+AS
+	BEGIN TRY
+		UPDATE C_HASHTAG.Visibilidad set 
+			Visibilidad_Desc = @Visibilidad_Desc,
+			Comision_Prod_Vend = @Comision_Prod_Vend,
+			Comision_Envio_Prod = @Comision_Envio_Prod,
+			Comision_Tipo_Public = @Comision_Tipo_Public,
+			Habilitado = @Habilitado
+			where Id_Visibilidad = @Id_Visibilidad
+	END TRY
+	BEGIN CATCH
+		DECLARE @MensajeError varchar(255)
+		SET @MensajeError = 'El nombre "' + @Visibilidad_Desc + '" ya esta en uso'
+		RAISERROR(@MensajeError, 16, 1)
+	END CATCH
+GO
 
 /***********************************************************************
  *
