@@ -516,7 +516,7 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.obtenerVisibilidad @Id_Visibilidad int
 AS
-	SELECT * FROM Visibilidad
+	SELECT * FROM C_HASHTAG.Visibilidad
 	where Id_Visibilidad = @Id_Visibilidad
 GO
 
@@ -655,6 +655,22 @@ AS
 	INSERT INTO C_HASHTAG.Rubro_Publicacion(Id_Publicacion, Id_Rubro)
 		VALUES (@Id_Publicacion, (select top 1 Id_Rubro from C_HASHTAG.Rubro where Desc_Corta = @Rubro))
 GO
+
+
+/****************************************************************
+ *							ObtenerPublicaciones
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerPublicaciones @Descripcion nvarchar(255), @Rubro nvarchar(255)
+AS
+	SELECT p.*, tp.Descripcion as 'tipo_public' FROM C_HASHTAG.Publicacion p
+	join C_HASHTAG.Tipo_Public tp on(p.Id_Tipo_Public = tp.Id_Tipo_Public)
+	join C_HASHTAG.Rubro_Publicacion rp on(p.Id_Publicacion = rp.Id_Publicacion)
+	where Id_Estado = 2 --solo muestro las activas
+	and rp.Id_Rubro = (select top 1 Id_Rubro from C_HASHTAG.Rubro r where r.Desc_Corta = @Rubro)
+	and p.Descripcion like '%'+@Descripcion+'%'
+	order by  Id_Visibilidad -- LISTO POR IMPORTANCIA
+GO
+
 
 /***********************************************************************
  *

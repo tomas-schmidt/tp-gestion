@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using WindowsFormsApplication1.ABM_Rol;
 using WindowsFormsApplication1.ABM_Usuario;
 using WindowsFormsApplication1.ABM_Visibilidad;
+using WindowsFormsApplication1.ComprarOfertar;
 using WindowsFormsApplication1.ConexionBD;
 using WindowsFormsApplication1.Generar_Publicación;
 
@@ -74,6 +75,12 @@ namespace WindowsFormsApplication1
                 {
                     GenerarPublicacion gp = new GenerarPublicacion(idUser);
                     gp.Show();
+                }
+
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "Comprar/Ofertar")
+                {
+                    ListarPublicaciones lp = new ListarPublicaciones(idUser);
+                    lp.Show();
                 }
 
             }
