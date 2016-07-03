@@ -45,7 +45,7 @@
             this.Column2});
             this.dataGridView_roles.Location = new System.Drawing.Point(18, 35);
             this.dataGridView_roles.Name = "dataGridView_roles";
-            this.dataGridView_roles.Size = new System.Drawing.Size(251, 191);
+            this.dataGridView_roles.Size = new System.Drawing.Size(246, 197);
             this.dataGridView_roles.TabIndex = 0;
             this.dataGridView_roles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_roles_CellContentClick);
             // 
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 243);
+            this.ClientSize = new System.Drawing.Size(285, 256);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_roles);
             this.Name = "RolesUsuario";

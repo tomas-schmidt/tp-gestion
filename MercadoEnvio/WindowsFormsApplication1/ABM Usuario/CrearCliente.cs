@@ -11,7 +11,7 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    public partial class CrearCliente : Form
+    public partial class CrearCliente : FormMaestro
     {
         public CrearCliente()
         {
@@ -35,6 +35,25 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void CrearCliente_Load(object sender, EventArgs e)
         {
+            validador.textBoxsNoVacios(new List<TextBox>(new[] {
+                txt_calle,
+                txt_nombre,
+                txt_apellido,
+                txt_codPostal,
+                txt_localidad,
+                txt_mail,
+                txt_telefono,
+                txt_nroCalle,
+                txt_nroDoc,
+            }));
+
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_codPostal,
+                txt_telefono,
+                txt_nroCalle,
+                txt_nroPiso
+            }));
+
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerTiposDoc = bd.obtenerStoredProcedure("ObtenerTiposDocumento");
             var reader = spObtenerTiposDoc.ExecuteReader();
@@ -52,7 +71,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        protected override void interactuar()
         {
             try
             {
@@ -86,6 +105,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
             }
         
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.submitir();
         }
 
         private void label15_Click(object sender, EventArgs e)

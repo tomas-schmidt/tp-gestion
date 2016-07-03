@@ -97,5 +97,14 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
 
         }
+
+        private void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            txt_apellido.Clear();
+            txt_dni.Clear();
+            txt_Email.Clear();
+            txt_nombre.Clear();
+
+        }
     }
 }

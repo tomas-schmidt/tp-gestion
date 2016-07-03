@@ -1233,10 +1233,10 @@ CREATE TABLE C_HASHTAG.Compra
 	Id_Calif numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Calificacion(Id_Calificacion)
 )
 
-/*permitir la repeticion de valores no null, pero si null*/
+/*permitir la repeticion de valores no null, pero si null
 CREATE UNIQUE NONCLUSTERED INDEX Id_Calif_NotNull 
 ON C_HASHTAG.Compra(Id_Calif)
-WHERE Id_Calif IS NOT NULL;
+WHERE Id_Calif IS NOT NULL;*/
 
 INSERT INTO C_HASHTAG.Compra
 (
@@ -1257,7 +1257,7 @@ INSERT INTO C_HASHTAG.Compra
 		Compra_Fecha,
 		Calificacion_Codigo
 		FROM gd_esquema.Maestra
-		WHERE Compra_Cantidad IS NOT NULL -- ME PONIA COMPRAS CON LA CANT Y FECHA EN NULL
+		WHERE Compra_Cantidad IS NOT NULL and Calificacion_Codigo is not null
 
 /****************************************************************/
 --							Factura

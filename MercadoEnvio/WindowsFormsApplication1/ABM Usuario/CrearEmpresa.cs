@@ -11,7 +11,7 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    public partial class CrearEmpresa : Form
+    public partial class CrearEmpresa : FormMaestro
     {
         public CrearEmpresa()
         {
@@ -23,7 +23,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
-        private void btn_crearEmpesa_Click(object sender, EventArgs e)
+        protected override void interactuar()
         {
             try
             {
@@ -57,8 +57,33 @@ namespace WindowsFormsApplication1.ABM_Usuario
             }
         }
 
+        private void btn_crearEmpesa_Click(object sender, EventArgs e)
+        {
+            this.submitir();
+        }
+
         private void CrearEmpresa_Load(object sender, EventArgs e)
         {
+            validador.textBoxsNoVacios(new List<TextBox>(new[] {
+                txt_calle,
+                txt_Ciudad,
+                txt_codPostal,
+                txt_cuit,
+                txt_localidad,
+                txt_mail,
+                txt_nombreContacto,
+                txt_telefono,
+                txt_razonSocial,
+                txt_nroCalle
+            }));
+
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_codPostal,
+                txt_telefono,
+                txt_nroCalle,
+                txt_nroPiso
+            }));
+
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerRubros = bd.obtenerStoredProcedure("obtenerRubros");
             var reader = spObtenerRubros.ExecuteReader();
