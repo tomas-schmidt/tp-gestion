@@ -944,7 +944,8 @@ INSERT INTO C_HASHTAG.Cliente(
   Suponiendo que podria haber muchos mas clientes
 */
 CREATE NONCLUSTERED INDEX indiceCliente
-ON C_HASHTAG.Cliente (Nombre,Apellido,Mail)
+ON C_HASHTAG.Cliente (Nombre,Apellido)
+
 
 
 /****************************************************************/
@@ -1232,7 +1233,7 @@ CREATE TABLE C_HASHTAG.Compra
 (
 	Id_Compra numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Id_User numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
-	ID_Publicacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
+	Id_Publicacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
 	Monto numeric(18,2) NOT NULL,
 	Cantidad numeric(18,0) NOT NULL,
 	Fecha datetime,
