@@ -937,7 +937,7 @@ ON C_HASHTAG.Cliente (Nombre,Apellido,Mail)
 CREATE TABLE C_HASHTAG.Rubro
 (
 	Id_Rubro numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Desc_Corta nvarchar(50) unique,
+	Desc_Corta nvarchar(50),
 	Desc_Larga nvarchar(255)
 )
 
@@ -1027,7 +1027,7 @@ INSERT INTO C_HASHTAG.Empresa
 CREATE TABLE C_HASHTAG.Estado
 (
 	Id_Estado numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Descripcion nvarchar(255) 
+	Descripcion nvarchar(255) NOT NULL
 )
 
 INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Borrador')
@@ -1042,11 +1042,11 @@ INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Finalizada')
 CREATE TABLE C_HASHTAG.Visibilidad
 (
 	Id_Visibilidad numeric(18,0) IDENTITY (10002,1) PRIMARY KEY,
-	Visibilidad_Desc nvarchar(255)unique,
-	Comision_Prod_Vend numeric(18,2),
-	Comision_Envio_Prod numeric(18,2),
-	Comision_Tipo_Public numeric(18,2),
-	Habilitado bit
+	Visibilidad_Desc nvarchar(255) NOT NULL,
+	Comision_Prod_Vend numeric(18,2) NOT NULL,
+	Comision_Envio_Prod numeric(18,2) NOT NULL,
+	Comision_Tipo_Public numeric(18,2) NOT NULL,
+	Habilitado bit DEFAULT 1
 )
 
 /*Gratis no provee servicio de envío.
@@ -1085,7 +1085,7 @@ la plataforma. Esta característica no es aplicable a los datos migrados.
 CREATE TABLE C_HASHTAG.Tipo_Public
 (
 	Id_Tipo_Public numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Descripcion nvarchar(255) 
+	Descripcion nvarchar(255) NOT NULL 
 )
 INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Compra Inmediata')
 INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Subasta')
@@ -1095,17 +1095,17 @@ INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Subasta')
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Publicacion
 (
-	Id_Publicacion numeric(18,0) IDENTITY(1,1) PRIMARY KEY,--auto numerico y consecutivo entre publicaciones
-	Monto numeric(18,2),
-	Id_Visibilidad numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Visibilidad(Id_Visibilidad),
-	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
-	Id_Estado numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Estado(Id_Estado),
-	Id_Tipo_Public numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Tipo_Public(Id_Tipo_Public), 
-	Fecha_Inicial datetime,
-	Fecha_Final datetime,
+	Id_Publicacion numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+	Monto numeric(18,2) NOT NULL,
+	Id_Visibilidad numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Visibilidad(Id_Visibilidad),
+	Id_User numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
+	Id_Estado numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Estado(Id_Estado),
+	Id_Tipo_Public numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Tipo_Public(Id_Tipo_Public), 
+	Fecha_Inicial datetime NOT NULL,
+	Fecha_Final datetime NOT NULL,
 	Preguntas bit,
 	Stock numeric(18,0),
-	Descripcion nvarchar(255)
+	Descripcion nvarchar(255) NOT NULL
 )
 
 
@@ -1177,15 +1177,21 @@ INSERT INTO C_HASHTAG.Publicacion
 		WHERE Publ_Cli_Dni IS NOT NULL and Publicacion_Tipo is not null
 SET IDENTITY_INSERT C_HASHTAG.Publicacion OFF
 
+
+--CREO INDICE para optimizar filtrar por descripcion
+CREATE NONCLUSTERED INDEX indicePublicacion
+ON C_HASHTAG.Publicacion (Descripcion)
+
+
 /****************************************************************/
 --							Calificacion
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Calificacion
 (
 	Id_Calificacion numeric(18,0) identity(1,1) PRIMARY KEY,
-	Cant_Estrellas numeric(18,0),
+	Cant_Estrellas numeric(18,0) NOT NULL CHECK (Cant_Estrellas between 1 and 5),
 	Descripcion nvarchar(255)
-)
+	)
 
 SET IDENTITY_INSERT C_HASHTAG.Calificacion ON
 INSERT INTO C_HASHTAG.Calificacion
@@ -1209,12 +1215,12 @@ SET IDENTITY_INSERT C_HASHTAG.Calificacion OFF
 CREATE TABLE C_HASHTAG.Compra
 (
 	Id_Compra numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
-	ID_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
-	Monto numeric(18,2),
-	Cantidad numeric(18,0),
+	Id_User numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
+	ID_Publicacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
+	Monto numeric(18,2) NOT NULL,
+	Cantidad numeric(18,0) NOT NULL,
 	Fecha datetime,
-	Id_Calif numeric(18,0)FOREIGN KEY REFERENCES C_HASHTAG.Calificacion(Id_Calificacion)
+	Id_Calif numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Calificacion(Id_Calificacion)
 )
 
 /*permitir la repeticion de valores no null, pero si null*/
@@ -1249,10 +1255,10 @@ INSERT INTO C_HASHTAG.Compra
 CREATE TABLE C_HASHTAG.Factura
 (
 	Id_Factura numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
+	Id_Publicacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
 	Numero numeric(18,0),
-	Fecha datetime,
-	Total numeric(18,0),
+	Fecha datetime NOT NULL,
+	Total numeric(18,0) NOT NULL,
 )
 INSERT INTO C_HASHTAG.Factura
 (
@@ -1268,16 +1274,20 @@ INSERT INTO C_HASHTAG.Factura
 		Factura_Total
 		FROM gd_esquema.Maestra
 
+CREATE NONCLUSTERED INDEX indiceFactura
+ON C_HASHTAG.Factura (Fecha,Total)
+
+
 /****************************************************************/
 --							Item
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Item
 (
 	Id_Item numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Id_Factura numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Factura(Id_Factura),
-	Descripcion nvarchar(255),
-	Monto numeric(18,0),
-	Cantidad numeric(18,0)
+	Id_Factura numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Factura(Id_Factura),
+	Descripcion nvarchar(255) DEFAULT 'Sin descripcion',
+	Monto numeric(18,0) NOT NULL,
+	Cantidad numeric(18,0) NOT NULL
 )
 
 INSERT INTO C_HASHTAG.Item
@@ -1306,9 +1316,9 @@ CREATE TABLE C_HASHTAG.Oferta
 
 (
 	Id_Oferta numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Id_Publicacion numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion), 
-	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
-	Monto_Ofertado numeric(18,2),
+	Id_Publicacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion), 
+	Id_User numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
+	Monto_Ofertado numeric(18,2) NOT NULL,
 	Fecha datetime 
 )
 
