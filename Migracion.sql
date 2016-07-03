@@ -685,8 +685,8 @@ GO
 CREATE TABLE C_HASHTAG.Rol
 (
 	Id_Rol numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Nombre_Rol nvarchar(255),
-	Habilitado bit 
+	Nombre_Rol nvarchar(255) NOT NULL,
+	Habilitado bit NOT NULL DEFAULT 1
 )
 GO
 
@@ -723,7 +723,7 @@ GO
 CREATE TABLE C_HASHTAG.Funcionalidad
 (
 	Id_Funcionalidad numeric(18,0)IDENTITY(1,1) PRIMARY KEY,
-	Nombre_Funcionalidad nvarchar(255) unique
+	Nombre_Funcionalidad nvarchar(255) UNIQUE NOT NULL
 )
 
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ABMRol')
@@ -787,10 +787,10 @@ INSERT INTO C_HASHTAG.Tipo_Doc(Doc_Desc) VALUES ('Cedula')
 CREATE TABLE C_HASHTAG.Usuario
 (
 	Id_User numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Username nvarchar(50) UNIQUE,
-	Contraseña varchar(255),
-	Intentos_Fallidos numeric(18,0),
-	Habilitado bit
+	Username nvarchar(50) UNIQUE NOT NULL,
+	Contraseña varchar(255) NOT NULL,
+	Intentos_Fallidos numeric(18,0) DEFAULT 0,
+	Habilitado bit DEFAULT 1
 )
 
 --Creo administrador con Id_User:1, username:admin1 y password:administrador (hasheada)
@@ -844,11 +844,11 @@ INSERT INTO C_HASHTAG.Usuario
 CREATE TABLE C_HASHTAG.Cliente
 (
 	Id_Cliente numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Nombre nvarchar(255),
-	Apellido nvarchar(255),
-	Nro_Doc numeric(18,0),
-	Tipo_Doc numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Tipo_doc(Doc_Codigo),
-	Mail nvarchar(255) unique,
+	Nombre nvarchar(255) NOT NULL,
+	Apellido nvarchar(255) NOT NULL,
+	Nro_Doc numeric(18,0) NOT NULL,
+	Tipo_Doc numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Tipo_doc(Doc_Codigo),
+	Mail nvarchar(255) NOT NULL,
 	Telefono numeric(18,0),
 	Domicilio_Calle nvarchar(100),
 	Nro_Calle numeric(18,0),
@@ -858,7 +858,7 @@ CREATE TABLE C_HASHTAG.Cliente
 	Nacimiento datetime,
 	Localidad varchar (255),
 	Creacion datetime,
-	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
+	Id_User numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
 	CONSTRAINT Doc UNIQUE
     (
         Tipo_Doc, Nro_Doc
@@ -924,6 +924,12 @@ INSERT INTO C_HASHTAG.Cliente(
 		FROM gd_esquema.Maestra
 		where Publ_Cli_Nombre IS NOT NULL
 
+/*CREO UN INDICE para:"listado que permita filtrar simultáneamente por alguno o todos los siguientes campos"
+  Suponiendo que podria haber muchos mas clientes
+*/
+CREATE NONCLUSTERED INDEX indiceCliente
+ON C_HASHTAG.Cliente (Nombre,Apellido,Mail)
+
 
 /****************************************************************/
 --							Rubro
@@ -952,21 +958,21 @@ INSERT INTO C_HASHTAG.Rubro
 CREATE TABLE C_HASHTAG.Empresa
 (
 	Id_Empresa numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-	Razon_Social nvarchar(255) UNIQUE,
-	Mail nvarchar(50),
+	Razon_Social nvarchar(255) UNIQUE NOT NULL,
+	Mail nvarchar(50) NOT NULL,
 	Telefono numeric(18,0),
 	Calle nvarchar(100),
 	Cod_Postal nvarchar(50),
 	Ciudad nvarchar(255),
 	Localidad nvarchar(255),
-	Cuit nvarchar(255) UNIQUE,
+	Cuit nvarchar(255) UNIQUE NOT NULL,
 	Nombre_Contacto nvarchar(255),
-	Rubro_Principal numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Rubro(Id_Rubro),
+	Rubro_Principal numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Rubro(Id_Rubro),
 	Nro_Calle numeric(18,0),
 	Piso numeric(18,0),
 	Departamento nvarchar(50),
 	Creacion DateTime,
-	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
+	Id_User numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User)
 )
 
 
