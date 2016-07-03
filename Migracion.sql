@@ -491,6 +491,27 @@ AS
 	END CATCH
 GO
 
+/****************************************************************
+ *							ObtenerVisibilidades
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerVisibilidades
+AS
+	SELECT *
+		FROM Visibilidad
+GO
+
+/****************************************************************
+ *							cambiarEstadoVisibilidad
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.cambiarEstadoVisibilidad
+	@Id_Visibilidad int
+AS 
+		UPDATE C_HASHTAG.Visibilidad
+		set Habilitado = ~Habilitado
+		where Id_Visibilidad = @Id_Visibilidad
+GO
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS

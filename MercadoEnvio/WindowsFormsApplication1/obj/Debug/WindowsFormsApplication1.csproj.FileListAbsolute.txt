@@ -51,3 +51,4 @@ C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsAppl
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.ModificarCliente.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Visibilidad.AltaVisibilidad.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Visibilidad.ABMVisibilidad.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Visibilidad.ListarVisibilidades.resources

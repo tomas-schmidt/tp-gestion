@@ -59,6 +59,11 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
                 reader.Read();
                 spCrearVisibilidad.Connection.Close();
                 MessageBox.Show("Nueva visibilidad creada exitosamente");
+                txt_comProd.Clear();
+                txt_comTipo.Clear();
+                txt_nombre.Clear();
+                txt_comEnvio.Clear(); 
+                cb_habilitado.CheckState = 0;
             }
             catch (SqlException excepcion)
             {
