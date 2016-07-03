@@ -27,6 +27,14 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 string visibilidad = reader[1].ToString();
                 comboBox1.Items.Add(visibilidad);
             }
+
+            var spObtenerEstados = bd.obtenerStoredProcedure("obtenerEstadosElegibles");
+            var reader2 = spObtenerEstados.ExecuteReader();
+            while (reader2.Read())
+            {
+                string estado = reader2[1].ToString();
+                comboBox2.Items.Add(estado);
+            }
         }
     }
 }

@@ -556,9 +556,12 @@ CREATE PROCEDURE C_HASHTAG.generarCompra
 	@Id_User numeric(18,0),
 	@Preguntas bit,
 	@Stock numeric(18,0),
+	@Estado nvarchar(255),
 	@Descripcion nvarchar(255)
 as
 	begin try
+		declare @fecha datetime
+		set @fecha = C_HASHTAG.obtenerFecha()
 		INSERT INTO C_HASHTAG.Publicacion
 		(
 			Monto,
@@ -574,7 +577,7 @@ as
 		)	
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
-			@Id_User, 2 /*activa*/, 1 /*Compra inmediata*/, NULL, NULL, @Preguntas, @Stock, @Descripcion)
+			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 1 /*compra inmediata*/ , @fecha , dateadd(month, 1, @fecha), @Preguntas, @Stock, @Descripcion)
 	end try
 	begin catch
 		DECLARE @MensajeError varchar(255)
@@ -591,6 +594,7 @@ CREATE PROCEDURE C_HASHTAG.generarSubasta
 	@Visibilidad nvarchar(255),
 	@Id_User numeric(18,0),
 	@Preguntas bit,
+	@Estado nvarchar(255) ,
 	@Descripcion nvarchar(255)
 as
 	begin try
@@ -609,7 +613,7 @@ as
 		)	
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
-			@Id_User, 2 /*activa*/, 2 /*subasta*/, NULL, NULL, @Preguntas, 1, @Descripcion)
+			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 2 /*subasta*/, NULL, NULL, @Preguntas, 1, @Descripcion)
 	end try
 	begin catch
 		DECLARE @MensajeError varchar(255)
@@ -617,6 +621,16 @@ as
 		RAISERROR(@MensajeError, 16, 1)
 	end catch
 go
+
+/****************************************************************
+ *							ObtenerEstadosElegibles
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerEstadosElegibles
+AS
+	SELECT *
+		FROM C_HASHTAG.Estado e
+		where e.Descripcion like 'Activa' or e.Descripcion like 'Borrador'
+GO
 
 /***********************************************************************
  *
