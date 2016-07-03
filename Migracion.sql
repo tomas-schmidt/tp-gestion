@@ -584,6 +584,8 @@ GO
 INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Administrador', 1)
 INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Cliente', 1)
 INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Empresa', 1)
+--inserto rol que pide el enunciado para probar todas las funcionalidades
+INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Rol Especial', 1)
 
 /*TRIGGER
 
@@ -648,6 +650,16 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,7)
 --Inserto funcionalidades de la empresa
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,4)
 
+--Inserto todas las funcionalidades al rol especial
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,1)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,2)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,3)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,4)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,5)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,6)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,7)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,8)
+
 /****************************************************************/
 --					TIPO DOCUMENTO	
 /****************************************************************/
@@ -676,10 +688,14 @@ CREATE TABLE C_HASHTAG.Usuario
 INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
 	('admin1', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1)
 
-
 --Creo administrador con Id_User:2, username:admin2 y password:administrador (hasheada)
 INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
 	('admin2', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1)
+
+--PEDIDO DEL ENUNCIADO: Creo usuario de rol especial con Id_User:3, username:admin y password:w23e (hasheada)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
+	('admin', '6b1583aea70be6a605d44e3563880d1b833a1d25c7ac5cb0222101e83a76559f',0,1)
+
 
 INSERT INTO C_HASHTAG.Usuario
 (
@@ -1242,3 +1258,7 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 	SELECT u.Id_User, 3
 		FROM C_HASHTAG.Usuario u JOIN C_HASHTAG.Empresa e
 		ON (u.Id_User = e.Id_User)
+
+--PEDIDO DEL ENUNCIADO: Cargo Rol especial (Id_Rol = 4) a usuario con username admin (Id_User = 3)
+INSERT INTO C_HASHTAG.Rol_Usuario(Id_User, Id_Rol) VALUES
+	(3,4)
