@@ -1015,16 +1015,16 @@ INSERT INTO C_HASHTAG.Publicacion
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18)),
 		2, -- estan todas activas
-		(SELECT Id_Tipo_Public  
+		(SELECT top 1 Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Estado),  -- ARREGLADO Era Publicacion_Estado, no Publicacion_Tipo
+			where Descripcion = Publicacion_Tipo),
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
 		Publicacion_Descripcion
 		FROM gd_esquema.Maestra
-		WHERE Publ_Empresa_Cuit IS NOT NULL
+		WHERE Publ_Empresa_Cuit IS NOT NULL and Publicacion_Tipo is not null
 
 INSERT INTO C_HASHTAG.Publicacion
 (
@@ -1050,14 +1050,14 @@ INSERT INTO C_HASHTAG.Publicacion
 		2, -- estan todas activas
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
-			where Descripcion = Publicacion_Estado),  -- ARREGLADO Era Publicacion_Estado, no Publicacion_Tipo
+			where Descripcion = Publicacion_Tipo), 
 		Publicacion_Fecha,
 		Publicacion_Fecha_Venc,
 		'Si', -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
 		Publicacion_Descripcion
 		FROM gd_esquema.Maestra
-		WHERE Publ_Cli_Dni IS NOT NULL
+		WHERE Publ_Cli_Dni IS NOT NULL and Publicacion_Tipo is not null
 
 /****************************************************************/
 --							Calificacion

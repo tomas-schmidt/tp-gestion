@@ -174,17 +174,29 @@
     <Compile Include="FormMaestro.Designer.cs">
       <DependentUpon>FormMaestro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Generar Publicación\GenerarCompra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\GenerarCompra.Designer.cs">
+      <DependentUpon>GenerarCompra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicación\GenerarSubasta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\GenerarSubasta.Designer.cs">
+      <DependentUpon>GenerarSubasta.cs</DependentUpon>
+    </Compile>
     <Compile Include="RolesUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RolesUsuario.Designer.cs">
       <DependentUpon>RolesUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="Generar Publicación\Form1.cs">
+    <Compile Include="Generar Publicación\GenerarPublicacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Generar Publicación\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Generar Publicación\GenerarPublicacion.Designer.cs">
+      <DependentUpon>GenerarPublicacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Historial Cliente\Form1.cs">
       <SubType>Form</SubType>
@@ -265,6 +277,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Facturas\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\GenerarCompra.resx">
+      <DependentUpon>GenerarCompra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\GenerarPublicacion.resx">
+      <DependentUpon>GenerarPublicacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\GenerarSubasta.resx">
+      <DependentUpon>GenerarSubasta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RolesUsuario.resx">
       <DependentUpon>RolesUsuario.cs</DependentUpon>

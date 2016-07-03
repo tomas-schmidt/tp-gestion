@@ -11,6 +11,7 @@ using WindowsFormsApplication1.ABM_Rol;
 using WindowsFormsApplication1.ABM_Usuario;
 using WindowsFormsApplication1.ABM_Visibilidad;
 using WindowsFormsApplication1.ConexionBD;
+using WindowsFormsApplication1.Generar_Publicación;
 
 namespace WindowsFormsApplication1
 {
@@ -66,6 +67,11 @@ namespace WindowsFormsApplication1
                 {
                     ABMVisibilidad abmVisibilidad = new ABMVisibilidad();
                     abmVisibilidad.Show();
+                }
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "GenerarPublicacion")
+                {
+                    GenerarPublicacion gp = new GenerarPublicacion();
+                    gp.Show();
                 }
 
             }

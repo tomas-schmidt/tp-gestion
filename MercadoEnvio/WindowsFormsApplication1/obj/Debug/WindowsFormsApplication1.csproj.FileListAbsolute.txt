@@ -53,3 +53,6 @@ C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsAppl
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Visibilidad.ABMVisibilidad.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Visibilidad.ListarVisibilidades.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Visibilidad.ModificarVisibilidad.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Generar_Publicación.GenerarCompra.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Generar_Publicación.GenerarPublicacion.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Generar_Publicación.GenerarSubasta.resources
