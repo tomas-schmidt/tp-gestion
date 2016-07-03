@@ -267,6 +267,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(122, 178);
             this.comboBox1.Name = "comboBox1";
@@ -318,7 +319,7 @@
             this.txt_nroCalle.TabIndex = 9;
             this.txt_nroCalle.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // btn_crearCliente
+            // CrearCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -354,7 +355,7 @@
             this.Controls.Add(this.txt_nombre);
             this.Controls.Add(this.txt_password);
             this.Controls.Add(this.txt_username);
-            this.Name = "btn_crearCliente";
+            this.Name = "CrearCliente";
             this.Text = "CrearCliente";
             this.Load += new System.EventHandler(this.CrearCliente_Load);
             this.ResumeLayout(false);

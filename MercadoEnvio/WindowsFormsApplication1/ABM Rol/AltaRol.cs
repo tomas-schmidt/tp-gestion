@@ -11,7 +11,7 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Rol
 {
-    public partial class AltaRol : Form
+    public partial class AltaRol : FormMaestro
     {
         public AltaRol()
         {
@@ -22,8 +22,7 @@ namespace WindowsFormsApplication1.ABM_Rol
         {
 
         }
-
-        private void btn_guardar_Click(object sender, EventArgs e)
+        protected override void interactuar()
         {
             BaseDeDatos bd = new BaseDeDatos();
             var spCrearRol = bd.obtenerStoredProcedure("crearRol");
@@ -52,12 +51,17 @@ namespace WindowsFormsApplication1.ABM_Rol
                 MessageBox.Show("Nuevo Rol cargado");
                 txt_nombreRol.Clear();
             }
-            
+
             catch (SqlException excepcion)
             {
                 MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
             }
         
+        }
+
+        private void btn_guardar_Click(object sender, EventArgs e)
+        {
+            this.submitir();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -67,6 +71,10 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void AltaRol_Load(object sender, EventArgs e)
         {
+            validador.textBoxsNoVacios(new List<TextBox>(new[] {
+                txt_nombreRol
+            }));
+
             this.cargarTabla();
         }
 
