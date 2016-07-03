@@ -940,13 +940,6 @@ INSERT INTO C_HASHTAG.Cliente(
 		FROM gd_esquema.Maestra
 		where Publ_Cli_Nombre IS NOT NULL
 
-/*CREO UN INDICE para:"listado que permita filtrar simultáneamente por alguno o todos los siguientes campos"
-  Suponiendo que podria haber muchos mas clientes
-*/
-CREATE NONCLUSTERED INDEX indiceCliente
-ON C_HASHTAG.Cliente (Nombre,Apellido)
-
-
 
 /****************************************************************/
 --							Rubro
@@ -1059,11 +1052,11 @@ INSERT INTO C_HASHTAG.Estado (Descripcion) VALUES ('Finalizada')
 CREATE TABLE C_HASHTAG.Visibilidad
 (
 	Id_Visibilidad numeric(18,0) IDENTITY (10002,1) PRIMARY KEY,
-	Visibilidad_Desc nvarchar(255) NOT NULL,
-	Comision_Prod_Vend numeric(18,2) NOT NULL,
-	Comision_Envio_Prod numeric(18,2) NOT NULL,
-	Comision_Tipo_Public numeric(18,2) NOT NULL,
-	Habilitado bit DEFAULT 1
+	Visibilidad_Desc nvarchar(255),
+	Comision_Prod_Vend numeric(18,2),
+	Comision_Envio_Prod numeric(18,2),
+	Comision_Tipo_Public numeric(18,2),
+	Habilitado bit 
 )
 
 /*Gratis no provee servicio de envío.
@@ -1206,7 +1199,7 @@ ON C_HASHTAG.Publicacion (Descripcion)
 CREATE TABLE C_HASHTAG.Calificacion
 (
 	Id_Calificacion numeric(18,0) identity(1,1) PRIMARY KEY,
-	Cant_Estrellas numeric(18,0) NOT NULL CHECK (Cant_Estrellas between 1 and 5),
+	Cant_Estrellas numeric(18,0) NOT NULL, 
 	Descripcion nvarchar(255)
 	)
 
@@ -1290,6 +1283,8 @@ INSERT INTO C_HASHTAG.Factura
 		Factura_Fecha,
 		Factura_Total
 		FROM gd_esquema.Maestra
+		WHERE Factura_Fecha is NOT NULL
+
 
 CREATE NONCLUSTERED INDEX indiceFactura
 ON C_HASHTAG.Factura (Fecha,Total)
@@ -1317,12 +1312,12 @@ INSERT INTO C_HASHTAG.Item
 	SELECT
 		(SELECT Id_Factura
 			FROM C_HASHTAG.Factura
-			WHERE Factura_Nro = Numero),
+			WHERE Factura_Nro = Numero) as 'fact',
 		'Sin descripcion', -- falta descripcion
 		Item_Factura_Monto,
 		Item_Factura_Cantidad
 		FROM gd_esquema.Maestra
-		where Item_Factura_Cantidad IS NOT NULL -- no se si poner la restriccion de que el monto tampoco sea null
+		where Item_Factura_Cantidad IS NOT NULL AND 'fact' IS NOT NULL   -- no se si poner la restriccion de que el monto tampoco sea null
 
 
 /****************************************************************/
