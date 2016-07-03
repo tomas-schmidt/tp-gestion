@@ -547,6 +547,19 @@ AS
 	END CATCH
 GO
 
+/****************************************************************
+ *						generarCompra
+ ****************************************************************/
+/*CREATE PROCEDURE C_HASHTAG.generarCompra
+	@Monto numeric(18,2),
+	@Visibilidad nvarchar(255),
+	@Id_User numeric(18,0),
+	@Preguntas nvarchar(255),
+	@Stock numeric(18,0),
+	Descripcion nvarchar(255)
+	*/
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
@@ -980,7 +993,7 @@ INSERT INTO C_HASHTAG.Tipo_Public (Descripcion) VALUES ('Subasta')
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Publicacion
 (
-	Id_Publicacion numeric(18,0) PRIMARY KEY,--auto numerico y consecutivo entre publicaciones
+	Id_Publicacion numeric(18,0) IDENTITY(1,1) PRIMARY KEY,--auto numerico y consecutivo entre publicaciones
 	Monto numeric(18,2),
 	Id_Visibilidad numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Visibilidad(Id_Visibilidad),
 	Id_User numeric(18,0) FOREIGN KEY REFERENCES C_HASHTAG.Usuario(Id_User),
@@ -993,6 +1006,8 @@ CREATE TABLE C_HASHTAG.Publicacion
 	Descripcion nvarchar(255)
 )
 
+
+SET IDENTITY_INSERT C_HASHTAG.Publicacion ON
 INSERT INTO C_HASHTAG.Publicacion
 (
 	Id_Publicacion,
@@ -1058,17 +1073,19 @@ INSERT INTO C_HASHTAG.Publicacion
 		Publicacion_Descripcion
 		FROM gd_esquema.Maestra
 		WHERE Publ_Cli_Dni IS NOT NULL and Publicacion_Tipo is not null
+SET IDENTITY_INSERT C_HASHTAG.Publicacion OFF
 
 /****************************************************************/
 --							Calificacion
 /****************************************************************/
 CREATE TABLE C_HASHTAG.Calificacion
 (
-	Id_Calificacion numeric(18,0) PRIMARY KEY,
+	Id_Calificacion numeric(18,0) identity(1,1) PRIMARY KEY,
 	Cant_Estrellas numeric(18,0),
 	Descripcion nvarchar(255)
 )
 
+SET IDENTITY_INSERT C_HASHTAG.Calificacion ON
 INSERT INTO C_HASHTAG.Calificacion
 (
 	Id_Calificacion,
@@ -1082,6 +1099,7 @@ INSERT INTO C_HASHTAG.Calificacion
 	FROM gd_esquema.Maestra g2	
 	WHERE Calificacion_Codigo IS NOT NULL
 
+SET IDENTITY_INSERT C_HASHTAG.Calificacion OFF
 
 /****************************************************************/
 --							Compra

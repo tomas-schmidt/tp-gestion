@@ -11,7 +11,7 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Rol
 {
-    public partial class ModificarRol : Form
+    public partial class ModificarRol : FormMaestro
     {
         private int idamodificar;
 
@@ -23,30 +23,14 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void ModificarRol_Load(object sender, EventArgs e)
         {
+            validador.textBoxsNoVacios(new List<TextBox>(new[] {
+                txt_nombreRol
+            }));
+
             this.cargarTabla();
         }
 
-        private void cargarTabla()
-        {
-            BaseDeDatos bd = new BaseDeDatos();
-            var spObtenerFuncionalidades = bd.obtenerStoredProcedure("obtenerFuncionalidades");
-
-            SqlDataAdapter sda = new SqlDataAdapter();
-            sda.SelectCommand = spObtenerFuncionalidades;
-            DataTable dbdataset = new DataTable();
-            sda.Fill(dbdataset);
-            foreach (DataRow item in dbdataset.Rows)
-            {
-                int n = dataGridView_funcionalidades.Rows.Add();
-                dataGridView_funcionalidades.Rows[n].Cells[0].Value = "false";
-                dataGridView_funcionalidades.Rows[n].Cells[1].Value = item["Id_Funcionalidad"].ToString();
-                dataGridView_funcionalidades.Rows[n].Cells[2].Value = item["Nombre_Funcionalidad"].ToString();
-            }
-
-        }
-
-
-        private void btn_guardar_Click(object sender, EventArgs e)
+        protected override void interactuar()
         {
             BaseDeDatos bd = new BaseDeDatos();
             var spactualizarYBorrarFuncionalidadesRol = bd.obtenerStoredProcedure("actualizarYBorrarFuncionalidadesRol");
@@ -81,6 +65,31 @@ namespace WindowsFormsApplication1.ABM_Rol
                 MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
             }
         
+        }
+
+        private void cargarTabla()
+        {
+            BaseDeDatos bd = new BaseDeDatos();
+            var spObtenerFuncionalidades = bd.obtenerStoredProcedure("obtenerFuncionalidades");
+
+            SqlDataAdapter sda = new SqlDataAdapter();
+            sda.SelectCommand = spObtenerFuncionalidades;
+            DataTable dbdataset = new DataTable();
+            sda.Fill(dbdataset);
+            foreach (DataRow item in dbdataset.Rows)
+            {
+                int n = dataGridView_funcionalidades.Rows.Add();
+                dataGridView_funcionalidades.Rows[n].Cells[0].Value = "false";
+                dataGridView_funcionalidades.Rows[n].Cells[1].Value = item["Id_Funcionalidad"].ToString();
+                dataGridView_funcionalidades.Rows[n].Cells[2].Value = item["Nombre_Funcionalidad"].ToString();
+            }
+
+        }
+
+
+        private void btn_guardar_Click(object sender, EventArgs e)
+        {
+            this.submitir();
         }
 
         private void dataGridView_funcionalidades_CellContentClick(object sender, DataGridViewCellEventArgs e)
