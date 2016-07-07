@@ -32,6 +32,7 @@ DROP PROCEDURE C_HASHTAG.generarSubasta
 DROP PROCEDURE C_HASHTAG.obtenerEstadosElegibles
 DROP PROCEDURE C_HASHTAG.agregarRubroAPublicacion
 DROP PROCEDURE C_HASHTAG.obtenerPublicaciones
+DROP PROCEDURE C_HASHTAG.obtenerPublicacion
 
 
 --Drops tablas

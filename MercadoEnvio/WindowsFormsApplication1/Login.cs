@@ -43,7 +43,6 @@ namespace WindowsFormsApplication1
                 spLogin.Parameters.Add("@Contraseña", SqlDbType.VarChar).Value = SHA256.GetSHA256(txt_passwd.Text);
                 var reader = spLogin.ExecuteReader();
                 reader.Read();
-                MessageBox.Show("Login Exitoso");
                 int iduser = Convert.ToInt32(reader[0]);
                 RolesUsuario f = new RolesUsuario(iduser);
                 f.Show();

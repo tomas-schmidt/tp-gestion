@@ -671,6 +671,15 @@ AS
 	order by  Id_Visibilidad -- LISTO POR IMPORTANCIA
 GO
 
+/****************************************************************
+ *							ObtenerPublicacion
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerPublicacion @Id_Publicacion int
+AS
+	select * from C_HASHTAG.Publicacion
+	where Id_Publicacion = @Id_Publicacion
+GO
+
 
 /***********************************************************************
  *

@@ -23,7 +23,16 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.ColumnIndex == 3)
+            {
+                int idPublicacion = (Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString()));
+                if (dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString() == "Compra Inmediata")
+                {
 
+                    MostrarCompra mc = new MostrarCompra(idPublicacion);
+                    mc.Show();
+                }
+            }
         }
 
         private void groupBox2_Enter(object sender, EventArgs e)
@@ -59,6 +68,8 @@ namespace WindowsFormsApplication1.ComprarOfertar
                             dataGridView1.Rows[n].Cells[0].Value = item2["Descripcion"].ToString();
                             dataGridView1.Rows[n].Cells[1].Value = item2["Monto"].ToString();
                             dataGridView1.Rows[n].Cells[2].Value = item2["tipo_public"].ToString();
+                            dataGridView1.Rows[n].Cells[4].Value = item2["Id_Publicacion"].ToString();
+                            dataGridView1.Rows[n].Cells[3].Value = "Ver";
                         }
                     }
                 
