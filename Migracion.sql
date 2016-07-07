@@ -557,7 +557,8 @@ CREATE PROCEDURE C_HASHTAG.generarCompra
 	@Preguntas bit,
 	@Stock numeric(18,0),
 	@Estado nvarchar(255),
-	@Descripcion nvarchar(255)
+	@Descripcion nvarchar(255),
+	@Envio bit
 as
 	begin try
 		declare @fecha datetime
@@ -573,11 +574,12 @@ as
 			Fecha_Final,
 			Preguntas,
 			Stock,
-			Descripcion
+			Descripcion,
+			Envio
 		)	
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
-			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 1 /*compra inmediata*/ , @fecha , dateadd(month, 1, @fecha), @Preguntas, @Stock, @Descripcion)
+			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 1 /*compra inmediata*/ , @fecha , dateadd(month, 1, @fecha), @Preguntas, @Stock, @Descripcion, @Envio)
 		
 		select top 1 Id_Publicacion
 			from C_HASHTAG.Publicacion
@@ -600,7 +602,8 @@ CREATE PROCEDURE C_HASHTAG.generarSubasta
 	@Id_User numeric(18,0),
 	@Preguntas bit,
 	@Estado nvarchar(255) ,
-	@Descripcion nvarchar(255)
+	@Descripcion nvarchar(255),
+	@Envio bit
 as
 	begin try
 		declare @fecha datetime
@@ -616,11 +619,12 @@ as
 			Fecha_Final,
 			Preguntas,
 			Stock,
-			Descripcion
+			Descripcion,
+			Envio
 		)	
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
-			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 2 /*subasta*/, @fecha , dateadd(month, 1, @fecha), @Preguntas, 1, @Descripcion)
+			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 2 /*subasta*/, @fecha , dateadd(month, 1, @fecha), @Preguntas, 1, @Descripcion, @Envio)
 	
 			select top 1 Id_Publicacion
 			from C_HASHTAG.Publicacion
@@ -680,6 +684,21 @@ AS
 	where Id_Publicacion = @Id_Publicacion
 GO
 
+/****************************************************************
+ *							RealizarCompra
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.realizarCompra @Id_Publicacion int, @Stock int
+AS
+	Update C_HASHTAG.Publicacion
+	set Stock = Stock - @Stock
+	where Id_Publicacion = @Id_Publicacion
+	-- me fijo si la publicacion se quedo sin stock, de ser cierto la finalizo
+	if ((select stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = 0)
+		begin
+			update C_HASHTAG.Publicacion
+			set Id_Estado = 4 -- 'Finalizada'
+		end
+GO
 
 /***********************************************************************
  *
@@ -1124,7 +1143,8 @@ CREATE TABLE C_HASHTAG.Publicacion
 	Fecha_Final datetime NOT NULL,
 	Preguntas bit,
 	Stock numeric(18,0),
-	Descripcion nvarchar(255) NOT NULL
+	Descripcion nvarchar(255) NOT NULL,
+	Envio bit
 )
 
 
@@ -1141,7 +1161,8 @@ INSERT INTO C_HASHTAG.Publicacion
 	Fecha_Final,
 	Preguntas,
 	Stock,
-	Descripcion
+	Descripcion,
+	Envio
 )
 	SELECT DISTINCT
 		Publicacion_Cod,
@@ -1158,7 +1179,8 @@ INSERT INTO C_HASHTAG.Publicacion
 		Publicacion_Fecha_Venc,
 		1, -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
-		Publicacion_Descripcion
+		Publicacion_Descripcion,
+		0 -- Ninguna publicacion de las migradas tiene envio, es una funcionalidad nueva
 		FROM gd_esquema.Maestra
 		WHERE Publ_Empresa_Cuit IS NOT NULL and Publicacion_Tipo is not null
 
@@ -1174,7 +1196,8 @@ INSERT INTO C_HASHTAG.Publicacion
 	Fecha_Final,
 	Preguntas,
 	Stock,
-	Descripcion 
+	Descripcion,
+	Envio 
 )
 	SELECT DISTINCT
 		Publicacion_Cod,
@@ -1191,7 +1214,8 @@ INSERT INTO C_HASHTAG.Publicacion
 		Publicacion_Fecha_Venc,
 		1, -- supongo que todas aceptan preguntas
 		Publicacion_Stock,
-		Publicacion_Descripcion
+		Publicacion_Descripcion,
+		0 -- Ninguna publicacion de las migradas tiene envio, es una funcionalidad nueva
 		FROM gd_esquema.Maestra
 		WHERE Publ_Cli_Dni IS NOT NULL and Publicacion_Tipo is not null
 SET IDENTITY_INSERT C_HASHTAG.Publicacion OFF

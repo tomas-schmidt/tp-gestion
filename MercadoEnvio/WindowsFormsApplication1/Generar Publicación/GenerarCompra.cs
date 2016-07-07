@@ -85,6 +85,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 spGenerarPublicacion.Parameters.Add("@Preguntas", SqlDbType.Bit).Value = checkBox1.CheckState;
                 spGenerarPublicacion.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = txt_descripcion.Text;
                 spGenerarPublicacion.Parameters.Add("@Estado", SqlDbType.VarChar).Value = (string)comboBox2.Items[si2];
+                spGenerarPublicacion.Parameters.Add("@Envio", SqlDbType.Bit).Value = checkBox2.CheckState;
                 var reader = spGenerarPublicacion.ExecuteReader();
                 reader.Read();
                 

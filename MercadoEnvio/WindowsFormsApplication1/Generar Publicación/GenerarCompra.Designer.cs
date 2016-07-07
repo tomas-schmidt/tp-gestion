@@ -44,6 +44,7 @@
             this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label6 = new System.Windows.Forms.Label();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,7 +129,7 @@
             // 
             // btn_generarCompra
             // 
-            this.btn_generarCompra.Location = new System.Drawing.Point(119, 492);
+            this.btn_generarCompra.Location = new System.Drawing.Point(119, 527);
             this.btn_generarCompra.Name = "btn_generarCompra";
             this.btn_generarCompra.Size = new System.Drawing.Size(293, 23);
             this.btn_generarCompra.TabIndex = 10;
@@ -190,11 +191,22 @@
             this.label6.TabIndex = 14;
             this.label6.Text = "Elegir rubros";
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(32, 489);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(93, 17);
+            this.checkBox2.TabIndex = 15;
+            this.checkBox2.Text = "Habilitar envio";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // GenerarCompra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 560);
+            this.ClientSize = new System.Drawing.Size(561, 582);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.comboBox2);
@@ -236,5 +248,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
