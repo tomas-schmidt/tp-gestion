@@ -29,8 +29,14 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 if (dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString() == "Compra Inmediata")
                 {
 
-                    MostrarCompra mc = new MostrarCompra(idPublicacion);
+                    MostrarCompra mc = new MostrarCompra(idPublicacion, idUserActual);
                     mc.Show();
+                }
+                if (dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString() == "Subasta")
+                {
+
+                    MostrarSubasta ms = new MostrarSubasta(idPublicacion, idUserActual);
+                    ms.Show();
                 }
             }
         }
@@ -53,6 +59,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
                         var spObtenerPublicaciones = bd.obtenerStoredProcedure("obtenerPublicaciones");
                         spObtenerPublicaciones.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = item.Cells[1].Value.ToString();
                         spObtenerPublicaciones.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = txt_descripcion.Text;
+                        spObtenerPublicaciones.Parameters.Add("@Id_User", SqlDbType.Int).Value = idUserActual;
                         //var reader = spObtenerPublicaciones.ExecuteReader();
                         //reader.Read();
 

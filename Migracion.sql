@@ -664,7 +664,7 @@ GO
 /****************************************************************
  *							ObtenerPublicaciones
  ****************************************************************/
-CREATE PROCEDURE C_HASHTAG.obtenerPublicaciones @Descripcion nvarchar(255), @Rubro nvarchar(255)
+CREATE PROCEDURE C_HASHTAG.obtenerPublicaciones @Descripcion nvarchar(255), @Rubro nvarchar(255), @Id_User int
 AS
 	SELECT p.*, tp.Descripcion as 'tipo_public' FROM C_HASHTAG.Publicacion p
 	join C_HASHTAG.Tipo_Public tp on(p.Id_Tipo_Public = tp.Id_Tipo_Public)
@@ -672,6 +672,7 @@ AS
 	where Id_Estado = 2 --solo muestro las activas
 	and rp.Id_Rubro = (select top 1 Id_Rubro from C_HASHTAG.Rubro r where r.Desc_Corta = @Rubro)
 	and p.Descripcion like '%'+@Descripcion+'%'
+	and p.Id_User != @Id_User
 	order by  Id_Visibilidad -- LISTO POR IMPORTANCIA
 GO
 
@@ -687,17 +688,98 @@ GO
 /****************************************************************
  *							RealizarCompra
  ****************************************************************/
-CREATE PROCEDURE C_HASHTAG.realizarCompra @Id_Publicacion int, @Stock int
+CREATE PROCEDURE C_HASHTAG.realizarCompra @Id_Publicacion int, @Stock int, @Id_User int
 AS
-	Update C_HASHTAG.Publicacion
-	set Stock = Stock - @Stock
-	where Id_Publicacion = @Id_Publicacion
-	-- me fijo si la publicacion se quedo sin stock, de ser cierto la finalizo
-	if ((select stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = 0)
+	--if (@Stock > 0 and @Stock > (select Stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion))
+	--begin
+	begin transaction
+		--modifico stock de la publicacion
+		Update C_HASHTAG.Publicacion
+		set Stock = Stock - @Stock
+		where Id_Publicacion = @Id_Publicacion
+
+		--realizo la facturacion de la nueva compra
+		declare @Total numeric(18,2), @Monto numeric(18,2), @Comision_Prod_Vend numeric(18,2), @Comision_Envio_Prod numeric(18,2), @Envio bit, @Id_Factura int, @TotalEnvio int, @SubTotal int
+	
+		select  @Monto = Monto, @Envio = Envio, @Comision_Prod_Vend = Comision_Prod_Vend, @Comision_Envio_Prod = Comision_Envio_Prod
+		from C_HASHTAG.Publicacion p
+		join C_HASHTAG.Visibilidad v
+		on (v.Id_Visibilidad = p.Id_Visibilidad)
+		where Id_Publicacion = @Id_Publicacion
+
+		set @SubTotal = (@Stock * @Comision_Prod_Vend * @Monto)
+	
+		set @TotalEnvio = 0
+		if (@Envio > 0)
 		begin
-			update C_HASHTAG.Publicacion
-			set Id_Estado = 4 -- 'Finalizada'
-		end
+			set @TotalEnvio = (@Comision_Envio_Prod * @Monto)
+		end	
+
+		set @Total = @SubTotal + @TotalEnvio
+
+		insert into C_HASHTAG.Factura
+		(Id_Publicacion, Fecha, Total) Values
+		(@Id_Publicacion, C_HASHTAG.obtenerFecha(), @Total)
+
+		set @Id_Factura = (select top 1 Id_Factura from C_HASHTAG.Factura
+							order by Id_Factura desc)
+
+		insert into C_HASHTAG.Item 
+		(Id_Factura, Descripcion, Monto, Cantidad)
+		values
+		(@Id_Factura,'Comision por productos vendidos', @SubTotal, @Stock)
+
+		if (@Envio = 1)
+		begin
+				insert into C_HASHTAG.Item 
+				(Id_Factura, Descripcion, Monto, Cantidad)
+				values
+				(@Id_Factura,'Comision por envio', @TotalEnvio, 1)
+		end	
+
+		--registro la compra
+
+		insert into C_HASHTAG.Compra
+		(Id_User, Id_Publicacion, Monto, Cantidad, Fecha, Id_Calif)
+		values
+		(@Id_User, @Id_Publicacion, (select Monto from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion), @Stock, C_HASHTAG.obtenerFecha(), NULL)
+	
+		-- me fijo si la publicacion se quedo sin stock, de ser cierto la finalizo
+		if ((select stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = 0)
+			begin
+				update C_HASHTAG.Publicacion
+				set Id_Estado = 4 -- 'Finalizada'
+				where Id_Publicacion = @Id_Publicacion
+			end
+	commit transaction
+	--end
+GO
+
+/****************************************************************
+ *							RealizarOferta
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.realizarOferta @Id_Publicacion int, @MontoOfertado int, @Id_User int
+AS
+	if (@MontoOfertado > (select Monto from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion))
+	begin
+	begin transaction
+		--modifico el monto de la publicacion
+		Update C_HASHTAG.Publicacion
+		set Monto = @MontoOfertado
+		where Id_Publicacion = @Id_Publicacion
+
+		--registro la oferta
+
+		insert into C_HASHTAG.Oferta(Id_Publicacion, Id_User, Monto_Ofertado, Fecha)
+		values
+		(@Id_Publicacion, @Id_User, @MontoOfertado, C_HASHTAG.obtenerFecha())
+	
+	commit transaction
+	end
+	else
+		begin
+		raiserror ('El monto ofertado debe superar el monto actual', 16, 1)
+	end
 GO
 
 /***********************************************************************
@@ -1094,16 +1176,16 @@ comprado.*/
 
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
-	VALUES ('Platino', 0.10, 10.00, 180.00, 1)
+	VALUES ('Platino', 0.10, 0.05, 180.00, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
-	VALUES ('Oro', 0.15, 20.00, 140.00, 1)
+	VALUES ('Oro', 0.15, 0.20, 140.00, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
-	VALUES ('Plata', 0.20, 30.00, 100.00, 1)
+	VALUES ('Plata', 0.20, 0.20, 100.00, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
-	VALUES ('Bronce', 0.30, 40.00, 60.00, 1)
+	VALUES ('Bronce', 0.30, 0.20, 60.00, 1)
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
 	VALUES ('Gratis', 0.00, 0.00, 0, 1) 
@@ -1225,7 +1307,6 @@ SET IDENTITY_INSERT C_HASHTAG.Publicacion OFF
 CREATE NONCLUSTERED INDEX indicePublicacion
 ON C_HASHTAG.Publicacion (Descripcion)
 
-
 /****************************************************************/
 --							Calificacion
 /****************************************************************/
@@ -1234,7 +1315,7 @@ CREATE TABLE C_HASHTAG.Calificacion
 	Id_Calificacion numeric(18,0) identity(1,1) PRIMARY KEY,
 	Cant_Estrellas numeric(18,0) NOT NULL, 
 	Descripcion nvarchar(255)
-	)
+)
 
 SET IDENTITY_INSERT C_HASHTAG.Calificacion ON
 INSERT INTO C_HASHTAG.Calificacion
@@ -1299,25 +1380,27 @@ CREATE TABLE C_HASHTAG.Factura
 (
 	Id_Factura numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 	Id_Publicacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Publicacion(Id_Publicacion),
-	Numero numeric(18,0),
 	Fecha datetime NOT NULL,
 	Total numeric(18,0) NOT NULL,
 )
+
+SET IDENTITY_INSERT C_HASHTAG.Factura ON
 INSERT INTO C_HASHTAG.Factura
 (
+	Id_Factura,
 	Id_Publicacion,
-	Numero,
 	Fecha,
 	Total
 )
 	SELECT DISTINCT
-		Publicacion_Cod,
 		Factura_Nro,
+		Publicacion_Cod,
 		Factura_Fecha,
 		Factura_Total
 		FROM gd_esquema.Maestra
 		WHERE Factura_Fecha is NOT NULL
 
+SET IDENTITY_INSERT C_HASHTAG.Factura OFF
 
 CREATE NONCLUSTERED INDEX indiceFactura
 ON C_HASHTAG.Factura (Fecha,Total)
@@ -1345,7 +1428,7 @@ INSERT INTO C_HASHTAG.Item
 	SELECT
 		(SELECT Id_Factura
 			FROM C_HASHTAG.Factura
-			WHERE Factura_Nro = Numero) as 'fact',
+			WHERE Factura_Nro = Id_Factura) as 'fact',
 		'Sin descripcion', -- falta descripcion
 		Item_Factura_Monto,
 		Item_Factura_Cantidad

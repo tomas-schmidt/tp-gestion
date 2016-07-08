@@ -33,6 +33,8 @@ DROP PROCEDURE C_HASHTAG.obtenerEstadosElegibles
 DROP PROCEDURE C_HASHTAG.agregarRubroAPublicacion
 DROP PROCEDURE C_HASHTAG.obtenerPublicaciones
 DROP PROCEDURE C_HASHTAG.obtenerPublicacion
+DROP PROCEDURE C_HASHTAG.realizarCompra
+DROP PROCEDURE C_HASHTAG.realizarOferta
 
 
 --Drops tablas
@@ -59,3 +61,17 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 
 --Drop esquema
 DROP SCHEMA C_HASHTAG
+
+select * from C_HASHTAG.Publicacion
+where Id_Tipo_Public = 2
+
+select * from C_HASHTAG.Rubro_Publicacion
+where Id_Publicacion = 66139
+
+Descripcion Publicación 5378812351
+
+select * from C_HASHTAG.Oferta
+order by Id_Oferta desc
+select * from C_HASHTAG.Rubro
+where Id_Rubro = 23
+

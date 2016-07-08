@@ -11,20 +11,33 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ComprarOfertar
 {
-    public partial class MostrarCompra : FormMaestro
+    public partial class MostrarSubasta : FormMaestro
     {
         private int idPublicacion;
         private int idUserActual;
 
-        public MostrarCompra(int idPublicacion, int idUserActual)
+        public MostrarSubasta(int idPublicacion, int idUserActual)
         {
             this.idPublicacion = idPublicacion;
             this.idUserActual = idUserActual;
             InitializeComponent();
         }
 
-        private void MostrarCompra_Load(object sender, EventArgs e)
+        private void groupBox1_Enter(object sender, EventArgs e)
         {
+
+        }
+
+        private void MostrarSubasta_Load(object sender, EventArgs e)
+        {
+            validador.textBoxsNoVacios(new List<TextBox>(new[] {
+                txt_nuevoMonto
+            }));
+
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_nuevoMonto
+            }));
+            
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerPublicacion = bd.obtenerStoredProcedure("obtenerPublicacion");
             spObtenerPublicacion.Parameters.Add("@Id_Publicacion", SqlDbType.Int).Value = idPublicacion;
@@ -36,33 +49,30 @@ namespace WindowsFormsApplication1.ComprarOfertar
             {
                 txt_monto.Text = item["Monto"].ToString();
                 txt_descripcion.Text = item["Descripcion"].ToString();
-                txt_stock.Text = item["Stock"].ToString();
                 txt_fechaFinal.Text = item["Fecha_Final"].ToString();
                 checkBox1.Checked = ((bool)item["Envio"]);
                 checkBox1.Enabled = false;
-                for (int i = 1; i <= (Convert.ToInt32(item["Stock"].ToString())); i++)
-                {
-                    cb_Stock.Items.Add(i);
-                }
             }
-            cb_Stock.SelectedItem = cb_Stock.Items[0];
 
+        }
 
+        private void btn_comprar_Click(object sender, EventArgs e)
+        {
+            this.submitir();
         }
 
         protected override void interactuar()
         {
             try
             {
-                int si = cb_Stock.SelectedIndex;
                 BaseDeDatos bd = new BaseDeDatos();
-                var spRealizarCompra = bd.obtenerStoredProcedure("realizarCompra");
-                spRealizarCompra.Parameters.Add("@Id_Publicacion", SqlDbType.Int).Value = idPublicacion;
-                spRealizarCompra.Parameters.Add("@Stock", SqlDbType.Int).Value = Convert.ToInt32(cb_Stock.Items[si]);
-                spRealizarCompra.Parameters.Add("@Id_User", SqlDbType.Int).Value = idUserActual;
-                spRealizarCompra.ExecuteNonQuery();
-                spRealizarCompra.Connection.Close();
-                MessageBox.Show("Compra realizada exitosamente");
+                var spRealizarOferta = bd.obtenerStoredProcedure("realizarOferta");
+                spRealizarOferta.Parameters.Add("@Id_Publicacion", SqlDbType.Int).Value = idPublicacion;
+                spRealizarOferta.Parameters.Add("@MontoOfertado", SqlDbType.Int).Value = Convert.ToInt32(txt_nuevoMonto.Text);
+                spRealizarOferta.Parameters.Add("@Id_User", SqlDbType.Int).Value = idUserActual;
+                spRealizarOferta.ExecuteNonQuery();
+                spRealizarOferta.Connection.Close();
+                MessageBox.Show("Oferta realizada exitosamente");
             }
             catch (SqlException excepcion)
             {
@@ -70,9 +80,5 @@ namespace WindowsFormsApplication1.ComprarOfertar
             }
         }
 
-        private void btn_comprar_Click(object sender, EventArgs e)
-        {
-            this.submitir();
-        }
     }
 }
