@@ -19,7 +19,41 @@ CREATE PROCEDURE C_HASHTAG.SetFecha
 AS
 	TRUNCATE TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 	INSERT INTO C_HASHTAG.FECHA_DEL_SISTEMA ([Fecha]) VALUES (@Fecha)
+
+	--Finalizo compras inmediatas vencidas
+	update C_HASHTAG.Publicacion
+	set Id_Estado = 4
+	where Fecha_Final < @Fecha and Id_Tipo_Public = 1 and Id_Estado = 2
+
+	--Finalizo subastas vencidas y realizo la facturacion y registro de compra
+	declare @Id_Publicacion int, @Id_User int
+	declare subsVencidas cursor for
+		select p.Id_Publicacion, o.Id_User
+		from C_HASHTAG.Publicacion p
+		join C_HASHTAG.Oferta  o
+		on (p.Id_Publicacion = o.Id_Publicacion)
+		where Monto = Monto_Ofertado and Fecha_Final < @Fecha and Id_Tipo_Public = 2 and Id_Estado = 2
+
+	open subsVencidas
+	fetch next from subsVencidas
+		into @Id_Publicacion, @Id_User
+	while @@FETCH_STATUS = 0
+		begin
+			--finalizo la subasta
+			update C_HASHTAG.Publicacion
+				set Id_Estado = 4 -- 'Finalizada'
+				where Id_Publicacion = @Id_Publicacion
+
+			-- registro la compra y realizo la facturacion
+			EXEC C_HASHTAG.FacturarYResgistrarCompra @Id_Publicacion, 1, @Id_User
+
+		fetch next from subsVencidas
+			into @Id_Publicacion, @Id_User
+		end
+	close subsVencidas
+	deallocate subsVencidas
 GO
+
 
 CREATE FUNCTION C_HASHTAG.obtenerFecha () RETURNS DateTime
 AS
@@ -686,73 +720,90 @@ AS
 GO
 
 /****************************************************************
+ *							FacturarYResgistrarCompra
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.FacturarYResgistrarCompra @Id_Publicacion int, @Stock int, @Id_User int
+ as
+	--realizo la facturacion de la nueva compra
+	declare @Total numeric(18,2), @Monto numeric(18,2), @Comision_Prod_Vend numeric(18,2), @Comision_Envio_Prod numeric(18,2), @Envio bit, @Id_Factura int, @TotalEnvio int, @SubTotal int
+	
+	select  @Monto = Monto, @Envio = Envio, @Comision_Prod_Vend = Comision_Prod_Vend, @Comision_Envio_Prod = Comision_Envio_Prod
+	from C_HASHTAG.Publicacion p
+	join C_HASHTAG.Visibilidad v
+	on (v.Id_Visibilidad = p.Id_Visibilidad)
+	where Id_Publicacion = @Id_Publicacion
+		set @SubTotal = (@Stock * @Comision_Prod_Vend * @Monto)
+
+	set @TotalEnvio = 0
+	if (@Envio = 1)
+	begin
+		set @TotalEnvio = (@Comision_Envio_Prod * @Monto)
+	end	
+
+	set @Total = @SubTotal + @TotalEnvio
+
+	insert into C_HASHTAG.Factura
+	(Id_Publicacion, Fecha, Total) Values
+	(@Id_Publicacion, C_HASHTAG.obtenerFecha(), @Total)
+
+	set @Id_Factura = (select top 1 Id_Factura from C_HASHTAG.Factura
+						order by Id_Factura desc)
+
+	insert into C_HASHTAG.Item 
+	(Id_Factura, Descripcion, Monto, Cantidad)
+	values
+	(@Id_Factura,'Comision por productos vendidos', @SubTotal, @Stock)
+
+	if (@Envio = 1)
+	begin
+		insert into C_HASHTAG.Item 
+		(Id_Factura, Descripcion, Monto, Cantidad)
+		values
+		(@Id_Factura,'Comision por envio', @TotalEnvio, 1)
+	end	
+
+	--registro la compra
+
+	insert into C_HASHTAG.Compra
+	(Id_User, Id_Publicacion, Monto, Cantidad, Fecha, Id_Calif)
+	values
+	(@Id_User, @Id_Publicacion, (select Monto from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion), @Stock, C_HASHTAG.obtenerFecha(), NULL)
+GO
+/****************************************************************
  *							RealizarCompra
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.realizarCompra @Id_Publicacion int, @Stock int, @Id_User int
 AS
-	--if (@Stock > 0 and @Stock > (select Stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion))
-	--begin
-	begin transaction
-		--modifico stock de la publicacion
-		Update C_HASHTAG.Publicacion
-		set Stock = Stock - @Stock
-		where Id_Publicacion = @Id_Publicacion
+	if ((select Id_Estado from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) != 2)
+	begin
+		raiserror ('Publicacion no activa',16,1)
+		return
+	end
 
-		--realizo la facturacion de la nueva compra
-		declare @Total numeric(18,2), @Monto numeric(18,2), @Comision_Prod_Vend numeric(18,2), @Comision_Envio_Prod numeric(18,2), @Envio bit, @Id_Factura int, @TotalEnvio int, @SubTotal int
-	
-		select  @Monto = Monto, @Envio = Envio, @Comision_Prod_Vend = Comision_Prod_Vend, @Comision_Envio_Prod = Comision_Envio_Prod
-		from C_HASHTAG.Publicacion p
-		join C_HASHTAG.Visibilidad v
-		on (v.Id_Visibilidad = p.Id_Visibilidad)
-		where Id_Publicacion = @Id_Publicacion
+	if ((@Stock <= (select Stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion)))
+	begin
+		begin transaction
+			--modifico stock de la publicacion
+			Update C_HASHTAG.Publicacion
+			set Stock = Stock - @Stock
+			where Id_Publicacion = @Id_Publicacion
 
-		set @SubTotal = (@Stock * @Comision_Prod_Vend * @Monto)
-	
-		set @TotalEnvio = 0
-		if (@Envio > 0)
-		begin
-			set @TotalEnvio = (@Comision_Envio_Prod * @Monto)
-		end	
+			-- registro la compra y realizo la facturacion
+			EXEC C_HASHTAG.FacturarYResgistrarCompra @Id_Publicacion, @Stock, @Id_User
 
-		set @Total = @SubTotal + @TotalEnvio
-
-		insert into C_HASHTAG.Factura
-		(Id_Publicacion, Fecha, Total) Values
-		(@Id_Publicacion, C_HASHTAG.obtenerFecha(), @Total)
-
-		set @Id_Factura = (select top 1 Id_Factura from C_HASHTAG.Factura
-							order by Id_Factura desc)
-
-		insert into C_HASHTAG.Item 
-		(Id_Factura, Descripcion, Monto, Cantidad)
-		values
-		(@Id_Factura,'Comision por productos vendidos', @SubTotal, @Stock)
-
-		if (@Envio = 1)
-		begin
-				insert into C_HASHTAG.Item 
-				(Id_Factura, Descripcion, Monto, Cantidad)
-				values
-				(@Id_Factura,'Comision por envio', @TotalEnvio, 1)
-		end	
-
-		--registro la compra
-
-		insert into C_HASHTAG.Compra
-		(Id_User, Id_Publicacion, Monto, Cantidad, Fecha, Id_Calif)
-		values
-		(@Id_User, @Id_Publicacion, (select Monto from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion), @Stock, C_HASHTAG.obtenerFecha(), NULL)
-	
-		-- me fijo si la publicacion se quedo sin stock, de ser cierto la finalizo
-		if ((select stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = 0)
+			-- me fijo si la publicacion se quedo sin stock, de ser cierto la finalizo
+			if ((select stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = 0)
 			begin
 				update C_HASHTAG.Publicacion
 				set Id_Estado = 4 -- 'Finalizada'
 				where Id_Publicacion = @Id_Publicacion
 			end
-	commit transaction
-	--end
+		commit transaction
+	end
+	else
+	begin
+		raiserror ('No hay suficiente stock',16,1)
+	end
 GO
 
 /****************************************************************
@@ -798,10 +849,14 @@ CREATE TABLE C_HASHTAG.[FECHA_DEL_SISTEMA](
 )
 
 -- Cargo la fecha en la que inicia el sistema
-DECLARE @fecha datetime
+/*DECLARE @fecha datetime
 SET @fecha = CAST('20150101' AS datetime)
 EXEC C_HASHTAG.SetFecha @fecha
-GO
+GO*/
+insert into C_HASHTAG.FECHA_DEL_SISTEMA
+(Fecha) values
+(CAST('20150101' AS datetime))
+
 
 
 

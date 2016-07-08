@@ -72,12 +72,13 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 spRealizarOferta.Parameters.Add("@Id_User", SqlDbType.Int).Value = idUserActual;
                 spRealizarOferta.ExecuteNonQuery();
                 spRealizarOferta.Connection.Close();
-                MessageBox.Show("Oferta realizada exitosamente");
             }
             catch (SqlException excepcion)
             {
                 MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
             }
+
+            MessageBox.Show("Oferta realizada exitosamente");
         }
 
     }
