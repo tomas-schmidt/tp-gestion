@@ -143,11 +143,17 @@
     <Compile Include="ABM Visibilidad\ModificarVisibilidad.Designer.cs">
       <DependentUpon>ModificarVisibilidad.cs</DependentUpon>
     </Compile>
-    <Compile Include="Calificar\Form1.cs">
+    <Compile Include="Calificar\Calificar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Calificar\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Calificar\Calificar.Designer.cs">
+      <DependentUpon>Calificar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Calificar\ListarComprasSinCalificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Calificar\ListarComprasSinCalificar.Designer.cs">
+      <DependentUpon>ListarComprasSinCalificar.cs</DependentUpon>
     </Compile>
     <Compile Include="ComprarOfertar\ListarPublicaciones.cs">
       <SubType>Form</SubType>
@@ -281,8 +287,11 @@
     <EmbeddedResource Include="ABM Visibilidad\ModificarVisibilidad.resx">
       <DependentUpon>ModificarVisibilidad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Calificar\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Calificar\Calificar.resx">
+      <DependentUpon>Calificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Calificar\ListarComprasSinCalificar.resx">
+      <DependentUpon>ListarComprasSinCalificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ComprarOfertar\ListarPublicaciones.resx">
       <DependentUpon>ListarPublicaciones.cs</DependentUpon>

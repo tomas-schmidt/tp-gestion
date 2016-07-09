@@ -833,6 +833,35 @@ AS
 	end
 GO
 
+/****************************************************************
+ *							obtenerComprasSinCalificar
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.obtenerComprasSinCalificar @Id_User int
+ as
+	select c.*, Descripcion from C_HASHTAG.Compra c
+		join C_HASHTAG.Publicacion p
+		on(c.Id_Publicacion = p.Id_Publicacion)
+		where Id_Calif is null and c.Id_User = @Id_User
+go
+
+/****************************************************************
+ *							Calificar
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.Calificar @Id_Compra int, @Cant_Estrellas int, @Descripcion nvarchar (255)
+ as
+	insert into C_HASHTAG.Calificacion (Cant_Estrellas, Descripcion) values
+	(@Cant_Estrellas, @Descripcion)
+
+	declare @Id_Calificacion int
+	set @Id_Calificacion = (select top 1 Id_Calificacion from C_HASHTAG.Calificacion
+							order by Id_Calificacion desc)
+
+	update C_HASHTAG.Compra
+	set Id_Calif = @Id_Calificacion
+	where Id_Compra = @Id_Compra
+
+go
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS

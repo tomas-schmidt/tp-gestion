@@ -33,7 +33,6 @@ C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsAppl
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rol.ListarRoles.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rol.ModificarRol.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rubro.Form1.resources
-C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Calificar.Form1.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ElegirFuncionalidad.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Facturas.Form1.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.RolesUsuario.resources
@@ -60,3 +59,5 @@ C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsAppl
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ComprarOfertar.ListarPublicaciones.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ComprarOfertar.MostrarCompra.resources
 C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ComprarOfertar.MostrarSubasta.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Calificar.ListarComprasSinCalificar.resources
+C:\Users\Administrador\Documents\GitHub\tp-gestion\MercadoEnvio\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Calificar.Calificar.resources

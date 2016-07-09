@@ -36,6 +36,8 @@ DROP PROCEDURE C_HASHTAG.obtenerPublicacion
 DROP PROCEDURE C_HASHTAG.realizarCompra
 DROP PROCEDURE C_HASHTAG.realizarOferta
 DROP PROCEDURE C_HASHTAG.FacturarYResgistrarCompra
+DROP PROCEDURE C_HASHTAG.obtenerComprasSinCalificar
+DROP PROCEDURE C_HASHTAG.Calificar
 
 
 --Drops tablas
