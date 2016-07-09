@@ -54,5 +54,11 @@ namespace WindowsFormsApplication1.Calificar
                 c.Show();
             }
         }
+
+        private void btn_historial_Click(object sender, EventArgs e)
+        {
+            HistorialCalificaciones hc = new HistorialCalificaciones(idUserActual);
+            hc.Show();
+        }
     }
 }

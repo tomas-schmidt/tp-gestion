@@ -774,9 +774,15 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.realizarCompra @Id_Publicacion int, @Stock int, @Id_User int
 AS
-	if ((select Id_Estado from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) != 2)
+	if ((select Id_Estado from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) != 2 )
 	begin
 		raiserror ('Publicacion no activa',16,1)
+		return
+	end
+
+	if ((select count(*) from C_HASHTAG.Compra where Id_User = @Id_User and Id_Calif is null) >= 3)
+	begin
+		raiserror ('Tenes muchas calificaciones pendientes',16,1)
 		return
 	end
 
@@ -811,6 +817,13 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.realizarOferta @Id_Publicacion int, @MontoOfertado int, @Id_User int
 AS
+
+	if ((select count(*) from C_HASHTAG.Compra where Id_User = @Id_User and Id_Calif is null) >= 3)
+	begin
+		raiserror ('Tenes muchas calificaciones pendientes',16,1)
+		return
+	end
+
 	if (@MontoOfertado > (select Monto from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion))
 	begin
 	begin transaction
@@ -860,6 +873,32 @@ go
 	set Id_Calif = @Id_Calificacion
 	where Id_Compra = @Id_Compra
 
+go
+
+/****************************************************************
+ *							ObtenerUltimasCalificaciones
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.obtenerUltimasCalificaciones @Id_User int
+ as
+	select top 5 Cant_Estrellas, ca.Descripcion as 'Desc_calif', p.Descripcion as 'Desc_public' from C_HASHTAG.Calificacion ca
+	join C_HASHTAG.Compra co
+	on(ca.Id_Calificacion = co.Id_Calif)
+	join C_HASHTAG.Publicacion p
+	on(co.Id_Publicacion = p.Id_Publicacion)
+	where co.Id_User = @Id_User
+	order by Id_Calificacion desc
+go
+
+/****************************************************************
+ *							ObtenerCalificaciones
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.obtenerCalificaciones @Id_User int
+ as
+	select Cant_Estrellas, Count (Id_Calif) as 'cant_calif' from C_HASHTAG.Calificacion ca
+	join C_HASHTAG.Compra co 
+	on (co.Id_Calif = ca.Id_Calificacion)
+	where Id_User = @Id_User
+	group by Cant_Estrellas
 go
 
 /***********************************************************************
