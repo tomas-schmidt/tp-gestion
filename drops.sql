@@ -39,7 +39,9 @@ DROP PROCEDURE C_HASHTAG.FacturarYResgistrarCompra
 DROP PROCEDURE C_HASHTAG.obtenerComprasSinCalificar
 DROP PROCEDURE C_HASHTAG.Calificar
 DROP PROCEDURE C_HASHTAG.obtenerUltimasCalificaciones
-
+DROP PROCEDURE C_HASHTAG.obtenerCalificaciones
+DROP PROCEDURE C_HASHTAG.obtenerCompras
+DROP PROCEDURE C_HASHTAG.obtenerOfertas
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario

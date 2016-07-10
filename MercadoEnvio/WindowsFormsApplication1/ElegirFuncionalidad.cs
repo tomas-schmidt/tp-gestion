@@ -13,7 +13,9 @@ using WindowsFormsApplication1.ABM_Visibilidad;
 using WindowsFormsApplication1.Calificar;
 using WindowsFormsApplication1.ComprarOfertar;
 using WindowsFormsApplication1.ConexionBD;
+using WindowsFormsApplication1.Facturas;
 using WindowsFormsApplication1.Generar_Publicación;
+using WindowsFormsApplication1.Historial_Cliente;
 
 namespace WindowsFormsApplication1
 {
@@ -90,6 +92,17 @@ namespace WindowsFormsApplication1
                     lc.Show();
                 }
 
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "ConsultarFacturas")
+                {
+                    ListarFacturas lf = new ListarFacturas(idUser);
+                    lf.Show();
+                }
+
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "ObtenerHistorial")
+                {
+                    HistorialCliente hc = new HistorialCliente(idUser);
+                    hc.Show();
+                }
             }
               
         

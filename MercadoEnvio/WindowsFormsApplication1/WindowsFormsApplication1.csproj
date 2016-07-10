@@ -186,11 +186,11 @@
     <Compile Include="ElegirFuncionalidad.Designer.cs">
       <DependentUpon>ElegirFuncionalidad.cs</DependentUpon>
     </Compile>
-    <Compile Include="Facturas\Form1.cs">
+    <Compile Include="Facturas\ListarFacturas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Facturas\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Facturas\ListarFacturas.Designer.cs">
+      <DependentUpon>ListarFacturas.cs</DependentUpon>
     </Compile>
     <Compile Include="FormMaestro.cs">
       <SubType>Form</SubType>
@@ -210,6 +210,18 @@
     <Compile Include="Generar Publicación\GenerarSubasta.Designer.cs">
       <DependentUpon>GenerarSubasta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Historial Cliente\HistorialCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Historial Cliente\HistorialCliente.Designer.cs">
+      <DependentUpon>HistorialCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Historial Cliente\OfertasRealizadas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Historial Cliente\OfertasRealizadas.Designer.cs">
+      <DependentUpon>OfertasRealizadas.cs</DependentUpon>
+    </Compile>
     <Compile Include="RolesUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -222,11 +234,11 @@
     <Compile Include="Generar Publicación\GenerarPublicacion.Designer.cs">
       <DependentUpon>GenerarPublicacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Historial Cliente\Form1.cs">
+    <Compile Include="Historial Cliente\ComprasConcretadas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Historial Cliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Historial Cliente\ComprasConcretadas.Designer.cs">
+      <DependentUpon>ComprasConcretadas.cs</DependentUpon>
     </Compile>
     <Compile Include="Listado Estadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -314,8 +326,8 @@
     <EmbeddedResource Include="ElegirFuncionalidad.resx">
       <DependentUpon>ElegirFuncionalidad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Facturas\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Facturas\ListarFacturas.resx">
+      <DependentUpon>ListarFacturas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMaestro.resx">
       <DependentUpon>FormMaestro.cs</DependentUpon>
@@ -329,11 +341,17 @@
     <EmbeddedResource Include="Generar Publicación\GenerarSubasta.resx">
       <DependentUpon>GenerarSubasta.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Historial Cliente\HistorialCliente.resx">
+      <DependentUpon>HistorialCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Historial Cliente\OfertasRealizadas.resx">
+      <DependentUpon>OfertasRealizadas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RolesUsuario.resx">
       <DependentUpon>RolesUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Historial Cliente\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Historial Cliente\ComprasConcretadas.resx">
+      <DependentUpon>ComprasConcretadas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

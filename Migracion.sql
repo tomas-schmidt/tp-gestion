@@ -901,6 +901,33 @@ go
 	group by Cant_Estrellas
 go
 
+/****************************************************************
+ *							ObtenerCompras
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.obtenerCompras @Id_User int
+ as
+	select p.Descripcion, c.Monto, c.Cantidad, c.Fecha
+	from C_HASHTAG.Compra c
+	join C_HASHTAG.Publicacion p
+	on (c.Id_Publicacion = p.Id_Publicacion)
+	where c.Id_User = @Id_User
+	order by Id_Compra desc
+go
+
+/****************************************************************
+ *							ObtenerOfertas
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.obtenerOfertas @Id_User int
+ as
+	select p.Descripcion, o.Monto_Ofertado, o.Fecha
+	from C_HASHTAG.Oferta o
+	join C_HASHTAG.Publicacion p
+	on (o.Id_Publicacion = p.Id_Publicacion)
+	where o.Id_User = @Id_User
+	order by Id_Oferta desc
+go
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
@@ -983,6 +1010,7 @@ INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('Comprar/Ofer
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ObtenerHistorial')
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('Calificar')
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ObtenerListadoEstadistico')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ConsultarFacturas')
 
 /****************************************************************/
 --							Funcionalidad_Rol
@@ -1007,6 +1035,7 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,7)
 
 --Inserto funcionalidades de la empresa
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,4)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,9)
 
 --Inserto todas las funcionalidades al rol especial
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,1)
@@ -1017,6 +1046,7 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,5)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,6)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,7)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,8)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,9)
 
 /****************************************************************/
 --					TIPO DOCUMENTO	
