@@ -35,7 +35,8 @@ namespace WindowsFormsApplication1.Generar_Publicación
             }));
 
             validador.textBoxsNumericos(new List<TextBox>(new[] {
-                txt_Stock
+                txt_Stock,
+                txt_monto
             }));
 
             BaseDeDatos bd = new BaseDeDatos();
@@ -67,6 +68,8 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 dataGridView1.Rows[n].Cells[0].Value = "false";
                 dataGridView1.Rows[n].Cells[1].Value = item["Desc_Corta"].ToString();
             }
+            comboBox1.SelectedItem = comboBox1.Items[0];
+            comboBox2.SelectedItem = comboBox2.Items[1];
 
         }
 

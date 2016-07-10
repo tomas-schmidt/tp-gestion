@@ -8,11 +8,11 @@ using System.Windows.Forms;
 namespace WindowsFormsApplication1
 {
     public class Validador
-
     {
         List<TextBox> textBoxNoVacios = new List<TextBox>();
         List<TextBox> textBoxNumericos = new List<TextBox>();
-        
+        List<TextBox> textBoxDecimales = new List<TextBox>();
+
         public void textBoxsNoVacios(List<TextBox> listaTxtBox)
         {
             textBoxNoVacios = listaTxtBox;
@@ -23,18 +23,24 @@ namespace WindowsFormsApplication1
             textBoxNumericos = listaTxtBox;
         }
 
+        public void textBoxsDecimales(List<TextBox> listaTxtBox)
+        {
+            textBoxDecimales = listaTxtBox;
+        }
+
 
         public void validar()
         {
             string mensajeError = validarTextBoxNoVacios();
             mensajeError += validarTextBoxNumericos();
+            mensajeError += validarTextBoxDecimales();
 
             if (mensajeError != "")
             {
                 throw new ValidacionException(mensajeError);
             }
         }
-        
+
 
         private string validarTextBoxNoVacios()
         {
@@ -55,14 +61,31 @@ namespace WindowsFormsApplication1
             string mensajeError = "";
             foreach (TextBox txtbox in textBoxNumericos)
             {
-                if (! regexNumerica.IsMatch(txtbox.Text))
+                if (!regexNumerica.IsMatch(txtbox.Text))
                 {
-                    mensajeError += "El campo " + txtbox.Name + " debe ser numerico\n";
+                    mensajeError += "El campo " + txtbox.Name + " debe ser numerico mayor a 0\n";
                 }
             }
 
             return mensajeError;
         }
-    
+
+        private string validarTextBoxDecimales()
+        {
+            string mensajeError = "";
+            foreach (TextBox txtbox in textBoxDecimales)
+            {
+                try
+                {
+                    Convert.ToDouble(txtbox.Text);
+                }
+                catch //(System.FormatException)
+                {
+                    mensajeError += "El campo " + txtbox.Name + " debe ser numerico\n";
+                }
+            }
+            return mensajeError;
+
+        }
     }
 }

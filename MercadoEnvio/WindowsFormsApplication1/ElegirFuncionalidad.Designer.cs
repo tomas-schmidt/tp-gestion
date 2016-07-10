@@ -43,10 +43,10 @@
             this.dataGridView_funcionalidades.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Funcionalidad,
             this.Column1});
-            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(18, 45);
+            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(26, 43);
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
             this.dataGridView_funcionalidades.ReadOnly = true;
-            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(260, 206);
+            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(261, 232);
             this.dataGridView_funcionalidades.TabIndex = 0;
             this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_funcionalidades_CellContentClick);
             // 
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(297, 275);
+            this.ClientSize = new System.Drawing.Size(314, 289);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_funcionalidades);
             this.Name = "ElegirFuncionalidad";

@@ -23,7 +23,20 @@ namespace WindowsFormsApplication1.Facturas
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_mayor,
+                txt_menor
+            }));
 
+
+            int date = 20150101;
+
+            int d = date % 100;
+            int m = (date / 100) % 100;
+            int y = date / 10000;
+
+            var result = new DateTime(y, m, d);
+            dateTimePicker_mayor.Value = result;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -74,6 +87,11 @@ namespace WindowsFormsApplication1.Facturas
             txt_descripcion.Clear();
             txt_mayor.Clear();
             txt_menor.Clear();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
 
     }

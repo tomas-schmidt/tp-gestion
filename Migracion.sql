@@ -214,6 +214,16 @@ AS
 			AND r.Id_Rol = @Id_Rol
 GO
 
+
+/****************************************************************
+ *							ObtenerRol
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerRol @Id_Rol int
+AS
+	SELECT * FROM C_HASHTAG.Rol
+	where Id_Rol = @Id_Rol
+GO
+
 /****************************************************************
  *					obtenerTiposDocumento
  ****************************************************************/
@@ -538,6 +548,7 @@ CREATE PROCEDURE C_HASHTAG.obtenerVisibilidades
 AS
 	SELECT *
 		FROM Visibilidad
+		where Habilitado = 1
 GO
 
 /****************************************************************
@@ -625,9 +636,9 @@ CREATE PROCEDURE C_HASHTAG.generarCompra
 	@Descripcion nvarchar(255),
 	@Envio bit
 as
-	if (@Monto < 0 or @Descripcion is null or @Visibilidad is null)
+	if (@Monto < 0 or @Stock  <= 0 or @Descripcion is null or @Visibilidad is null)
 	begin
-		RAISERROR('Ingresar bien los parametros', 16, 1)
+		RAISERROR('Debe ingresar bien los parametros', 16, 1)
 		return
 	end
 
@@ -748,7 +759,7 @@ AS
 	SELECT p.*, tp.Descripcion as 'tipo_public' FROM C_HASHTAG.Publicacion p
 	join C_HASHTAG.Tipo_Public tp on(p.Id_Tipo_Public = tp.Id_Tipo_Public)
 	join C_HASHTAG.Rubro_Publicacion rp on(p.Id_Publicacion = rp.Id_Publicacion)
-	where Id_Estado = 2 or Id_Estado = 3 --solo muestro las activas y pausadas
+	where (Id_Estado = 2 or Id_Estado = 3) --solo muestro las activas y pausadas
 	and rp.Id_Rubro = (select top 1 Id_Rubro from C_HASHTAG.Rubro r where r.Desc_Corta = @Rubro)
 	and p.Descripcion like '%'+@Descripcion+'%'
 	and p.Id_User != @Id_User
@@ -973,6 +984,112 @@ go
 go
 
 
+
+/****************************************************************
+ *					cambiarContraseniaPorAdmin
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.cambiarContraseniaPorAdmin @Username nvarchar (255), @Contrasenia1 nvarchar (255), @Contrasenia2 nvarchar (255)
+ as
+	if(@Contrasenia1 != @Contrasenia2)
+	begin
+		raiserror ('Confirme bien la nueva contraseña',16,2)
+		return
+	end
+	else
+	begin
+		update C_HASHTAG.Usuario
+		set Contraseña = @Contrasenia1
+		where Username = @Username
+	end
+go
+
+/****************************************************************
+ *					cambiarContraseniaPorUser
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.cambiarContraseniaPorUser @Id_User nvarchar (255),  @ContraseniaVieja nvarchar (255), @Contrasenia1 nvarchar (255), @Contrasenia2 nvarchar (255)
+ as
+	if(@ContraseniaVieja != (select Contraseña from C_HASHTAG.Usuario where Id_User = @Id_User))
+	begin
+		raiserror ('Contraseña actual incorrecta',16,2)
+		return
+	end
+
+	if(@Contrasenia1 != @Contrasenia2)
+	begin
+		raiserror ('Confirme bien la nueva contraseña',16,2)
+		return
+	end
+	else
+	begin
+		update C_HASHTAG.Usuario
+		set Contraseña = @Contrasenia1
+		where Id_User = @Id_User
+	end
+go
+
+/****************************************************************
+ *					obtenerFechaInicioTrimestre
+ ****************************************************************/
+CREATE FUNCTION C_HASHTAG.obtenerFechaInicioTrimestre (@anio int, @trimestre int)
+	RETURNS datetime
+AS
+BEGIN
+	RETURN CAST(
+		CAST(@anio AS varchar(4))
+		+ RIGHT('0' + CAST((@trimestre - 1) * 3 + 1 AS varchar(2)), 2)
+		+ '01'
+		AS DATETIME)
+END
+GO
+
+
+/****************************************************************
+ *					obtenerFechaFinTrimestre
+ ****************************************************************/
+CREATE FUNCTION C_HASHTAG.obtenerFechaFinTrimestre (@anio int, @trimestre int) RETURNS datetime
+AS
+BEGIN
+	DECLARE @FechaFin datetime
+	IF @trimestre = 4
+	BEGIN
+		SET @FechaFin = CAST(CAST(@anio as varchar(4)) + '1231' AS datetime)
+	END
+	ELSE
+	BEGIN
+		SET @FechaFin = CAST(
+			CAST(@anio AS varchar(4))
+			+ RIGHT('0' + CAST(@trimestre * 3 + 1 AS varchar(2)), 2)
+			+ '01'
+			AS DATETIME) - 1
+	END
+	
+	RETURN @FechaFin
+END
+GO
+
+/****************************************************************
+ *					vendedoresConMayorCantDeProdsNoVendidos
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.vendedoresConMayorCantDeProdsNoVendidos
+	@anio int,
+	@trimestre int
+AS
+	
+	IF C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) > C_HASHTAG.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	SELECT TOP 5 u.Username, p.Descripcion, p.Stock
+	from C_HASHTAG.Usuario u
+	join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
+	where (Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+	   or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+	order by 3 desc
+
+GO
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
@@ -1056,6 +1173,7 @@ INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ObtenerHisto
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('Calificar')
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ObtenerListadoEstadistico')
 INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('ConsultarFacturas')
+INSERT INTO C_HASHTAG.Funcionalidad (Nombre_Funcionalidad) VALUES ('CambiarContraseña')
 
 /****************************************************************/
 --							Funcionalidad_Rol
@@ -1072,15 +1190,19 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,1)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,2)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,3)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,8)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,10)
+
 
 --Inserto funcionalidades del cliente
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,5)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,6)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,7)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,10)
 
 --Inserto funcionalidades de la empresa
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,4)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,9)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (3,10)
 
 --Inserto todas las funcionalidades al rol especial
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,1)
@@ -1092,6 +1214,7 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,6)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,7)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,8)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,9)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (4,10)
 
 /****************************************************************/
 --					TIPO DOCUMENTO	

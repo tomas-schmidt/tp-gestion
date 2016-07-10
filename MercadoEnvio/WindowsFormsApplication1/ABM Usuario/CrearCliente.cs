@@ -63,6 +63,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 comboBox1.Items.Add(tipoDoc);
             }
             ;
+            comboBox1.SelectedItem = comboBox1.Items[0];
      
         }
 

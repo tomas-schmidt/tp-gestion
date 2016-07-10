@@ -50,7 +50,7 @@
             // cb_habilitado
             // 
             this.cb_habilitado.AutoSize = true;
-            this.cb_habilitado.Location = new System.Drawing.Point(37, 47);
+            this.cb_habilitado.Location = new System.Drawing.Point(37, 52);
             this.cb_habilitado.Name = "cb_habilitado";
             this.cb_habilitado.Size = new System.Drawing.Size(73, 17);
             this.cb_habilitado.TabIndex = 1;
@@ -70,7 +70,7 @@
             // 
             // btn_guardar
             // 
-            this.btn_guardar.Location = new System.Drawing.Point(162, 268);
+            this.btn_guardar.Location = new System.Drawing.Point(165, 268);
             this.btn_guardar.Name = "btn_guardar";
             this.btn_guardar.Size = new System.Drawing.Size(75, 23);
             this.btn_guardar.TabIndex = 4;

@@ -57,6 +57,7 @@
             this.txt_apellido = new System.Windows.Forms.TextBox();
             this.txt_nombre = new System.Windows.Forms.TextBox();
             this.txt_username = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label15
@@ -296,11 +297,22 @@
             this.txt_username.Size = new System.Drawing.Size(100, 20);
             this.txt_username.TabIndex = 31;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(174, 335);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(147, 23);
+            this.button1.TabIndex = 62;
+            this.button1.Text = "Cambiar contraseña";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ModificarCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(470, 332);
+            this.ClientSize = new System.Drawing.Size(470, 370);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.txt_nroCalle);
             this.Controls.Add(this.btn_actualizarCliente);
@@ -369,5 +381,6 @@
         private System.Windows.Forms.TextBox txt_apellido;
         private System.Windows.Forms.TextBox txt_nombre;
         private System.Windows.Forms.TextBox txt_username;
+        private System.Windows.Forms.Button button1;
     }
 }

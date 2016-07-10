@@ -32,6 +32,12 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
                 txt_nombre
             }));
 
+            validador.textBoxsDecimales(new List<TextBox>(new[] {
+                txt_comEnvio,
+                txt_comTipo,
+                txt_comProd
+            }));
+
         }
 
         private void label1_Click(object sender, EventArgs e)

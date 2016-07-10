@@ -28,6 +28,10 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 txt_descripcion
             }));
 
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_montoInicial
+            }));
+
             
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerVisibilidades = bd.obtenerStoredProcedure("ObtenerVisibilidades");
@@ -58,6 +62,8 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 dataGridView1.Rows[n].Cells[0].Value = "false";
                 dataGridView1.Rows[n].Cells[1].Value = item["Desc_Corta"].ToString();
             }
+            comboBox2.SelectedItem = comboBox2.Items[1];
+            comboBox1.SelectedItem = comboBox1.Items[0];
 
         }
 

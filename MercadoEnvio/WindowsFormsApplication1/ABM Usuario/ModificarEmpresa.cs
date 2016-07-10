@@ -124,5 +124,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             this.submitir();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CambiarContrasenia cc = new CambiarContrasenia(txt_username.Text);
+            cc.Show();
+        }
     }
 }

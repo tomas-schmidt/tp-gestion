@@ -57,6 +57,7 @@
             this.txt_Ciudad = new System.Windows.Forms.TextBox();
             this.txt_razonSocial = new System.Windows.Forms.TextBox();
             this.txt_username = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txt_nombreContacto
@@ -296,11 +297,22 @@
             this.txt_username.Size = new System.Drawing.Size(100, 20);
             this.txt_username.TabIndex = 63;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(244, 327);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(147, 23);
+            this.button1.TabIndex = 94;
+            this.button1.Text = "Cambiar contraseña";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ModificarEmpresa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 348);
+            this.ClientSize = new System.Drawing.Size(586, 362);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.txt_nombreContacto);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.txt_nroCalle);
@@ -369,5 +381,6 @@
         private System.Windows.Forms.TextBox txt_Ciudad;
         private System.Windows.Forms.TextBox txt_razonSocial;
         private System.Windows.Forms.TextBox txt_username;
+        private System.Windows.Forms.Button button1;
     }
 }

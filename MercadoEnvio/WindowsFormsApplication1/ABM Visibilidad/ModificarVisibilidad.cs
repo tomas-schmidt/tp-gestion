@@ -23,6 +23,12 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
 
         private void ModificarVisibilidad_Load(object sender, EventArgs e)
         {
+            validador.textBoxsDecimales(new List<TextBox>(new[] {
+                txt_comEnvio,
+                txt_comTipo,
+                txt_comProd
+            }));
+
             validador.textBoxsNoVacios(new List<TextBox>(new[] {
                 txt_comEnvio,
                 txt_comTipo,

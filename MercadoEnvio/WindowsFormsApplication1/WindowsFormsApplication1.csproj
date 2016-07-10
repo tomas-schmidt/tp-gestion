@@ -83,6 +83,12 @@
     <Compile Include="ABM Usuario\ABMUsuario.Designer.cs">
       <DependentUpon>ABMUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Usuario\CambiarContrasenia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Usuario\CambiarContrasenia.Designer.cs">
+      <DependentUpon>CambiarContrasenia.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Usuario\CrearCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +166,12 @@
     </Compile>
     <Compile Include="Calificar\ListarComprasSinCalificar.Designer.cs">
       <DependentUpon>ListarComprasSinCalificar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CambiarContraseniaUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CambiarContraseniaUser.Designer.cs">
+      <DependentUpon>CambiarContraseniaUser.cs</DependentUpon>
     </Compile>
     <Compile Include="ComprarOfertar\ListarPublicaciones.cs">
       <SubType>Form</SubType>
@@ -240,11 +252,11 @@
     <Compile Include="Historial Cliente\ComprasConcretadas.Designer.cs">
       <DependentUpon>ComprasConcretadas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Listado Estadistico\Form1.cs">
+    <Compile Include="Listado Estadistico\ListadoEstadistico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Listado Estadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Listado Estadistico\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -274,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Usuario\ABMUsuario.resx">
       <DependentUpon>ABMUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Usuario\CambiarContrasenia.resx">
+      <DependentUpon>CambiarContrasenia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Usuario\CrearCliente.resx">
       <DependentUpon>CrearCliente.cs</DependentUpon>
@@ -314,6 +329,9 @@
     <EmbeddedResource Include="Calificar\ListarComprasSinCalificar.resx">
       <DependentUpon>ListarComprasSinCalificar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="cambiarContraseniaUser.resx">
+      <DependentUpon>CambiarContraseniaUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ComprarOfertar\ListarPublicaciones.resx">
       <DependentUpon>ListarPublicaciones.cs</DependentUpon>
     </EmbeddedResource>
@@ -353,8 +371,8 @@
     <EmbeddedResource Include="Historial Cliente\ComprasConcretadas.resx">
       <DependentUpon>ComprasConcretadas.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Listado Estadistico\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

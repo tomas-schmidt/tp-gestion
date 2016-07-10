@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.dataGridView_funcionalidades = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_guardar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cb_habilitado = new System.Windows.Forms.CheckBox();
             this.txt_nombreRol = new System.Windows.Forms.TextBox();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_funcionalidades)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,32 +48,15 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(3, 73);
+            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(12, 83);
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
-            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(343, 150);
+            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(372, 150);
             this.dataGridView_funcionalidades.TabIndex = 10;
             this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_funcionalidades_CellContentClick);
             // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Seleccionar";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Id_Funcionalidad";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Nombre_Funcionalidad";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
             // btn_guardar
             // 
-            this.btn_guardar.Location = new System.Drawing.Point(111, 248);
+            this.btn_guardar.Location = new System.Drawing.Point(152, 250);
             this.btn_guardar.Name = "btn_guardar";
             this.btn_guardar.Size = new System.Drawing.Size(75, 23);
             this.btn_guardar.TabIndex = 9;
@@ -107,11 +90,29 @@
             this.txt_nombreRol.Size = new System.Drawing.Size(100, 20);
             this.txt_nombreRol.TabIndex = 6;
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Seleccionar";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Id_Funcionalidad";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column3.HeaderText = "Nombre_Funcionalidad";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
             // ModificarRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 306);
+            this.ClientSize = new System.Drawing.Size(396, 290);
             this.Controls.Add(this.dataGridView_funcionalidades);
             this.Controls.Add(this.btn_guardar);
             this.Controls.Add(this.label1);
@@ -129,12 +130,12 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView_funcionalidades;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button btn_guardar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox cb_habilitado;
         private System.Windows.Forms.TextBox txt_nombreRol;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
     }
 }

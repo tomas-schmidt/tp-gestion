@@ -103,6 +103,12 @@ namespace WindowsFormsApplication1
                     HistorialCliente hc = new HistorialCliente(idUser);
                     hc.Show();
                 }
+
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "CambiarContraseña")
+                {
+                    CambiarContraseniaUser cc = new CambiarContraseniaUser(idUser);
+                    cc.Show();
+                }
             }
               
         

@@ -28,6 +28,19 @@ namespace WindowsFormsApplication1.ABM_Rol
             }));
 
             this.cargarTabla();
+
+            BaseDeDatos bd = new BaseDeDatos();
+            var spObtenerRol = bd.obtenerStoredProcedure("obtenerRol");
+            spObtenerRol.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = idamodificar;
+            SqlDataAdapter sda = new SqlDataAdapter();
+            sda.SelectCommand = spObtenerRol;
+            DataTable dbdataset = new DataTable();
+            sda.Fill(dbdataset);
+            foreach (DataRow item in dbdataset.Rows)
+            {
+                txt_nombreRol.Text = item["Nombre_Rol"].ToString();
+                cb_habilitado.Checked = (bool)item["Habilitado"];
+            }
         }
 
         protected override void interactuar()
@@ -71,7 +84,7 @@ namespace WindowsFormsApplication1.ABM_Rol
         {
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerFuncionalidades = bd.obtenerStoredProcedure("obtenerFuncionalidades");
-
+      
             SqlDataAdapter sda = new SqlDataAdapter();
             sda.SelectCommand = spObtenerFuncionalidades;
             DataTable dbdataset = new DataTable();
@@ -84,6 +97,23 @@ namespace WindowsFormsApplication1.ABM_Rol
                 dataGridView_funcionalidades.Rows[n].Cells[2].Value = item["Nombre_Funcionalidad"].ToString();
             }
 
+            var spObtenerFuncionalidadesDeRol = bd.obtenerStoredProcedure("obtenerFuncionalidadesDeRol");
+            spObtenerFuncionalidadesDeRol.Parameters.Add("@Id_Rol", SqlDbType.VarChar).Value = idamodificar;
+            SqlDataAdapter sda2 = new SqlDataAdapter();
+            sda.SelectCommand = spObtenerFuncionalidadesDeRol;
+            DataTable dbdataset2 = new DataTable();
+            sda.Fill(dbdataset2);
+            foreach (DataRow item2 in dbdataset2.Rows)
+            {
+
+                foreach (DataGridViewRow item in dataGridView_funcionalidades.Rows)
+                {
+                    if (item.Cells[2].Value.ToString() == item2["Nombre_Funcionalidad"].ToString())
+                    {
+                        item.Cells[0].Value = "true";
+                    }
+                }
+            }
         }
 
 

@@ -91,7 +91,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
             {
                 string rubro = reader[1].ToString();
                 comboBox1.Items.Add(rubro);
-            } 
+            }
+            comboBox1.SelectedItem = comboBox1.Items[0];
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
