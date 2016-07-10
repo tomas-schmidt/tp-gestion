@@ -49,6 +49,8 @@ namespace WindowsFormsApplication1.Facturas
                 consulta = consulta + " and i.Descripcion like '%" + txt_descripcion.Text + "%'";
             }
 
+            consulta = consulta + " order by Id_Factura desc";
+
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerFacturas = bd.obtenerConsulta(consulta);
             spObtenerFacturas.Parameters.Add("@FechaMaxima", SqlDbType.DateTime).Value = dateTimePicker_menor.Value;
@@ -65,6 +67,13 @@ namespace WindowsFormsApplication1.Facturas
                 dataGridView1.Rows[n].Cells[1].Value = item["Fecha"].ToString();
                 dataGridView1.Rows[n].Cells[2].Value = item["Total"].ToString();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            txt_descripcion.Clear();
+            txt_mayor.Clear();
+            txt_menor.Clear();
         }
 
     }

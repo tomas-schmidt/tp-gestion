@@ -42,6 +42,8 @@ DROP PROCEDURE C_HASHTAG.obtenerUltimasCalificaciones
 DROP PROCEDURE C_HASHTAG.obtenerCalificaciones
 DROP PROCEDURE C_HASHTAG.obtenerCompras
 DROP PROCEDURE C_HASHTAG.obtenerOfertas
+DROP PROCEDURE C_HASHTAG.facturarPublicacion
+
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario
@@ -67,3 +69,5 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 
 --Drop esquema
 DROP SCHEMA C_HASHTAG
+
+

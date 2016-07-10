@@ -23,7 +23,7 @@ AS
 	--Finalizo compras inmediatas vencidas
 	update C_HASHTAG.Publicacion
 	set Id_Estado = 4
-	where Fecha_Final < @Fecha and Id_Tipo_Public = 1 and Id_Estado = 2
+	where Fecha_Final < @Fecha and Id_Tipo_Public = 1 and Id_Estado != 4
 
 	--Finalizo subastas vencidas y realizo la facturacion y registro de compra
 	declare @Id_Publicacion int, @Id_User int
@@ -32,7 +32,7 @@ AS
 		from C_HASHTAG.Publicacion p
 		join C_HASHTAG.Oferta  o
 		on (p.Id_Publicacion = o.Id_Publicacion)
-		where Monto = Monto_Ofertado and Fecha_Final < @Fecha and Id_Tipo_Public = 2 and Id_Estado = 2
+		where Monto = Monto_Ofertado and Fecha_Final < @Fecha and Id_Tipo_Public = 2 and Id_Estado != 4
 
 	open subsVencidas
 	fetch next from subsVencidas
@@ -338,16 +338,28 @@ GO
 CREATE PROCEDURE C_HASHTAG.cambiarEstadoEmpresa
 	@Id_Empresa int
 AS 
-		UPDATE u SET u.Habilitado = ~(u.Habilitado)
-		from C_HASHTAG.Usuario u join C_HASHTAG.Empresa e
-		ON e.Id_User = u.Id_User
-		where e.Id_Empresa = @Id_Empresa
-		--if (u.Habilitado == 1) 
+	declare @Id_User int
+	
+	set @Id_User = (select u.Id_User from C_HASHTAG.Usuario u join C_HASHTAG.Empresa e
+					on (e.Id_User = u.Id_User) where e.Id_Empresa = @Id_Empresa)
 
-		--else
+		UPDATE C_HASHTAG.Usuario
+		SET Habilitado = ~(Habilitado)
+		where Id_User = @Id_User
+		
+		if ((select Habilitado from C_HASHTAG.Usuario where Id_User = @Id_User) = 0)
+		begin
+			update C_HASHTAG.Publicacion
+			set Id_Estado =  3 --pausada
+			where Id_User = @Id_User and Id_Estado = 2
+		end
 
-		-- FALTA AGREGAR LOGICA DE COMO HABILITARLO/deshabilitarlo
-
+		else
+		begin
+			update C_HASHTAG.Publicacion
+			set Id_Estado =  2 --activa
+			where Id_User = @Id_User and Id_Estado = 3
+		end
 GO
 
 /****************************************************************
@@ -439,12 +451,6 @@ AS
 		from C_HASHTAG.Usuario u join C_HASHTAG.Cliente c
 		on(u.Id_User = c.Id_User)
 		where c.Id_Cliente = @Id_Cliente
-		--if (u.Habilitado == 1) 
-
-		--else
-
-		-- FALTA AGREGAR LOGICA DE COMO HABILITARLO/deshabilitarlo
-
 GO
 
 /****************************************************************
@@ -582,6 +588,31 @@ AS
 GO
 
 /****************************************************************
+ *						facturarPublicacion
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.facturarPublicacion @Id_Publicacion int
+ as
+	declare @Comision_Tipo_Public numeric(18,2), @Id_Factura int
+	set @Comision_Tipo_Public = (select Comision_Tipo_Public 
+								from C_HASHTAG.Publicacion p
+								join C_HASHTAG.Visibilidad v
+								on (p.Id_Visibilidad = v.Id_Visibilidad)
+								where Id_Publicacion = @Id_Publicacion)
+
+	insert into C_HASHTAG.Factura
+	Values (@Id_Publicacion, C_HASHTAG.obtenerFecha(), @Comision_Tipo_Public)
+
+	set @Id_Factura = (select top 1 Id_Factura from C_HASHTAG.Factura
+						order by Id_Factura desc)
+
+	insert into C_HASHTAG.Item 
+	(Id_Factura, Descripcion, Monto, Cantidad)
+	values
+	(@Id_Factura,'Comision por publicacion', @Comision_Tipo_Public, 1)
+go
+
+
+/****************************************************************
  *						generarCompra
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.generarCompra
@@ -594,8 +625,14 @@ CREATE PROCEDURE C_HASHTAG.generarCompra
 	@Descripcion nvarchar(255),
 	@Envio bit
 as
-	begin try
-		declare @fecha datetime
+	if (@Monto < 0 or @Descripcion is null or @Visibilidad is null)
+	begin
+		RAISERROR('Ingresar bien los parametros', 16, 1)
+		return
+	end
+
+	begin transaction
+		declare @fecha datetime, @Id_Publicacion int
 		set @fecha = C_HASHTAG.obtenerFecha()
 		INSERT INTO C_HASHTAG.Publicacion
 		(
@@ -614,17 +651,18 @@ as
 		values
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
 			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 1 /*compra inmediata*/ , @fecha , dateadd(month, 1, @fecha), @Preguntas, @Stock, @Descripcion, @Envio)
-		
-		select top 1 Id_Publicacion
-			from C_HASHTAG.Publicacion
-			order by Id_Publicacion desc
+					
+		set @Id_Publicacion = (select top 1 Id_Publicacion
+								from C_HASHTAG.Publicacion
+								order by Id_Publicacion desc)
 
-	end try
-	begin catch
-		DECLARE @MensajeError varchar(255)
-		SET @MensajeError = 'No se pudo crear la publicacion'
-		RAISERROR(@MensajeError, 16, 1)
-	end catch
+		select top 1 Id_Publicacion
+								from C_HASHTAG.Publicacion
+								order by Id_Publicacion desc
+
+		exec C_HASHTAG.facturarPublicacion @Id_Publicacion
+
+	commit transaction
 go
 
 /****************************************************************
@@ -639,8 +677,14 @@ CREATE PROCEDURE C_HASHTAG.generarSubasta
 	@Descripcion nvarchar(255),
 	@Envio bit
 as
-	begin try
-		declare @fecha datetime
+	if (@Monto < 0 or @Descripcion is null or @Visibilidad is null)
+	begin
+		RAISERROR('Ingresar bien los parametros', 16, 1)
+		return
+	end
+
+	begin transaction
+		declare @fecha datetime, @Id_Publicacion int
 		set @fecha = C_HASHTAG.obtenerFecha()
 		INSERT INTO C_HASHTAG.Publicacion
 		(
@@ -660,16 +704,17 @@ as
 			(@Monto, (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad),
 			@Id_User, (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado), 2 /*subasta*/, @fecha , dateadd(month, 1, @fecha), @Preguntas, 1, @Descripcion, @Envio)
 	
-			select top 1 Id_Publicacion
-			from C_HASHTAG.Publicacion
-			order by Id_Publicacion desc
+			set @Id_Publicacion = (select top 1 Id_Publicacion
+								from C_HASHTAG.Publicacion
+								order by Id_Publicacion desc)
 
-	end try
-	begin catch
-		DECLARE @MensajeError varchar(255)
-		SET @MensajeError = 'No se pudo crear la publicacion'
-		RAISERROR(@MensajeError, 16, 1)
-	end catch
+		select top 1 Id_Publicacion
+								from C_HASHTAG.Publicacion
+								order by Id_Publicacion desc
+
+		exec C_HASHTAG.facturarPublicacion @Id_Publicacion
+
+	commit transaction
 go
 
 /****************************************************************
@@ -703,7 +748,7 @@ AS
 	SELECT p.*, tp.Descripcion as 'tipo_public' FROM C_HASHTAG.Publicacion p
 	join C_HASHTAG.Tipo_Public tp on(p.Id_Tipo_Public = tp.Id_Tipo_Public)
 	join C_HASHTAG.Rubro_Publicacion rp on(p.Id_Publicacion = rp.Id_Publicacion)
-	where Id_Estado = 2 --solo muestro las activas
+	where Id_Estado = 2 or Id_Estado = 3 --solo muestro las activas y pausadas
 	and rp.Id_Rubro = (select top 1 Id_Rubro from C_HASHTAG.Rubro r where r.Desc_Corta = @Rubro)
 	and p.Descripcion like '%'+@Descripcion+'%'
 	and p.Id_User != @Id_User
@@ -1479,7 +1524,7 @@ INSERT INTO C_HASHTAG.Calificacion
 )
 	SELECT DISTINCT
 		g2.Calificacion_Codigo,
-		g2.Calificacion_Cant_Estrellas,
+		(g2.Calificacion_Cant_Estrellas)/2,
 		g2.Calificacion_Descripcion
 	FROM gd_esquema.Maestra g2	
 	WHERE Calificacion_Codigo IS NOT NULL
