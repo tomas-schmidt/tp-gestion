@@ -1097,11 +1097,12 @@ AS
 		RETURN
 	END
 
-	if(@visibilidad = 'Todas')
+	if(@visibilidad like 'Todas')
 	begin
-		SELECT TOP 5 u.Username, p.Descripcion, p.Stock
+		SELECT TOP 5 u.Username as 'Username', p.Descripcion as 'Descripcion', p.Stock as 'Stock', Visibilidad_Desc as 'Visibilidad'
 		from C_HASHTAG.Usuario u
 		join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
+		join C_HASHTAG.Visibilidad v on (p.Id_Visibilidad = v.Id_Visibilidad)
 		where (Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
 			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
 		order by 3 desc
@@ -1109,12 +1110,13 @@ AS
 
 	else
 	begin
-		SELECT TOP 5 u.Username, p.Descripcion, p.Stock
+		SELECT TOP 5 u.Username as 'Username', p.Descripcion as 'Descripcion', p.Stock as 'Stock', Visibilidad_Desc as 'Visibilidad'
 		from C_HASHTAG.Usuario u
 		join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
-		where (@visibilidad = (select v.Visibilidad_Desc from C_HASHTAG.Visibilidad v where p.Id_Visibilidad = v.Id_Visibilidad)
+		join C_HASHTAG.Visibilidad v on (p.Id_Visibilidad = v.Id_Visibilidad)
+		where (@visibilidad like (select v.Visibilidad_Desc from C_HASHTAG.Visibilidad v where p.Id_Visibilidad = v.Id_Visibilidad))
 		and ((Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
-			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))))
+			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre)))
 		order by 3 desc
 	end
 GO
@@ -1134,14 +1136,15 @@ AS
 		RETURN
 	END
 
-	SELECT TOP 5 u.Username, sum(Cantidad) as 'CantidadProductos'
+	SELECT TOP 5 u.Username, sum(Cantidad) as 'CantidadProductos',r1.Desc_Corta as 'Rubro'
 	from C_HASHTAG.Usuario u
 	join C_HASHTAG.Compra c on (u.Id_User = c.Id_User)
 	join C_HASHTAG.Publicacion p on (c.Id_Publicacion = p.Id_Publicacion)
 	join C_HASHTAG.Rubro_Publicacion rp on (p.Id_Publicacion = rp.Id_Publicacion)
+	join C_HASHTAG.Rubro r1 on (rp.Id_Rubro = r1.Id_Rubro)
 	where (Fecha > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre)
 	and @rubro = (select Desc_Corta from C_HASHTAG.Rubro r where rp.Id_Rubro = r.Id_Rubro))
-	group by u.Username
+	group by u.Username, r1.Desc_Corta
 	order by 2 desc
 
 GO

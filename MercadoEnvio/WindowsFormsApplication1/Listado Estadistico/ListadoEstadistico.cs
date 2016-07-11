@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -155,6 +156,148 @@ namespace WindowsFormsApplication1.Listado_Estadistico
                 btn_mayorMontoFacturas.Show();
                 btn_mayorProdsComprados.Hide();
                 btn_prodsNoVendidos.Hide();
+            }
+        }
+
+        private void btn_prodsNoVendidos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+                int si = cb_trimestre.SelectedIndex;
+                int si2 = cb_visibilidad.SelectedIndex;
+                BaseDeDatos bd = new BaseDeDatos();
+                var spVendedoresConMayorCantDeProdsNoVendidos = bd.obtenerStoredProcedure("vendedoresConMayorCantDeProdsNoVendidos");
+                spVendedoresConMayorCantDeProdsNoVendidos.Parameters.Add("@anio", SqlDbType.Int).Value = Convert.ToInt32(txt_anio.Text);
+                spVendedoresConMayorCantDeProdsNoVendidos.Parameters.Add("@trimestre", SqlDbType.Int).Value = Convert.ToInt32(cb_trimestre.Items[si]);
+                spVendedoresConMayorCantDeProdsNoVendidos.Parameters.Add("@visibilidad", SqlDbType.VarChar).Value = (cb_visibilidad.Items[si2]).ToString();
+
+                SqlDataAdapter sda = new SqlDataAdapter();
+                sda.SelectCommand = spVendedoresConMayorCantDeProdsNoVendidos;
+                DataTable dbdataset = new DataTable();
+                sda.Fill(dbdataset);
+                foreach (DataRow item in dbdataset.Rows)
+                {
+                    int n = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[n].Cells[0].Value = item["Username"].ToString();
+                    dataGridView1.Rows[n].Cells[1].Value = item["Descripcion"].ToString();
+                    dataGridView1.Rows[n].Cells[2].Value = item["Stock"].ToString();
+                    dataGridView1.Rows[n].Cells[3].Value = item["Visibilidad"].ToString();    
+                }
+                spVendedoresConMayorCantDeProdsNoVendidos.Connection.Close();
+            }
+            catch (SqlException excepcion)
+            {
+                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+            }
+        }
+
+        private void btn_mayorProdsComprados_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+                int si = cb_trimestre.SelectedIndex;
+                int si2 = cb_rubros.SelectedIndex;
+                BaseDeDatos bd = new BaseDeDatos();
+                var spClientesConMayorCantDeProdsComprados = bd.obtenerStoredProcedure("clientesConMayorCantDeProdsComprados");
+                spClientesConMayorCantDeProdsComprados.Parameters.Add("@anio", SqlDbType.Int).Value = Convert.ToInt32(txt_anio.Text);
+                spClientesConMayorCantDeProdsComprados.Parameters.Add("@trimestre", SqlDbType.Int).Value = Convert.ToInt32(cb_trimestre.Items[si]);
+                spClientesConMayorCantDeProdsComprados.Parameters.Add("@rubro", SqlDbType.VarChar).Value = (cb_rubros.Items[si2]).ToString();
+
+                SqlDataAdapter sda = new SqlDataAdapter();
+                sda.SelectCommand = spClientesConMayorCantDeProdsComprados;
+                DataTable dbdataset = new DataTable();
+                sda.Fill(dbdataset);
+                foreach (DataRow item in dbdataset.Rows)
+                {
+                    int n = dataGridView2.Rows.Add();
+                    dataGridView2.Rows[n].Cells[0].Value = item["Username"].ToString();
+                    dataGridView2.Rows[n].Cells[1].Value = item["CantidadProductos"].ToString();
+                    dataGridView2.Rows[n].Cells[2].Value = item["Rubro"].ToString();
+                }
+                spClientesConMayorCantDeProdsComprados.Connection.Close();
+            }
+            catch (SqlException excepcion)
+            {
+                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+            }
+
+        }
+
+        private void btn_mayorCantFacturas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+                int si = cb_trimestre.SelectedIndex;
+                BaseDeDatos bd = new BaseDeDatos();
+                var spVendedoresConMayorCantDeFacturas = bd.obtenerStoredProcedure("vendedoresConMayorCantDeFacturas");
+                spVendedoresConMayorCantDeFacturas.Parameters.Add("@anio", SqlDbType.Int).Value = Convert.ToInt32(txt_anio.Text);
+                spVendedoresConMayorCantDeFacturas.Parameters.Add("@trimestre", SqlDbType.Int).Value = Convert.ToInt32(cb_trimestre.Items[si]);
+                
+                SqlDataAdapter sda = new SqlDataAdapter();
+                sda.SelectCommand = spVendedoresConMayorCantDeFacturas;
+                DataTable dbdataset = new DataTable();
+                sda.Fill(dbdataset);
+                foreach (DataRow item in dbdataset.Rows)
+                {
+                    int n = dataGridView3.Rows.Add();
+                    dataGridView3.Rows[n].Cells[0].Value = item["Username"].ToString();
+                    dataGridView3.Rows[n].Cells[1].Value = item["CantidadFacturas"].ToString();
+                }
+
+                spVendedoresConMayorCantDeFacturas.Connection.Close();
+            }
+            catch (SqlException excepcion)
+            {
+                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+            }
+        }
+
+        private void btn_mayorMontoFacturas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+                int si = cb_trimestre.SelectedIndex;
+                BaseDeDatos bd = new BaseDeDatos();
+                var spVendedoresConMayorMontoFacturado = bd.obtenerStoredProcedure("vendedoresConMayorMontoFacturado");
+                spVendedoresConMayorMontoFacturado.Parameters.Add("@anio", SqlDbType.Int).Value = Convert.ToInt32(txt_anio.Text);
+                spVendedoresConMayorMontoFacturado.Parameters.Add("@trimestre", SqlDbType.Int).Value = Convert.ToInt32(cb_trimestre.Items[si]);
+
+                SqlDataAdapter sda = new SqlDataAdapter();
+                sda.SelectCommand = spVendedoresConMayorMontoFacturado;
+                DataTable dbdataset = new DataTable();
+                sda.Fill(dbdataset);
+                foreach (DataRow item in dbdataset.Rows)
+                {
+                    int n = dataGridView4.Rows.Add();
+                    dataGridView4.Rows[n].Cells[0].Value = item["Username"].ToString();
+                    dataGridView4.Rows[n].Cells[1].Value = item["MontoTotal"].ToString();
+                }
+
+                spVendedoresConMayorMontoFacturado.Connection.Close();
+            }
+            catch (SqlException excepcion)
+            {
+                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+            }
+        }
+
+        private void txt_anio_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txt_anio_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+
+            if(!Char.IsDigit(ch) && ch != 8 && ch != 46)
+            {
+                e.Handled = true;
+                MessageBox.Show("Debe ser un año");
             }
         }
     }
