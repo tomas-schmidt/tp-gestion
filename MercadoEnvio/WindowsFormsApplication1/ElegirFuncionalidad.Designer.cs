@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.dataGridView_funcionalidades = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.Funcionalidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_funcionalidades)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,25 +43,12 @@
             this.dataGridView_funcionalidades.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Funcionalidad,
             this.Column1});
-            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(26, 43);
+            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(18, 43);
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
             this.dataGridView_funcionalidades.ReadOnly = true;
-            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(261, 232);
+            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(276, 172);
             this.dataGridView_funcionalidades.TabIndex = 0;
             this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_funcionalidades_CellContentClick);
-            // 
-            // Funcionalidad
-            // 
-            this.Funcionalidad.HeaderText = "Funcionalidad";
-            this.Funcionalidad.Name = "Funcionalidad";
-            this.Funcionalidad.ReadOnly = true;
-            this.Funcionalidad.Width = 117;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Seleccionar";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
             // 
             // label1
             // 
@@ -72,11 +59,24 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Elegir funcionalidad";
             // 
+            // Funcionalidad
+            // 
+            this.Funcionalidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Funcionalidad.HeaderText = "Funcionalidad";
+            this.Funcionalidad.Name = "Funcionalidad";
+            this.Funcionalidad.ReadOnly = true;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Seleccionar";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
             // ElegirFuncionalidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 289);
+            this.ClientSize = new System.Drawing.Size(314, 235);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_funcionalidades);
             this.Name = "ElegirFuncionalidad";

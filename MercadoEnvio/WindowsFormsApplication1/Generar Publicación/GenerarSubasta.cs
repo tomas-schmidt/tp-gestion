@@ -69,6 +69,21 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         protected override void interactuar()
         {
+            bool poseeUnRubro = false;
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                if (bool.Parse(item.Cells[0].Value.ToString()))
+                {
+                    poseeUnRubro = true;
+                }
+            }
+
+            if (poseeUnRubro == false)
+            {
+                MessageBox.Show("Debe seleccionar como minimo un rubro");
+                return;
+            }
+
             try
             {
                 int si1 = comboBox1.SelectedIndex;

@@ -244,8 +244,8 @@ CREATE PROCEDURE C_HASHTAG.crearUsuarioYCliente
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado) VALUES 
-		(@Username, @Contraseña, 0, 1)
+		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
+		(@Username, @Contraseña, 0, 1, 1) --todos los usuario nuevos poseen su primera publicacion gratis
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
@@ -308,8 +308,8 @@ CREATE PROCEDURE C_HASHTAG.crearUsuarioYEmpresa
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado) VALUES 
-		(@Username, @Contraseña, 0, 1)
+		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
+		(@Username, @Contraseña, 0, 1, 1) --todos los usuario nuevos poseen su primera publicacion gratis
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
@@ -603,12 +603,27 @@ GO
  ****************************************************************/
  CREATE PROCEDURE C_HASHTAG.facturarPublicacion @Id_Publicacion int
  as
+
+	declare @Id_User int
+	set @Id_User = (select Id_User from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion)
+
 	declare @Comision_Tipo_Public numeric(18,2), @Id_Factura int
 	set @Comision_Tipo_Public = (select Comision_Tipo_Public 
 								from C_HASHTAG.Publicacion p
 								join C_HASHTAG.Visibilidad v
 								on (p.Id_Visibilidad = v.Id_Visibilidad)
 								where Id_Publicacion = @Id_Publicacion)
+
+	--Si es la primera publicacion de un usuario nuevo no le facturo ninguna comision
+	if((select Publicacion_Gratis from C_HASHTAG.Usuario where Id_User = @Id_User) = 1)
+	begin
+		set @Comision_Tipo_Public = 0
+		
+		update C_HASHTAG.Usuario
+		set Publicacion_Gratis = 0
+		where Id_User = @Id_User
+		
+	end
 
 	insert into C_HASHTAG.Factura
 	Values (@Id_Publicacion, C_HASHTAG.obtenerFecha(), @Comision_Tipo_Public)
@@ -756,14 +771,14 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.obtenerPublicaciones @Descripcion nvarchar(255), @Rubro nvarchar(255), @Id_User int
 AS
-	SELECT p.*, tp.Descripcion as 'tipo_public' FROM C_HASHTAG.Publicacion p
+	SELECT DISTINCT p.*, tp.Descripcion as 'tipo_public' FROM C_HASHTAG.Publicacion p
 	join C_HASHTAG.Tipo_Public tp on(p.Id_Tipo_Public = tp.Id_Tipo_Public)
 	join C_HASHTAG.Rubro_Publicacion rp on(p.Id_Publicacion = rp.Id_Publicacion)
 	where (Id_Estado = 2 or Id_Estado = 3) --solo muestro las activas y pausadas
 	and rp.Id_Rubro = (select top 1 Id_Rubro from C_HASHTAG.Rubro r where r.Desc_Corta = @Rubro)
 	and p.Descripcion like '%'+@Descripcion+'%'
 	and p.Id_User != @Id_User
-	order by  Id_Visibilidad -- LISTO POR IMPORTANCIA
+	--order by  Id_Visibilidad -- LISTO POR IMPORTANCIA
 GO
 
 /****************************************************************
@@ -1072,6 +1087,70 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.vendedoresConMayorCantDeProdsNoVendidos
 	@anio int,
+	@trimestre int,
+	@visibilidad nvarchar(255)
+AS
+	
+	IF C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) > C_HASHTAG.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	if(@visibilidad = 'Todas')
+	begin
+		SELECT TOP 5 u.Username, p.Descripcion, p.Stock
+		from C_HASHTAG.Usuario u
+		join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
+		where (Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+		order by 3 desc
+	end
+
+	else
+	begin
+		SELECT TOP 5 u.Username, p.Descripcion, p.Stock
+		from C_HASHTAG.Usuario u
+		join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
+		where (@visibilidad = (select v.Visibilidad_Desc from C_HASHTAG.Visibilidad v where p.Id_Visibilidad = v.Id_Visibilidad)
+		and ((Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))))
+		order by 3 desc
+	end
+GO
+
+/****************************************************************
+ *					clientesConMayorCantDeProdsComprados
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.clientesConMayorCantDeProdsComprados
+	@anio int,
+	@trimestre int,
+	@rubro nvarchar(255)
+AS
+	
+	IF C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) > C_HASHTAG.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	SELECT TOP 5 u.Username, sum(Cantidad) as 'CantidadProductos'
+	from C_HASHTAG.Usuario u
+	join C_HASHTAG.Compra c on (u.Id_User = c.Id_User)
+	join C_HASHTAG.Publicacion p on (c.Id_Publicacion = p.Id_Publicacion)
+	join C_HASHTAG.Rubro_Publicacion rp on (p.Id_Publicacion = rp.Id_Publicacion)
+	where (Fecha > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre)
+	and @rubro = (select Desc_Corta from C_HASHTAG.Rubro r where rp.Id_Rubro = r.Id_Rubro))
+	group by u.Username
+	order by 2 desc
+
+GO
+
+/****************************************************************
+ *					vendedoresConMayorCantDeFacturas
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.vendedoresConMayorCantDeFacturas
+	@anio int,
 	@trimestre int
 AS
 	
@@ -1081,14 +1160,38 @@ AS
 		RETURN
 	END
 
-	SELECT TOP 5 u.Username, p.Descripcion, p.Stock
+	SELECT TOP 5 u.Username, count(f.Id_Factura) as 'CantidadFacturas'
 	from C_HASHTAG.Usuario u
 	join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
-	where (Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
-	   or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
-	order by 3 desc
-
+	join C_HASHTAG.Factura f on (f.Id_Publicacion = p.Id_Publicacion)
+	where (Fecha > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+	group by u.Username
+	order by 2 desc
 GO
+
+/****************************************************************
+ *					vendedoresConMayorMontoFacturado
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.vendedoresConMayorMontoFacturado
+	@anio int,
+	@trimestre int
+AS
+	
+	IF C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) > C_HASHTAG.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	SELECT TOP 5 u.Username, sum(Total) as 'MontoTotal'
+	from C_HASHTAG.Usuario u
+	join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
+	join C_HASHTAG.Factura f on (f.Id_Publicacion = p.Id_Publicacion)
+	where (Fecha > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+	group by u.Username
+	order by 2 desc
+GO
+
 
 /***********************************************************************
  *
@@ -1237,20 +1340,21 @@ CREATE TABLE C_HASHTAG.Usuario
 	Username nvarchar(50) UNIQUE NOT NULL,
 	Contraseña varchar(255) NOT NULL,
 	Intentos_Fallidos numeric(18,0) DEFAULT 0,
-	Habilitado bit DEFAULT 1
+	Habilitado bit DEFAULT 1,
+	Publicacion_Gratis bit
 )
 
 --Creo administrador con Id_User:1, username:admin1 y password:administrador (hasheada)
-INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
-	('admin1', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
+	('admin1', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1,0)
 
 --Creo administrador con Id_User:2, username:admin2 y password:administrador (hasheada)
-INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
-	('admin2', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
+	('admin2', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1,0)
 
 --PEDIDO DEL ENUNCIADO: Creo usuario de rol especial con Id_User:3, username:admin y password:w23e (hasheada)
-INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado) VALUES 
-	('admin', '6b1583aea70be6a605d44e3563880d1b833a1d25c7ac5cb0222101e83a76559f',0,1)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado,Publicacion_Gratis) VALUES 
+	('admin', '6b1583aea70be6a605d44e3563880d1b833a1d25c7ac5cb0222101e83a76559f',0,1,0)
 
 
 INSERT INTO C_HASHTAG.Usuario
@@ -1258,13 +1362,15 @@ INSERT INTO C_HASHTAG.Usuario
 	Username,
 	Contraseña,
 	Intentos_Fallidos,
-	Habilitado
+	Habilitado,
+	Publicacion_Gratis
 )
 	SELECT DISTINCT
 		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
-		1
+		1,
+		0 -- no posee ningun usuario migrado la publicacion gratis
 		FROM gd_esquema.Maestra
 		where Cli_Dni IS NOT NULL
 	UNION
@@ -1272,7 +1378,8 @@ INSERT INTO C_HASHTAG.Usuario
 		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
-		1
+		1,
+		0 -- no posee ningun usuario migrado la publicacion gratis
 		FROM gd_esquema.Maestra
 		where Publ_Cli_Dni IS NOT NULL
 
@@ -1281,7 +1388,8 @@ INSERT INTO C_HASHTAG.Usuario
 		'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
-		1
+		1,
+		0 -- no posee ningun usuario migrado la publicacion gratis
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
 

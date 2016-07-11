@@ -48,6 +48,21 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         protected override void interactuar()
         {
+            bool poseeUnRubro = false;
+            foreach (DataGridViewRow item in dataGridView2.Rows)
+            {
+                if (bool.Parse(item.Cells[0].Value.ToString()))
+                {
+                    poseeUnRubro = true;
+                }
+            }
+
+            if (poseeUnRubro == false)
+            {
+                MessageBox.Show("Debe seleccionar como minimo un rubro");
+                return;
+            }
+
             try
             {
                 BaseDeDatos bd = new BaseDeDatos();
@@ -69,6 +84,9 @@ namespace WindowsFormsApplication1.ComprarOfertar
                         sda2.Fill(dbdataset2);
                     }
                 }
+
+                
+
                 foreach (DataRow item2 in dbdataset2.Rows)
                         {
                             int n = dataGridView1.Rows.Add();
@@ -77,7 +95,11 @@ namespace WindowsFormsApplication1.ComprarOfertar
                             dataGridView1.Rows[n].Cells[2].Value = item2["tipo_public"].ToString();
                             dataGridView1.Rows[n].Cells[4].Value = item2["Id_Publicacion"].ToString();
                             dataGridView1.Rows[n].Cells[3].Value = "Ver";
-                        }
+                            dataGridView1.Rows[n].Cells[5].Value = item2["Id_Visibilidad"].ToString();
+                         }
+
+                dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Ascending);
+                       
                     }
                 
             

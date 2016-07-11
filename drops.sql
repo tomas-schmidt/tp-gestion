@@ -46,9 +46,13 @@ DROP PROCEDURE C_HASHTAG.obtenerRol
 DROP PROCEDURE C_HASHTAG.facturarPublicacion
 DROP FUNCTION C_HASHTAG.obtenerFechaInicioTrimestre
 DROP FUNCTION C_HASHTAG.obtenerFechaFinTrimestre
-DROP PROCEDURE C_HASHTAG.vendedoresConMayorCantDeProdsNoVendidos
 DROP PROCEDURE C_HASHTAG.cambiarContraseniaPorAdmin
 DROP PROCEDURE C_HASHTAG.cambiarContraseniaPorUser
+DROP PROCEDURE C_HASHTAG.vendedoresConMayorCantDeProdsNoVendidos
+DROP PROCEDURE C_HASHTAG.clientesConMayorCantDeProdsComprados
+DROP PROCEDURE C_HASHTAG.vendedoresConMayorCantDeFacturas
+DROP PROCEDURE C_HASHTAG.vendedoresConMayorMontoFacturado
+
 
 
 --Drops tablas
@@ -75,17 +79,3 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 
 --Drop esquema
 DROP SCHEMA C_HASHTAG
-
-Descripcion Publicación 212351
-
-select * from C_HASHTAG.Publicacion
-
-update C_HASHTAG.Publicacion
-set Id_Estado = 2
-where Id_Publicacion = 12353
-
-select * from C_HASHTAG.Rubro_Publicacion
-where Id_Publicacion = 12353
-
-select * from C_HASHTAG.Rubro
-where Id_Rubro = 18

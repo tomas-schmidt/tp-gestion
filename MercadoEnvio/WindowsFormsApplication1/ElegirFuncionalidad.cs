@@ -16,6 +16,7 @@ using WindowsFormsApplication1.ConexionBD;
 using WindowsFormsApplication1.Facturas;
 using WindowsFormsApplication1.Generar_Publicación;
 using WindowsFormsApplication1.Historial_Cliente;
+using WindowsFormsApplication1.Listado_Estadistico;
 
 namespace WindowsFormsApplication1
 {
@@ -108,6 +109,12 @@ namespace WindowsFormsApplication1
                 {
                     CambiarContraseniaUser cc = new CambiarContraseniaUser(idUser);
                     cc.Show();
+                }
+
+                if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "ObtenerListadoEstadistico")
+                {
+                    ListadoEstadistico le = new ListadoEstadistico();
+                    le.Show();
                 }
             }
               

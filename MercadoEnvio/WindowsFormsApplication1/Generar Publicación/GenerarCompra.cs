@@ -75,6 +75,23 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         protected override void interactuar()
         {
+            bool poseeUnRubro = false;
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                if (bool.Parse(item.Cells[0].Value.ToString()))
+                {
+                    poseeUnRubro = true;
+                }
+            }
+
+            if (poseeUnRubro == false)
+            {
+                MessageBox.Show("Debe seleccionar como minimo un rubro");
+                return;
+            }
+
+
+
             try
             {
                 int si1 = comboBox1.SelectedIndex;
@@ -92,7 +109,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 var reader = spGenerarPublicacion.ExecuteReader();
                 reader.Read();
                 
-
                 foreach (DataGridViewRow item in dataGridView1.Rows)
                 {
                     if (bool.Parse(item.Cells[0].Value.ToString()))
@@ -120,10 +136,26 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            int si1 = comboBox1.SelectedIndex;
+            if ((string)comboBox1.Items[si1] == "Gratis")
+            {
+                checkBox2.Checked = false;
+                checkBox2.Enabled = false;
+            }
+            else
+            {
+                checkBox2.Enabled = true;
+            }
+
 
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
