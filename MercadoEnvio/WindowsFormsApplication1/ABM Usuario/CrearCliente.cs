@@ -99,6 +99,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 //spcrearUsuarioYCliente.ExecuteNonQuery();
                 spcrearUsuarioYCliente.Connection.Close();
                 MessageBox.Show("Nuevo cliente cargado con éxito");
+                this.Close();
             }
 
             catch (SqlException excepcion)

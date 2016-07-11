@@ -190,7 +190,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "MostrarCompra";
-            this.Text = " ";
+            this.Text = " Mostrar Compra";
             this.Load += new System.EventHandler(this.MostrarCompra_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

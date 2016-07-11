@@ -114,6 +114,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 }
                 spGenerarPublicacion.Connection.Close();
                 MessageBox.Show("Nueva publicacion generada");
+                this.Close();
             }
             catch (SqlException excepcion)
             {

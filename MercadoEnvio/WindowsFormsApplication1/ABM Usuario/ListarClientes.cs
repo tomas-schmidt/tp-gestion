@@ -77,7 +77,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 7)
+            if (e.ColumnIndex == 7 && (e.RowIndex != -1))
             {
                 BaseDeDatos bd = new BaseDeDatos();
                 var spcambiarEstadoEmpresa = bd.obtenerStoredProcedure("cambiarEstadoCliente");
@@ -86,7 +86,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 spcambiarEstadoEmpresa.Connection.Close();
                 MessageBox.Show("El cliente fue dado de baja/alta");
             }
-            if (e.ColumnIndex == 8)
+            if (e.ColumnIndex == 8 && (e.RowIndex != -1))
             {
                 ModificarCliente mc = new ModificarCliente(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                 mc.Show();

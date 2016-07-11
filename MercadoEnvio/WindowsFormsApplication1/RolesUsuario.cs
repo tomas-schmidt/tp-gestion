@@ -53,7 +53,7 @@ namespace WindowsFormsApplication1
 
         private void dataGridView_roles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 0)
+            if (e.ColumnIndex == 0 && (e.RowIndex != -1))
             {
                 BaseDeDatos bd = new BaseDeDatos();
                 var spObtenerRolesDeUsuario = bd.obtenerStoredProcedure("ObtenerRolesDeUsuario");

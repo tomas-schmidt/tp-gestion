@@ -23,12 +23,11 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 3)
+            if (e.ColumnIndex == 3 && (e.RowIndex != -1))
             {
                 int idPublicacion = (Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString()));
                 if (dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString() == "Compra Inmediata")
                 {
-
                     MostrarCompra mc = new MostrarCompra(idPublicacion, idUserActual);
                     mc.Show();
                 }

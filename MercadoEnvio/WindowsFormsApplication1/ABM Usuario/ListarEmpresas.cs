@@ -20,7 +20,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 5)
+            if (e.ColumnIndex == 5 && (e.RowIndex != -1))
             {
                 BaseDeDatos bd = new BaseDeDatos();
                 var spcambiarEstadoEmpresa = bd.obtenerStoredProcedure("cambiarEstadoEmpresa");
@@ -29,7 +29,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 spcambiarEstadoEmpresa.Connection.Close();
                 MessageBox.Show("La empresa fue dada de baja/alta");
             }
-            if (e.ColumnIndex == 6)
+            if (e.ColumnIndex == 6 && (e.RowIndex != -1))
             {
                 ModificarEmpresa mr = new ModificarEmpresa(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                 mr.Show();

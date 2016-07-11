@@ -45,8 +45,16 @@ namespace WindowsFormsApplication1.ComprarOfertar
                     cb_Stock.Items.Add(i);
                 }
             }
-            cb_Stock.SelectedItem = cb_Stock.Items[0];
 
+            if (cb_Stock.Items.Count == 0)
+            {
+                cb_Stock.Items.Add(0);
+                cb_Stock.SelectedItem = cb_Stock.Items[0];
+            }
+            else
+            {
+                cb_Stock.SelectedItem = cb_Stock.Items[0];
+            }
 
         }
 
@@ -63,6 +71,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 spRealizarCompra.ExecuteNonQuery();
                 spRealizarCompra.Connection.Close();
                 MessageBox.Show("Compra realizada exitosamente");
+                this.Close();
             }
             catch (SqlException excepcion)
             {

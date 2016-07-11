@@ -39,6 +39,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
                 spCambiarContraseniaPorAdmin.Connection.Close();
                 MessageBox.Show("Contraseña cambiada con éxito");
+                this.Close();
             }
 
             catch (SqlException excepcion)

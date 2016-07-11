@@ -45,7 +45,6 @@
             this.Column1});
             this.dataGridView_funcionalidades.Location = new System.Drawing.Point(18, 43);
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
-            this.dataGridView_funcionalidades.ReadOnly = true;
             this.dataGridView_funcionalidades.Size = new System.Drawing.Size(276, 172);
             this.dataGridView_funcionalidades.TabIndex = 0;
             this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_funcionalidades_CellContentClick);
@@ -80,7 +79,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_funcionalidades);
             this.Name = "ElegirFuncionalidad";
-            this.Text = "ElegirFuncionalidad";
+            this.Text = "Elegir Funcionalidad";
             this.Load += new System.EventHandler(this.ElegirFuncionalidad_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_funcionalidades)).EndInit();
             this.ResumeLayout(false);

@@ -80,7 +80,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_roles);
             this.Name = "RolesUsuario";
-            this.Text = "RolesUsuario";
+            this.Text = "Roles de usuario";
             this.Load += new System.EventHandler(this.FuncionalidadesUsuario_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_roles)).EndInit();
             this.ResumeLayout(false);

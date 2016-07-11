@@ -43,6 +43,7 @@ namespace WindowsFormsApplication1.Calificar
                 spCalificar.ExecuteNonQuery();
                 spCalificar.Connection.Close();
                 MessageBox.Show("Calificacion realizada exitosamente");
+                this.Close();
             }
             catch (SqlException excepcion)
             {

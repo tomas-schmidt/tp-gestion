@@ -933,17 +933,28 @@ go
  ****************************************************************/
  CREATE PROCEDURE C_HASHTAG.Calificar @Id_Compra int, @Cant_Estrellas int, @Descripcion nvarchar (255)
  as
-	insert into C_HASHTAG.Calificacion (Cant_Estrellas, Descripcion) values
-	(@Cant_Estrellas, @Descripcion)
 
-	declare @Id_Calificacion int
-	set @Id_Calificacion = (select top 1 Id_Calificacion from C_HASHTAG.Calificacion
-							order by Id_Calificacion desc)
+	if((select Id_Calif from C_HASHTAG.Compra where Id_Compra = @Id_Compra) is not null)
+	begin
+		raiserror('La compra ya fue calificada',16,2)
+		return
+	end
 
-	update C_HASHTAG.Compra
-	set Id_Calif = @Id_Calificacion
-	where Id_Compra = @Id_Compra
+	else
+	begin
+		begin transaction
+			insert into C_HASHTAG.Calificacion (Cant_Estrellas, Descripcion) values
+			(@Cant_Estrellas, @Descripcion)
 
+			declare @Id_Calificacion int
+			set @Id_Calificacion = (select top 1 Id_Calificacion from C_HASHTAG.Calificacion
+									order by Id_Calificacion desc)
+
+			update C_HASHTAG.Compra
+			set Id_Calif = @Id_Calificacion
+			where Id_Compra = @Id_Compra
+		commit transaction
+	end
 go
 
 /****************************************************************

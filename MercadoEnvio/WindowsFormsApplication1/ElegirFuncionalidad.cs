@@ -58,7 +58,7 @@ namespace WindowsFormsApplication1
 
         private void dataGridView_funcionalidades_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 1)
+            if (e.ColumnIndex == 1 && (e.RowIndex != -1))
             {
                 if (dataGridView_funcionalidades.Rows[e.RowIndex].Cells[0].Value.ToString() == "ABMRol")
                 {
@@ -116,6 +116,7 @@ namespace WindowsFormsApplication1
                     ListadoEstadistico le = new ListadoEstadistico();
                     le.Show();
                 }
+
             }
               
         

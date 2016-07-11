@@ -49,6 +49,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 reader.Read();
                 spcrearUsuarioYEmpresa.Connection.Close();
                 MessageBox.Show("Nueva empresa cargada con éxito");
+                this.Close();
             }
 
             catch (SqlException excepcion)

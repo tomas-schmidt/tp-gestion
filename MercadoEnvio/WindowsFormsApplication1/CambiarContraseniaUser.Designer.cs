@@ -111,7 +111,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "CambiarContraseniaUser";
-            this.Text = "cambiarContraseniaUser";
+            this.Text = "Cambiar contraseña";
             this.Load += new System.EventHandler(this.CambiarContraseniaUser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

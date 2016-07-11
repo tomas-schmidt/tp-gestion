@@ -47,7 +47,7 @@ namespace WindowsFormsApplication1.Calificar
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 4)
+            if (e.ColumnIndex == 4 && (e.RowIndex != -1))
             {
                 int idCompra = (Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[5].Value.ToString()));
                 Calificar c = new Calificar(idCompra);

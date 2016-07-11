@@ -49,7 +49,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 3)
+            if (e.ColumnIndex == 3 && (e.RowIndex != -1))
             {
                 BaseDeDatos bd = new BaseDeDatos();
                 var spBajaRol = bd.obtenerStoredProcedure("bajaRol");
@@ -59,7 +59,7 @@ namespace WindowsFormsApplication1.ABM_Rol
                 MessageBox.Show("El rol fue dado de baja");
                 this.cargarTabla();
             }
-            if (e.ColumnIndex == 4)
+            if (e.ColumnIndex == 4 && (e.RowIndex != -1))
             {
                 ModificarRol mr = new ModificarRol(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                 mr.Show();

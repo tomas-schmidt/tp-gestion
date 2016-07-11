@@ -36,6 +36,7 @@
             this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +56,7 @@
             this.Column4,
             this.Column1,
             this.Column5});
-            this.dataGridView1.Location = new System.Drawing.Point(18, 26);
+            this.dataGridView1.Location = new System.Drawing.Point(18, 39);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(561, 206);
@@ -96,17 +97,28 @@
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Roles";
+            // 
             // ListarRoles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(591, 262);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "ListarRoles";
-            this.Text = "Form2";
+            this.Text = "Roles";
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -119,5 +131,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column4;
         private System.Windows.Forms.DataGridViewButtonColumn Column1;
         private System.Windows.Forms.DataGridViewButtonColumn Column5;
+        private System.Windows.Forms.Label label1;
     }
 }

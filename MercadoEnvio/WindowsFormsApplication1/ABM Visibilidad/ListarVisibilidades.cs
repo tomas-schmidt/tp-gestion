@@ -47,7 +47,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 3)
+            if (e.ColumnIndex == 3 && (e.RowIndex != -1))
             {
                 BaseDeDatos bd = new BaseDeDatos();
                 var spCambiarEstadoVisibilidad = bd.obtenerStoredProcedure("cambiarEstadoVisibilidad");
@@ -57,7 +57,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
                 MessageBox.Show("La visibilidad fue dada de baja/alta");
                 this.cargarTabla();
             }
-            if (e.ColumnIndex == 4)
+            if (e.ColumnIndex == 4 && (e.RowIndex != -1))
             {
                 ModificarVisibilidad mv = new ModificarVisibilidad(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                 mv.Show();

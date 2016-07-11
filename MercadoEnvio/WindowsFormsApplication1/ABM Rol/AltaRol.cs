@@ -49,7 +49,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
                 spCrearRol.Connection.Close();
                 MessageBox.Show("Nuevo Rol cargado");
-                txt_nombreRol.Clear();
+                this.Close();
             }
 
             catch (SqlException excepcion)

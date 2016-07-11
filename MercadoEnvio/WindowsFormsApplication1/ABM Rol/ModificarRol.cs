@@ -70,7 +70,6 @@ namespace WindowsFormsApplication1.ABM_Rol
 
                 spactualizarYBorrarFuncionalidadesRol.Connection.Close();
                 MessageBox.Show("Rol modificado");
-                txt_nombreRol.Clear();
             }
 
             catch (SqlException excepcion)

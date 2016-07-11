@@ -113,6 +113,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 reader.Read();
                 spModificarEmpresa.Connection.Close();
                 MessageBox.Show("Campos actualizados exitosamente");
+                this.Close();
             }
             catch (SqlException excepcion)
             {
