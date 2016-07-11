@@ -72,7 +72,7 @@
             this.Controls.Add(this.btn_ofertas);
             this.Controls.Add(this.btn_compras);
             this.Name = "HistorialCliente";
-            this.Text = "HistorialCliente";
+            this.Text = "Historial Cliente";
             this.Load += new System.EventHandler(this.HistorialCliente_Load);
             this.ResumeLayout(false);
 

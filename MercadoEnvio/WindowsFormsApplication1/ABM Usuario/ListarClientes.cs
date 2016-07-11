@@ -11,7 +11,7 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    public partial class ListarClientes : Form
+    public partial class ListarClientes : FormMaestro
     {
         public ListarClientes()
         {
@@ -25,11 +25,15 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void ListarClientes_Load(object sender, EventArgs e)
         {
-
+            validador.textBoxsNumericos(new List<TextBox>(new[] {
+                txt_dni
+            }));
         }
 
-        private void btn_buscar_Click(object sender, EventArgs e)
+        protected override void interactuar()
         {
+            dataGridView1.Rows.Clear();
+
             string consulta;
             consulta = "select c.*, Habilitado, Doc_Desc from C_HASHTAG.Cliente c JOIN C_HASHTAG.Usuario u ON (u.Id_User = c.Id_User) join C_HASHTAG.Tipo_Doc td on (td.Doc_Codigo = c.Tipo_Doc) where Id_Cliente is not null";
 
@@ -73,6 +77,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 dataGridView1.Rows[n].Cells[8].Value = "Modificar";
 
             }
+        }
+
+        private void btn_buscar_Click(object sender, EventArgs e)
+        {
+            this.submitir();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

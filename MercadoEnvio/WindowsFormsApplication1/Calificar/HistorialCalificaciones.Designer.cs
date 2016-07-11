@@ -126,15 +126,15 @@
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
             // 
-            // HistorialCliente
+            // HistorialCalificaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(411, 386);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "HistorialCliente";
-            this.Text = "HistorialCalificaciones";
+            this.Name = "HistorialCalificaciones";
+            this.Text = "Historial Calificaciones";
             this.Load += new System.EventHandler(this.HistorialCalificaciones_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

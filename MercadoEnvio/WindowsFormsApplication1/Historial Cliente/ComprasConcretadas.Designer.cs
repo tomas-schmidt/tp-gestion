@@ -97,7 +97,7 @@
             this.ClientSize = new System.Drawing.Size(564, 262);
             this.Controls.Add(this.groupBox1);
             this.Name = "ComprasConcretadas";
-            this.Text = "Form1";
+            this.Text = "Compras concretadas";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

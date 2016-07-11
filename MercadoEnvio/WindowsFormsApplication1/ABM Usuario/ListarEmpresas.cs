@@ -11,7 +11,7 @@ using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    public partial class ListarEmpresas : Form
+    public partial class ListarEmpresas : FormMaestro
     {
         public ListarEmpresas()
         {
@@ -43,10 +43,10 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void ListarEmpresas_Load(object sender, EventArgs e)
         {
-
+            
         }
 
-        private void btn_buscar_Click(object sender, EventArgs e)
+        protected override void interactuar()
         {
             string consulta;
             consulta = "select e.*, Habilitado from C_HASHTAG.Empresa e JOIN C_HASHTAG.Usuario u ON (u.Id_User = e.Id_User) where Id_Empresa is not null";
@@ -85,6 +85,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
             }
         }
+
+        private void btn_buscar_Click(object sender, EventArgs e)
+        {
+            this.submitir();
+        }  
 
         private void btn_limpiar_Click(object sender, EventArgs e)
         {
