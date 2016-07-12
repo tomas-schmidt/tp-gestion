@@ -207,7 +207,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
             }
             try
             {
-                dataGridView1.Rows.Clear();
+                dataGridView2.Rows.Clear();
                 int si = cb_trimestre.SelectedIndex;
                 int si2 = cb_rubros.SelectedIndex;
                 BaseDeDatos bd = new BaseDeDatos();
@@ -245,7 +245,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
             }
             try
             {
-                dataGridView1.Rows.Clear();
+                dataGridView3.Rows.Clear();
                 int si = cb_trimestre.SelectedIndex;
                 BaseDeDatos bd = new BaseDeDatos();
                 var spVendedoresConMayorCantDeFacturas = bd.obtenerStoredProcedure("vendedoresConMayorCantDeFacturas");
@@ -281,7 +281,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
 
             try
             {
-                dataGridView1.Rows.Clear();
+                dataGridView4.Rows.Clear();
                 int si = cb_trimestre.SelectedIndex;
                 BaseDeDatos bd = new BaseDeDatos();
                 var spVendedoresConMayorMontoFacturado = bd.obtenerStoredProcedure("vendedoresConMayorMontoFacturado");

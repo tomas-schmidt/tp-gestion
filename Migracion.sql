@@ -1218,11 +1218,11 @@ AS
 		RETURN
 	END
 
-	SELECT TOP 5 u.Username, sum(Total) as 'MontoTotal'
+	SELECT TOP 5 u.Username, sum(c.Monto) as 'MontoTotal'
 	from C_HASHTAG.Usuario u
 	join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
-	join C_HASHTAG.Factura f on (f.Id_Publicacion = p.Id_Publicacion)
-	where (Fecha > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
+	join C_HASHTAG.Compra c on (c.Id_Publicacion = p.Id_Publicacion)
+	where (c.Fecha > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and c.Fecha < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
 	group by u.Username
 	order by 2 desc
 GO
