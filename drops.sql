@@ -86,6 +86,3 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 
 --Drop esquema
 DROP SCHEMA C_HASHTAG
-
-
-select * from c_hashtag.publicacion

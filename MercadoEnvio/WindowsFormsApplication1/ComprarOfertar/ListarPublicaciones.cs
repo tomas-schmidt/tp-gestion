@@ -45,6 +45,8 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         }
 
+        
+
         protected override void interactuar()
         {
             bool poseeUnRubro = false;
@@ -64,6 +66,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
             try
             {
+                dataGridView1.Rows.Clear();
                 BaseDeDatos bd = new BaseDeDatos();
                 DataTable dbdataset2 = new DataTable();
                 foreach (DataGridViewRow item in dataGridView2.Rows)
@@ -87,17 +90,19 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 
 
                 foreach (DataRow item2 in dbdataset2.Rows)
-                        {
-                            int n = dataGridView1.Rows.Add();
-                            dataGridView1.Rows[n].Cells[0].Value = item2["Descripcion"].ToString();
-                            dataGridView1.Rows[n].Cells[1].Value = item2["Monto"].ToString();
-                            dataGridView1.Rows[n].Cells[2].Value = item2["tipo_public"].ToString();
-                            dataGridView1.Rows[n].Cells[4].Value = item2["Id_Publicacion"].ToString();
-                            dataGridView1.Rows[n].Cells[3].Value = "Ver";
-                            dataGridView1.Rows[n].Cells[5].Value = item2["Id_Visibilidad"].ToString();
-                         }
+                    {
+                        int n = dataGridView1.Rows.Add();
+                        dataGridView1.Rows[n].Cells[0].Value = item2["Descripcion"].ToString();
+                        dataGridView1.Rows[n].Cells[1].Value = item2["Monto"].ToString();
+                        dataGridView1.Rows[n].Cells[2].Value = item2["tipo_public"].ToString();
+                        dataGridView1.Rows[n].Cells[4].Value = item2["Id_Publicacion"].ToString();
+                        dataGridView1.Rows[n].Cells[3].Value = "Ver";
+                        dataGridView1.Rows[n].Cells[5].Value = item2["Id_Visibilidad"].ToString();
+                    }
 
-                dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Ascending);
+                    dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Ascending);
+                    this.RemoveDuplicate(dataGridView1);
+               
                        
                     }
                 

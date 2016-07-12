@@ -781,7 +781,6 @@ AS
 	where (Id_Estado = 2 or Id_Estado = 3) --solo muestro las activas y pausadas
 	and rp.Id_Rubro = (select top 1 Id_Rubro from C_HASHTAG.Rubro r where r.Desc_Corta = @Rubro)
 	and p.Descripcion like '%'+@Descripcion+'%'
-	and p.Id_User != @Id_User
 	--order by  Id_Visibilidad -- LISTO POR IMPORTANCIA
 GO
 
@@ -855,11 +854,18 @@ AS
 		return
 	end
 
+	if ((select Id_User from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = @Id_User )
+	begin
+		raiserror ('No podes auto-comprarte',16,1)
+		return
+	end
+
 	if ((select count(*) from C_HASHTAG.Compra where Id_User = @Id_User and Id_Calif is null) >= 3)
 	begin
 		raiserror ('Tenes muchas calificaciones pendientes',16,1)
 		return
 	end
+
 
 	if ((@Stock <= (select Stock from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion)))
 	begin
@@ -892,6 +898,17 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.realizarOferta @Id_Publicacion int, @MontoOfertado int, @Id_User int
 AS
+	if ((select Id_Estado from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) != 2 )
+	begin
+		raiserror ('Publicacion no activa',16,1)
+		return
+	end
+
+	if ((select Id_User from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) = @Id_User )
+	begin
+		raiserror ('No podes auto-ofertarte',16,1)
+		return
+	end
 
 	if ((select count(*) from C_HASHTAG.Compra where Id_User = @Id_User and Id_Calif is null) >= 3)
 	begin
@@ -1209,8 +1226,6 @@ AS
 	group by u.Username
 	order by 2 desc
 GO
-
-select * from C_HASHTAG.Publicacion
 
  /****************************************************************
  *					obtenerBorradores
