@@ -44,6 +44,12 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 dataGridView1.Rows[n].Cells[5].Value = item["Id_Publicacion"].ToString();
 
             }
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No posee borradores");
+                this.Close();
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

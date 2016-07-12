@@ -161,6 +161,11 @@ namespace WindowsFormsApplication1.Listado_Estadistico
 
         private void btn_prodsNoVendidos_Click(object sender, EventArgs e)
         {
+            if (txt_anio.Text == "")
+            {
+                MessageBox.Show("Ingrese un año");
+                return;
+            }
             try
             {
                 dataGridView1.Rows.Clear();
@@ -182,7 +187,8 @@ namespace WindowsFormsApplication1.Listado_Estadistico
                     dataGridView1.Rows[n].Cells[0].Value = item["Username"].ToString();
                     dataGridView1.Rows[n].Cells[1].Value = item["Descripcion"].ToString();
                     dataGridView1.Rows[n].Cells[2].Value = item["Stock"].ToString();
-                    dataGridView1.Rows[n].Cells[3].Value = item["Visibilidad"].ToString();    
+                    dataGridView1.Rows[n].Cells[3].Value = item["Visibilidad"].ToString();
+                    dataGridView1.Rows[n].Cells[4].Value = item["Fecha_Final"].ToString();    
                 }
                 spVendedoresConMayorCantDeProdsNoVendidos.Connection.Close();
             }
@@ -194,6 +200,11 @@ namespace WindowsFormsApplication1.Listado_Estadistico
 
         private void btn_mayorProdsComprados_Click(object sender, EventArgs e)
         {
+            if (txt_anio.Text == "")
+            {
+                MessageBox.Show("Ingrese un año");
+                return;
+            }
             try
             {
                 dataGridView1.Rows.Clear();
@@ -227,6 +238,11 @@ namespace WindowsFormsApplication1.Listado_Estadistico
 
         private void btn_mayorCantFacturas_Click(object sender, EventArgs e)
         {
+            if (txt_anio.Text == "")
+            {
+                MessageBox.Show("Ingrese un año");
+                return;
+            }
             try
             {
                 dataGridView1.Rows.Clear();
@@ -257,6 +273,12 @@ namespace WindowsFormsApplication1.Listado_Estadistico
 
         private void btn_mayorMontoFacturas_Click(object sender, EventArgs e)
         {
+            if (txt_anio.Text == "")
+            {
+                MessageBox.Show("Ingrese un año");
+                return;
+            }
+
             try
             {
                 dataGridView1.Rows.Clear();

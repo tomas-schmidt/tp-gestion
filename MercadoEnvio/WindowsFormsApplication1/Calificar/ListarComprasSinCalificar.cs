@@ -43,6 +43,12 @@ namespace WindowsFormsApplication1.Calificar
                 dataGridView1.Rows[n].Cells[5].Value = item["Id_Compra"].ToString();
 
             }
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No posee calificaciones pendientes");
+                this.Close();
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -1131,25 +1131,25 @@ AS
 
 	if(@visibilidad like 'Todas')
 	begin
-		SELECT TOP 5 u.Username as 'Username', p.Descripcion as 'Descripcion', p.Stock as 'Stock', Visibilidad_Desc as 'Visibilidad'
+		SELECT TOP 5 u.Username as 'Username', p.Descripcion as 'Descripcion', p.Stock as 'Stock', Visibilidad_Desc as 'Visibilidad', p.Fecha_Final as 'Fecha_Final'
 		from C_HASHTAG.Usuario u
 		join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
 		join C_HASHTAG.Visibilidad v on (p.Id_Visibilidad = v.Id_Visibilidad)
 		where (Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
 			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
-		order by 3 desc
+		order by 3 desc, p.Id_Visibilidad, 5 asc
 	end
 
 	else
 	begin
-		SELECT TOP 5 u.Username as 'Username', p.Descripcion as 'Descripcion', p.Stock as 'Stock', Visibilidad_Desc as 'Visibilidad'
+		SELECT TOP 5 u.Username as 'Username', p.Descripcion as 'Descripcion', p.Stock as 'Stock', Visibilidad_Desc as 'Visibilidad', p.Fecha_Final as 'Fecha_Final'
 		from C_HASHTAG.Usuario u
 		join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
 		join C_HASHTAG.Visibilidad v on (p.Id_Visibilidad = v.Id_Visibilidad)
 		where (@visibilidad like (select v.Visibilidad_Desc from C_HASHTAG.Visibilidad v where p.Id_Visibilidad = v.Id_Visibilidad))
 		and ((Fecha_Final > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Final < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre))
 			or (Fecha_Inicial > =  C_HASHTAG.obtenerFechaInicioTrimestre(@anio, @trimestre) and Fecha_Inicial < =  C_HASHTAG.obtenerFechaFinTrimestre(@anio, @trimestre)))
-		order by 3 desc
+		order by 3 desc, p.Id_Visibilidad, 5 asc
 	end
 GO
 

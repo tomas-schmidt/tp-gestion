@@ -59,6 +59,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
@@ -85,7 +86,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 20);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(534, 138);
+            this.groupBox1.Size = new System.Drawing.Size(605, 138);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del listado";
@@ -94,7 +95,7 @@
             // lbl_visibilidad
             // 
             this.lbl_visibilidad.AutoSize = true;
-            this.lbl_visibilidad.Location = new System.Drawing.Point(210, 66);
+            this.lbl_visibilidad.Location = new System.Drawing.Point(267, 66);
             this.lbl_visibilidad.Name = "lbl_visibilidad";
             this.lbl_visibilidad.Size = new System.Drawing.Size(81, 13);
             this.lbl_visibilidad.TabIndex = 13;
@@ -104,7 +105,7 @@
             // 
             this.cb_visibilidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_visibilidad.FormattingEnabled = true;
-            this.cb_visibilidad.Location = new System.Drawing.Point(297, 58);
+            this.cb_visibilidad.Location = new System.Drawing.Point(354, 58);
             this.cb_visibilidad.Name = "cb_visibilidad";
             this.cb_visibilidad.Size = new System.Drawing.Size(169, 21);
             this.cb_visibilidad.TabIndex = 12;
@@ -113,7 +114,7 @@
             // 
             this.cb_rubros.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_rubros.FormattingEnabled = true;
-            this.cb_rubros.Location = new System.Drawing.Point(297, 58);
+            this.cb_rubros.Location = new System.Drawing.Point(354, 58);
             this.cb_rubros.Name = "cb_rubros";
             this.cb_rubros.Size = new System.Drawing.Size(169, 21);
             this.cb_rubros.TabIndex = 11;
@@ -121,7 +122,7 @@
             // lbl_rubro
             // 
             this.lbl_rubro.AutoSize = true;
-            this.lbl_rubro.Location = new System.Drawing.Point(223, 64);
+            this.lbl_rubro.Location = new System.Drawing.Point(280, 64);
             this.lbl_rubro.Name = "lbl_rubro";
             this.lbl_rubro.Size = new System.Drawing.Size(60, 13);
             this.lbl_rubro.TabIndex = 10;
@@ -129,7 +130,7 @@
             // 
             // btn_mayorMontoFacturas
             // 
-            this.btn_mayorMontoFacturas.Location = new System.Drawing.Point(194, 101);
+            this.btn_mayorMontoFacturas.Location = new System.Drawing.Point(453, 98);
             this.btn_mayorMontoFacturas.Name = "btn_mayorMontoFacturas";
             this.btn_mayorMontoFacturas.Size = new System.Drawing.Size(110, 23);
             this.btn_mayorMontoFacturas.TabIndex = 9;
@@ -139,7 +140,7 @@
             // 
             // btn_mayorCantFacturas
             // 
-            this.btn_mayorCantFacturas.Location = new System.Drawing.Point(194, 102);
+            this.btn_mayorCantFacturas.Location = new System.Drawing.Point(453, 99);
             this.btn_mayorCantFacturas.Name = "btn_mayorCantFacturas";
             this.btn_mayorCantFacturas.Size = new System.Drawing.Size(110, 23);
             this.btn_mayorCantFacturas.TabIndex = 8;
@@ -149,7 +150,7 @@
             // 
             // btn_mayorProdsComprados
             // 
-            this.btn_mayorProdsComprados.Location = new System.Drawing.Point(194, 102);
+            this.btn_mayorProdsComprados.Location = new System.Drawing.Point(453, 99);
             this.btn_mayorProdsComprados.Name = "btn_mayorProdsComprados";
             this.btn_mayorProdsComprados.Size = new System.Drawing.Size(110, 23);
             this.btn_mayorProdsComprados.TabIndex = 7;
@@ -159,7 +160,7 @@
             // 
             // btn_prodsNoVendidos
             // 
-            this.btn_prodsNoVendidos.Location = new System.Drawing.Point(194, 102);
+            this.btn_prodsNoVendidos.Location = new System.Drawing.Point(453, 99);
             this.btn_prodsNoVendidos.Name = "btn_prodsNoVendidos";
             this.btn_prodsNoVendidos.Size = new System.Drawing.Size(110, 23);
             this.btn_prodsNoVendidos.TabIndex = 6;
@@ -171,7 +172,7 @@
             // 
             this.cb_tipoListado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_tipoListado.FormattingEnabled = true;
-            this.cb_tipoListado.Location = new System.Drawing.Point(292, 23);
+            this.cb_tipoListado.Location = new System.Drawing.Point(349, 23);
             this.cb_tipoListado.Name = "cb_tipoListado";
             this.cb_tipoListado.Size = new System.Drawing.Size(214, 21);
             this.cb_tipoListado.TabIndex = 5;
@@ -181,14 +182,14 @@
             // 
             this.cb_trimestre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_trimestre.FormattingEnabled = true;
-            this.cb_trimestre.Location = new System.Drawing.Point(88, 63);
+            this.cb_trimestre.Location = new System.Drawing.Point(95, 63);
             this.cb_trimestre.Name = "cb_trimestre";
             this.cb_trimestre.Size = new System.Drawing.Size(88, 21);
             this.cb_trimestre.TabIndex = 4;
             // 
             // txt_anio
             // 
-            this.txt_anio.Location = new System.Drawing.Point(88, 24);
+            this.txt_anio.Location = new System.Drawing.Point(95, 24);
             this.txt_anio.Name = "txt_anio";
             this.txt_anio.Size = new System.Drawing.Size(109, 20);
             this.txt_anio.TabIndex = 3;
@@ -198,7 +199,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(210, 26);
+            this.label3.Location = new System.Drawing.Point(267, 26);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 13);
             this.label3.TabIndex = 2;
@@ -207,7 +208,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 66);
+            this.label2.Location = new System.Drawing.Point(34, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 13);
             this.label2.TabIndex = 1;
@@ -216,7 +217,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 27);
+            this.label1.Location = new System.Drawing.Point(34, 27);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 0;
@@ -230,7 +231,7 @@
             this.groupBox2.Controls.Add(this.dataGridView1);
             this.groupBox2.Location = new System.Drawing.Point(13, 177);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(532, 211);
+            this.groupBox2.Size = new System.Drawing.Size(604, 212);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Listado Estadistico";
@@ -244,10 +245,10 @@
             this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
             this.Column9});
-            this.dataGridView4.Location = new System.Drawing.Point(20, 25);
+            this.dataGridView4.Location = new System.Drawing.Point(12, 22);
             this.dataGridView4.Name = "dataGridView4";
             this.dataGridView4.ReadOnly = true;
-            this.dataGridView4.Size = new System.Drawing.Size(485, 176);
+            this.dataGridView4.Size = new System.Drawing.Size(578, 176);
             this.dataGridView4.TabIndex = 3;
             // 
             // Column8
@@ -273,10 +274,10 @@
             this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column6,
             this.Column7});
-            this.dataGridView3.Location = new System.Drawing.Point(20, 25);
+            this.dataGridView3.Location = new System.Drawing.Point(12, 22);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
-            this.dataGridView3.Size = new System.Drawing.Size(485, 176);
+            this.dataGridView3.Size = new System.Drawing.Size(578, 176);
             this.dataGridView3.TabIndex = 2;
             // 
             // Column6
@@ -303,10 +304,10 @@
             this.Column4,
             this.Column5,
             this.Column11});
-            this.dataGridView2.Location = new System.Drawing.Point(20, 25);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 22);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.Size = new System.Drawing.Size(485, 176);
+            this.dataGridView2.Size = new System.Drawing.Size(578, 176);
             this.dataGridView2.TabIndex = 1;
             // 
             // Column4
@@ -340,11 +341,12 @@
             this.Column1,
             this.Column2,
             this.Column3,
-            this.Column10});
-            this.dataGridView1.Location = new System.Drawing.Point(20, 25);
+            this.Column10,
+            this.Column12});
+            this.dataGridView1.Location = new System.Drawing.Point(12, 22);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(485, 176);
+            this.dataGridView1.Size = new System.Drawing.Size(578, 176);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -377,11 +379,17 @@
             this.Column10.ReadOnly = true;
             this.Column10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // Column12
+            // 
+            this.Column12.HeaderText = "Fecha final";
+            this.Column12.Name = "Column12";
+            this.Column12.ReadOnly = true;
+            // 
             // ListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(557, 401);
+            this.ClientSize = new System.Drawing.Size(629, 401);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ListadoEstadistico";
@@ -431,6 +439,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
 
     }
 }
