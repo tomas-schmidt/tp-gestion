@@ -222,6 +222,24 @@
     <Compile Include="Generar Publicación\GenerarSubasta.Designer.cs">
       <DependentUpon>GenerarSubasta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Generar Publicación\ListarBorradores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\ListarBorradores.Designer.cs">
+      <DependentUpon>ListarBorradores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicación\ModificarCompra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\ModificarCompra.Designer.cs">
+      <DependentUpon>ModificarCompra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicación\ModificarSubasta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\ModificarSubasta.Designer.cs">
+      <DependentUpon>ModificarSubasta.cs</DependentUpon>
+    </Compile>
     <Compile Include="Historial Cliente\HistorialCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,6 +376,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicación\GenerarSubasta.resx">
       <DependentUpon>GenerarSubasta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\ListarBorradores.resx">
+      <DependentUpon>ListarBorradores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\ModificarCompra.resx">
+      <DependentUpon>ModificarCompra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\ModificarSubasta.resx">
+      <DependentUpon>ModificarSubasta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\HistorialCliente.resx">
       <DependentUpon>HistorialCliente.cs</DependentUpon>

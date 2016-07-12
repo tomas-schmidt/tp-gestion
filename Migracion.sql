@@ -1210,12 +1210,129 @@ AS
 	order by 2 desc
 GO
 
+select * from C_HASHTAG.Publicacion
+
+ /****************************************************************
+ *					obtenerBorradores
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerBorradores @Id_User int
+as
+	select p.*, tp.Descripcion as 'tipo_public' from C_HASHTAG.Publicacion p
+	join C_HASHTAG.Tipo_Public tp
+	on (p.Id_Tipo_Public = tp.Id_Tipo_Public)
+	where Id_User = @Id_User and Id_Estado = 1
+go
+
+/****************************************************************
+ *							ObtenerPublicacionAModificar
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerPublicacionAModificar @Id_Publicacion int
+AS
+	select top 1 p.*, Visibilidad_Desc from C_HASHTAG.Publicacion p
+	join C_HASHTAG.Visibilidad v on(v.Id_Visibilidad = p.Id_Visibilidad)
+	where Id_Publicacion = @Id_Publicacion
+GO
+
+/****************************************************************
+ *							obtenerRubrosPublicacion
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.obtenerRubrosPublicacion @Id_Publicacion int
+ as
+	select r.Desc_Corta from C_HASHTAG.Rubro r
+	join C_HASHTAG.Rubro_Publicacion rp on (r.Id_Rubro = rp.Id_Rubro)
+	join C_HASHTAG.Publicacion p on (rp.Id_Publicacion = p.Id_Publicacion) 
+	where p.Id_Publicacion = @Id_Publicacion
+go
+
+/****************************************************************
+ *						modificarCompra
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.modificarCompra
+	@Monto numeric(18,2),
+	@Visibilidad nvarchar(255),
+	@Preguntas bit,
+	@Stock numeric(18,0),
+	@Estado nvarchar(255),
+	@Descripcion nvarchar(255),
+	@Envio bit,
+	@Id_Publicacion int
+as
+	if ((select Id_Estado from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) !=1)
+	begin
+		RAISERROR('Solo se pueden modificar borradores', 16, 1)
+		return
+	end
+
+	if (@Monto < 0 or @Stock  <= 0 or @Descripcion is null or @Visibilidad is null)
+	begin
+		RAISERROR('Debe ingresar bien los parametros', 16, 1)
+		return
+	end
+
+	begin transaction
+
+		update C_HASHTAG.Publicacion
+		set Monto = @Monto, Id_Visibilidad = (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad), Id_Estado = (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado),
+		Preguntas = @Preguntas, Stock = @Stock, Descripcion = @Descripcion, Envio = @Envio
+		where Id_Publicacion = @Id_Publicacion
+
+	commit transaction
+go
+
+/****************************************************************
+ *						ModificarSubasta
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.modificarSubasta
+	@Monto numeric(18,2),
+	@Visibilidad nvarchar(255),
+	@Preguntas bit,
+	@Estado nvarchar(255),
+	@Descripcion nvarchar(255),
+	@Envio bit,
+	@Id_Publicacion int
+as
+	if ((select Id_Estado from C_HASHTAG.Publicacion where Id_Publicacion = @Id_Publicacion) !=1)
+	begin
+		RAISERROR('Solo se pueden modificar borradores', 16, 1)
+		return
+	end
+
+	if (@Monto < 0 or @Descripcion is null or @Visibilidad is null)
+	begin
+		RAISERROR('Debe ingresar bien los parametros', 16, 1)
+		return
+	end
+
+	begin transaction
+
+		update C_HASHTAG.Publicacion
+		set Monto = @Monto, Id_Visibilidad = (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad), Id_Estado = (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado),
+		Preguntas = @Preguntas, Descripcion = @Descripcion, Envio = @Envio
+		where Id_Publicacion = @Id_Publicacion
+
+	commit transaction
+go
+
+
+/****************************************************************
+ *						EliminarRubrosDePublicacion
+ ****************************************************************/
+
+CREATE PROCEDURE C_HASHTAG.eliminarRubrosDePublicacion
+	@Id_Publicacion int
+AS
+	delete C_HASHTAG.Rubro_Publicacion
+	where Id_Publicacion = @Id_Publicacion
+GO
+
+
 
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
  *
  ***********************************************************************/
+
 
 USE GD1C2016
 

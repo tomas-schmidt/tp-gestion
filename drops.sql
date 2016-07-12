@@ -52,6 +52,13 @@ DROP PROCEDURE C_HASHTAG.vendedoresConMayorCantDeProdsNoVendidos
 DROP PROCEDURE C_HASHTAG.clientesConMayorCantDeProdsComprados
 DROP PROCEDURE C_HASHTAG.vendedoresConMayorCantDeFacturas
 DROP PROCEDURE C_HASHTAG.vendedoresConMayorMontoFacturado
+DROP PROCEDURE C_HASHTAG.obtenerBorradores
+DROP PROCEDURE C_HASHTAG.obtenerPublicacionAModificar
+DROP PROCEDURE C_HASHTAG.obtenerRubrosPublicacion
+DROP PROCEDURE C_HASHTAG.modificarCompra
+DROP PROCEDURE C_HASHTAG.modificarSubasta
+DROP PROCEDURE C_HASHTAG.eliminarRubrosDePublicacion
+
 
 
 
@@ -79,3 +86,6 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 
 --Drop esquema
 DROP SCHEMA C_HASHTAG
+
+
+select * from c_hashtag.publicacion

@@ -35,5 +35,11 @@ namespace WindowsFormsApplication1.Generar_Publicación
         {
 
         }
+
+        private void btn_borradores_Click(object sender, EventArgs e)
+        {
+            ListarBorradores lb = new ListarBorradores(idUser);
+            lb.Show();
+        }
     }
 }
