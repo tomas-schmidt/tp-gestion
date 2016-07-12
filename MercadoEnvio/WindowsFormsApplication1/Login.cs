@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -30,7 +31,7 @@ namespace WindowsFormsApplication1
 
         private void Login_Load(object sender, EventArgs e)
         {
-
+           
         }
 
         private void btn_login_Click(object sender, EventArgs e)

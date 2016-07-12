@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using WindowsFormsApplication1.ConexionBD;
 
 namespace WindowsFormsApplication1
 {
@@ -15,6 +16,8 @@ namespace WindowsFormsApplication1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            BaseDeDatos bd = new BaseDeDatos();
+            bd.establecerFechaDeSistema();
             Application.Run(new Login());
         }
     }

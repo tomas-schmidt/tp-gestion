@@ -25,7 +25,7 @@ AS
 	set Id_Estado = 4
 	where Fecha_Final < @Fecha and Id_Tipo_Public = 1 and Id_Estado != 4
 
-	--Finalizo subastas vencidas y realizo la facturacion y registro de compra
+	--Finalizo subastas vencidas con ofertas y realizo la facturacion y registro de compra
 	declare @Id_Publicacion int, @Id_User int
 	declare subsVencidas cursor for
 		select p.Id_Publicacion, o.Id_User
@@ -52,8 +52,12 @@ AS
 		end
 	close subsVencidas
 	deallocate subsVencidas
-GO
 
+	--Finalizo las subastas vencidas sin ofertas
+	update C_HASHTAG.Publicacion
+	set Id_Estado = 4
+	where Fecha_Final < @Fecha and Id_Tipo_Public = 2 and Id_Estado != 4
+GO
 
 CREATE FUNCTION C_HASHTAG.obtenerFecha () RETURNS DateTime
 AS
@@ -1230,8 +1234,6 @@ GO*/
 insert into C_HASHTAG.FECHA_DEL_SISTEMA
 (Fecha) values
 (CAST('20150101' AS datetime))
-
-
 
 
 /****************************************************************/

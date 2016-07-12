@@ -12,21 +12,37 @@ namespace WindowsFormsApplication1.ConexionBD
     {
         public String parametrosConexionDB;
         private String esquema;
-
+        private DateTime fechaDeSistema;
 
         public BaseDeDatos()
-        {
-            /*No funcionaba. arreglar
-             * parametrosConexionDB = "Server=" + System.Configuration.ConfigurationManager.AppSettings["server"] + ";"
+        {     
+            parametrosConexionDB = "Server=" + System.Configuration.ConfigurationManager.AppSettings["server"] + ";"
                 + "Database=" + System.Configuration.ConfigurationManager.AppSettings["database"] + ";"
                 + "User ID=" + System.Configuration.ConfigurationManager.AppSettings["id"] + ";"
-                + "Password=" + System.Configuration.ConfigurationManager.AppSettings["password"];*/
+                + "Password=" + System.Configuration.ConfigurationManager.AppSettings["password"];
 
-            //esquema = System.Configuration.ConfigurationManager.AppSettings["esquema"];
-            esquema = "C_HASHTAG";
+            esquema = System.Configuration.ConfigurationManager.AppSettings["esquema"];
+            
+            //establecerFechaDeSistema();
+            //hardcodeado:
+            //esquema = "C_HASHTAG";
+            //parametrosConexionDB = "Server=localhost\\SQLSERVER2012;Database=GD1C2016;USER ID=gd;Password=gd2016";
 
-            parametrosConexionDB = "Server=localhost\\SQLSERVER2012;Database=GD1C2016;USER ID=gd;Password=gd2016";
+        }
 
+        public void establecerFechaDeSistema()
+        {
+            fechaDeSistema = new DateTime(
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["year"]),
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["month"]),
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["day"]),
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["hour"]),
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["minutes"]),
+                0);
+
+            SqlCommand sp = obtenerStoredProcedure("SetFecha");
+            sp.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = fechaDeSistema;
+            sp.ExecuteNonQuery();
         }
 
         public SqlCommand obtenerStoredProcedure(String nombre)
