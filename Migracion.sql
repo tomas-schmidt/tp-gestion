@@ -1365,7 +1365,7 @@ EXEC C_HASHTAG.SetFecha @fecha
 GO*/
 insert into C_HASHTAG.FECHA_DEL_SISTEMA
 (Fecha) values
-(CAST('20150101' AS datetime))
+(CAST('20161231' AS datetime))
 
 
 /****************************************************************/
@@ -1830,7 +1830,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.empresa.' + RIGHT(CONVERT(varchar(18),Publ_Empresa_Cuit),18)),
-		2, -- estan todas activas
+		4, -- estan todas finalizadas en la fecha de inicio del sistema
 		(SELECT top 1 Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
 			where Descripcion = Publicacion_Tipo),
@@ -1865,7 +1865,7 @@ INSERT INTO C_HASHTAG.Publicacion
 		(SELECT Id_User
 			FROM C_HASHTAG.Usuario
 			WHERE Username = 'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Publ_Cli_Dni),18) ),
-		2, -- estan todas activas
+		4, -- estan todas finalizadas en la fecha de inicio del sistema
 		(SELECT Id_Tipo_Public  
 			FROM C_HASHTAG.Tipo_Public
 			where Descripcion = Publicacion_Tipo),
@@ -1949,6 +1949,8 @@ INSERT INTO C_HASHTAG.Compra
 		Calificacion_Codigo
 		FROM gd_esquema.Maestra
 		WHERE Compra_Cantidad IS NOT NULL and Calificacion_Codigo is not null
+		--and Compra_Fecha >= (select Fecha_Inicial from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
+		--and Compra_Fecha <= (select Fecha_Final from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
 
 /****************************************************************/
 --							Factura
@@ -1976,6 +1978,8 @@ INSERT INTO C_HASHTAG.Factura
 		Factura_Total
 		FROM gd_esquema.Maestra
 		WHERE Factura_Fecha is NOT NULL
+		--and Factura_Fecha >= (select Fecha_Inicial from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
+		--and Factura_Fecha <= (select Fecha_Final from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
 
 SET IDENTITY_INSERT C_HASHTAG.Factura OFF
 
@@ -2010,7 +2014,7 @@ INSERT INTO C_HASHTAG.Item
 		Item_Factura_Monto,
 		Item_Factura_Cantidad
 		FROM gd_esquema.Maestra
-		where Item_Factura_Cantidad IS NOT NULL AND 'fact' IS NOT NULL   -- no se si poner la restriccion de que el monto tampoco sea null
+		where Item_Factura_Cantidad IS NOT NULL AND 'fact' IS NOT NULL --and Factura_Nro IS NOT NULL   -- no se si poner la restriccion de que el monto tampoco sea null
 
 
 /****************************************************************/
