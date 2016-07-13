@@ -102,6 +102,11 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
                     dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Ascending);
                     this.RemoveDuplicate(dataGridView1);
+
+                    for (int i = 9; i <= this.dataGridView1.Rows.Count; i++)
+                    {
+                        dataGridView1.Rows[i].Visible = false;
+                    }
                
                        
                     }

@@ -127,5 +127,20 @@ namespace WindowsFormsApplication1.Generar_Publicación
         {
             this.submitir();
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int si1 = comboBox1.SelectedIndex;
+            if ((string)comboBox1.Items[si1] == "Gratis")
+            {
+                checkBox2.Checked = false;
+                checkBox2.Enabled = false;
+            }
+            else
+            {
+                checkBox2.Enabled = true;
+            }
+
+        }
     }
 }

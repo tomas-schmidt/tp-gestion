@@ -42,8 +42,14 @@
             this.btn_comprar = new System.Windows.Forms.Button();
             this.Cantidad = new System.Windows.Forms.Label();
             this.cb_Stock = new System.Windows.Forms.ComboBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txt_username = new System.Windows.Forms.TextBox();
+            this.txt_reputacion = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -57,9 +63,9 @@
             this.groupBox1.Controls.Add(this.txt_fechaFinal);
             this.groupBox1.Controls.Add(this.txt_stock);
             this.groupBox1.Controls.Add(this.txt_monto);
-            this.groupBox1.Location = new System.Drawing.Point(17, 14);
+            this.groupBox1.Location = new System.Drawing.Point(25, 94);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(413, 271);
+            this.groupBox1.Size = new System.Drawing.Size(414, 271);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos de la publicacion";
@@ -147,7 +153,7 @@
             this.groupBox2.Controls.Add(this.btn_comprar);
             this.groupBox2.Controls.Add(this.Cantidad);
             this.groupBox2.Controls.Add(this.cb_Stock);
-            this.groupBox2.Location = new System.Drawing.Point(465, 41);
+            this.groupBox2.Location = new System.Drawing.Point(473, 115);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(289, 198);
             this.groupBox2.TabIndex = 1;
@@ -156,7 +162,7 @@
             // 
             // btn_comprar
             // 
-            this.btn_comprar.Location = new System.Drawing.Point(66, 134);
+            this.btn_comprar.Location = new System.Drawing.Point(66, 106);
             this.btn_comprar.Name = "btn_comprar";
             this.btn_comprar.Size = new System.Drawing.Size(163, 49);
             this.btn_comprar.TabIndex = 2;
@@ -182,11 +188,59 @@
             this.cb_Stock.Size = new System.Drawing.Size(121, 21);
             this.cb_Stock.TabIndex = 0;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.txt_reputacion);
+            this.groupBox3.Controls.Add(this.txt_username);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Location = new System.Drawing.Point(25, 13);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(503, 75);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Dueño de la publicacion";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(16, 33);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(46, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Usuario:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(261, 33);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Reputacion:";
+            // 
+            // txt_username
+            // 
+            this.txt_username.Location = new System.Drawing.Point(68, 30);
+            this.txt_username.Name = "txt_username";
+            this.txt_username.ReadOnly = true;
+            this.txt_username.Size = new System.Drawing.Size(177, 20);
+            this.txt_username.TabIndex = 8;
+            // 
+            // txt_reputacion
+            // 
+            this.txt_reputacion.Location = new System.Drawing.Point(332, 30);
+            this.txt_reputacion.Name = "txt_reputacion";
+            this.txt_reputacion.ReadOnly = true;
+            this.txt_reputacion.Size = new System.Drawing.Size(142, 20);
+            this.txt_reputacion.TabIndex = 9;
+            // 
             // MostrarCompra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(786, 297);
+            this.ClientSize = new System.Drawing.Size(786, 378);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "MostrarCompra";
@@ -196,6 +250,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -216,5 +272,10 @@
         private System.Windows.Forms.Label Cantidad;
         private System.Windows.Forms.ComboBox cb_Stock;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox txt_reputacion;
+        private System.Windows.Forms.TextBox txt_username;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
     }
 }

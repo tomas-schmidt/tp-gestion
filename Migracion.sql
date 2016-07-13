@@ -248,8 +248,8 @@ CREATE PROCEDURE C_HASHTAG.crearUsuarioYCliente
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
-		(@Username, @Contraseña, 0, 1, 1) --todos los usuario nuevos poseen su primera publicacion gratis
+		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado, Publicacion_Gratis, Id_Reputacion) VALUES 
+		(@Username, @Contraseña, 0, 1, 1,1) --todos los usuario nuevos poseen su primera publicacion gratis
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
@@ -312,8 +312,8 @@ CREATE PROCEDURE C_HASHTAG.crearUsuarioYEmpresa
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
-		(@Username, @Contraseña, 0, 1, 1) --todos los usuario nuevos poseen su primera publicacion gratis
+		INSERT INTO C_HASHTAG.Usuario (Username, Contraseña , Intentos_Fallidos, Habilitado, Publicacion_Gratis, Id_Reputacion) VALUES 
+		(@Username, @Contraseña, 0, 1, 1, 1) --todos los usuario nuevos poseen su primera publicacion gratis
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
@@ -789,7 +789,9 @@ GO
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.obtenerPublicacion @Id_Publicacion int
 AS
-	select * from C_HASHTAG.Publicacion
+	select p.*, Desc_Reputacion as 'reputacion', Username from C_HASHTAG.Publicacion p
+	join C_HASHTAG.Usuario u on (p.Id_User = u.Id_User)
+	join C_HASHTAG.Reputacion r on (u.Id_Reputacion = r.Id_Reputacion)
 	where Id_Publicacion = @Id_Publicacion
 GO
 
@@ -974,6 +976,17 @@ go
 			update C_HASHTAG.Compra
 			set Id_Calif = @Id_Calificacion
 			where Id_Compra = @Id_Compra
+
+			--actualizo la reputacion del usuario calificado
+			declare @Id_User int
+
+			set @Id_User =(select u.Id_User from C_HASHTAG.Usuario u
+						   join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
+						   join C_HASHTAG.Compra c on (c.Id_Publicacion = p.Id_Publicacion)
+						   where Id_Compra = @Id_Compra)
+
+			exec C_HASHTAG.modificarReputacion @Id_User
+
 		commit transaction
 	end
 go
@@ -1339,6 +1352,34 @@ AS
 GO
 
 
+/****************************************************************
+ *						ModificarReputacion
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.modificarReputacion @Id_User int
+ as
+
+	if((select count(Id_Compra) from C_HASHTAG.Compra c
+		join C_HASHTAG.Publicacion p on c.Id_Publicacion = p.Id_Publicacion
+		where p.Id_User = @Id_User) = 0)
+	begin
+		update C_HASHTAG.Usuario
+		set Id_Reputacion = 1
+		where Id_User = @Id_User
+		return
+	end
+
+	declare @Promedio int
+
+	set @Promedio = (select (sum(Cant_Estrellas) / count(Id_Compra)) from C_HASHTAG.Calificacion c
+					join C_HASHTAG.Compra co on (c.Id_Calificacion = co.Id_Calif)
+					join C_HASHTAG.Publicacion p on (p.Id_Publicacion = co.Id_Publicacion)
+					join C_HASHTAG.Usuario u on (p.Id_User = u.Id_User)
+					where u.Id_User = @Id_User)
+
+	update C_HASHTAG.Usuario
+	set Id_Reputacion = (select r.Id_Reputacion from C_HASHTAG.Reputacion r where Promedio = @Promedio)
+	where Id_User = @Id_User
+go	
 
 /***********************************************************************
  *
@@ -1476,6 +1517,22 @@ CREATE TABLE C_HASHTAG.Tipo_Doc(
 INSERT INTO C_HASHTAG.Tipo_Doc(Doc_Desc) VALUES ('DNI')
 INSERT INTO C_HASHTAG.Tipo_Doc(Doc_Desc) VALUES ('Cedula')
 
+/****************************************************************/
+--							Reputacion
+/****************************************************************/
+CREATE TABLE C_HASHTAG.Reputacion
+(
+	Id_Reputacion numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+	Promedio numeric (18,0),
+	Desc_Reputacion nvarchar(255) 
+)
+
+INSERT INTO C_HASHTAG.Reputacion (Promedio, Desc_Reputacion) VALUES (0, 'Sin reputacion')
+INSERT INTO C_HASHTAG.Reputacion (Promedio, Desc_Reputacion) VALUES (1, 'Mala')
+INSERT INTO C_HASHTAG.Reputacion (Promedio, Desc_Reputacion) VALUES (2, 'Regular')
+INSERT INTO C_HASHTAG.Reputacion (Promedio, Desc_Reputacion) VALUES (3, 'Buena')
+INSERT INTO C_HASHTAG.Reputacion (Promedio, Desc_Reputacion) VALUES (4, 'Muy buena')
+INSERT INTO C_HASHTAG.Reputacion (Promedio, Desc_Reputacion) VALUES (5, 'Perfecta')
 
 /****************************************************************/
 --							Usuario
@@ -1487,20 +1544,21 @@ CREATE TABLE C_HASHTAG.Usuario
 	Contraseña varchar(255) NOT NULL,
 	Intentos_Fallidos numeric(18,0) DEFAULT 0,
 	Habilitado bit DEFAULT 1,
-	Publicacion_Gratis bit
+	Publicacion_Gratis bit,
+	Id_Reputacion numeric(18,0) NOT NULL FOREIGN KEY REFERENCES C_HASHTAG.Reputacion(Id_Reputacion)
 )
 
 --Creo administrador con Id_User:1, username:admin1 y password:administrador (hasheada)
-INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
-	('admin1', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1,0)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado, Publicacion_Gratis, Id_Reputacion) VALUES 
+	('admin1', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1,0,1)
 
 --Creo administrador con Id_User:2, username:admin2 y password:administrador (hasheada)
-INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado, Publicacion_Gratis) VALUES 
-	('admin2', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1,0)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado, Publicacion_Gratis, Id_Reputacion) VALUES 
+	('admin2', 'b20b0f63ce2ed361e8845d6bf2e59811aaa06ec96bcdb92f9bc0c5a25e83c9a6',0,1,0,1)
 
 --PEDIDO DEL ENUNCIADO: Creo usuario de rol especial con Id_User:3, username:admin y password:w23e (hasheada)
-INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado,Publicacion_Gratis) VALUES 
-	('admin', '6b1583aea70be6a605d44e3563880d1b833a1d25c7ac5cb0222101e83a76559f',0,1,0)
+INSERT INTO C_HASHTAG.Usuario (Username, Contraseña, Intentos_Fallidos, Habilitado,Publicacion_Gratis, Id_Reputacion) VALUES 
+	('admin', '6b1583aea70be6a605d44e3563880d1b833a1d25c7ac5cb0222101e83a76559f',0,1,0,1)
 
 
 INSERT INTO C_HASHTAG.Usuario
@@ -1509,14 +1567,16 @@ INSERT INTO C_HASHTAG.Usuario
 	Contraseña,
 	Intentos_Fallidos,
 	Habilitado,
-	Publicacion_Gratis
+	Publicacion_Gratis,
+	Id_Reputacion
 )
 	SELECT DISTINCT
 		'usuario.cliente.' + RIGHT(CONVERT(varchar(18),Cli_Dni),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
 		1,
-		0 -- no posee ningun usuario migrado la publicacion gratis
+		0, -- no posee ningun usuario migrado la publicacion gratis
+		1 -- sin reputacion
 		FROM gd_esquema.Maestra
 		where Cli_Dni IS NOT NULL
 	UNION
@@ -1525,7 +1585,8 @@ INSERT INTO C_HASHTAG.Usuario
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
 		1,
-		0 -- no posee ningun usuario migrado la publicacion gratis
+		0, -- no posee ningun usuario migrado la publicacion gratis
+		1 -- sin reputacion
 		FROM gd_esquema.Maestra
 		where Publ_Cli_Dni IS NOT NULL
 
@@ -1535,7 +1596,8 @@ INSERT INTO C_HASHTAG.Usuario
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		0,
 		1,
-		0 -- no posee ningun usuario migrado la publicacion gratis
+		0, -- no posee ningun usuario migrado la publicacion gratis
+		1 --sin reputacion
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
 
@@ -2099,3 +2161,25 @@ INSERT INTO C_HASHTAG.Rol_Usuario (Id_User, Id_Rol)
 --PEDIDO DEL ENUNCIADO: Cargo Rol especial (Id_Rol = 4) a usuario con username admin (Id_User = 3)
 INSERT INTO C_HASHTAG.Rol_Usuario(Id_User, Id_Rol) VALUES
 	(3,4)
+
+
+/*******SETEO UNA REPUTACION A LOS USUARIOS MIGRADOS***************/
+
+	declare @Id_User int
+	declare usuariosCreados cursor for
+			select Id_User from C_HASHTAG.Usuario
+
+	open usuariosCreados
+	fetch next from usuariosCreados
+		into @Id_User
+	while @@FETCH_STATUS = 0
+		begin
+			exec C_HASHTAG.modificarReputacion @Id_User
+		fetch next from usuariosCreados
+			into @Id_User
+		end
+	close usuariosCreados
+	deallocate usuariosCreados
+
+/*******SETEO UNA REPUTACION A LOS USUARIOS MIGRADOS***************/
+

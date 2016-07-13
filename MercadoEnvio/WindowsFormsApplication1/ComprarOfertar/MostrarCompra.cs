@@ -34,6 +34,8 @@ namespace WindowsFormsApplication1.ComprarOfertar
             sda.Fill(dbdataset);
             foreach (DataRow item in dbdataset.Rows)
             {
+                txt_reputacion.Text = item["reputacion"].ToString();
+                txt_username.Text = item["Username"].ToString();
                 txt_monto.Text = item["Monto"].ToString();
                 txt_descripcion.Text = item["Descripcion"].ToString();
                 txt_stock.Text = item["Stock"].ToString();
