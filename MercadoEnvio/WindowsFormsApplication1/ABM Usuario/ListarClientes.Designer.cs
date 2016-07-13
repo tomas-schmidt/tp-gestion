@@ -38,6 +38,9 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txt_apellido = new System.Windows.Forms.TextBox();
             this.btn_limpiar = new System.Windows.Forms.Button();
             this.btn_buscar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,9 +49,6 @@
             this.txt_Email = new System.Windows.Forms.TextBox();
             this.txt_dni = new System.Windows.Forms.TextBox();
             this.txt_nombre = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txt_apellido = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -68,7 +68,7 @@
             this.Column6,
             this.Column7,
             this.Column8});
-            this.dataGridView1.Location = new System.Drawing.Point(1, 120);
+            this.dataGridView1.Location = new System.Drawing.Point(5, 120);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(966, 243);
@@ -135,6 +135,42 @@
             this.Column8.ReadOnly = true;
             this.Column8.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.txt_apellido);
+            this.groupBox1.Controls.Add(this.btn_limpiar);
+            this.groupBox1.Controls.Add(this.btn_buscar);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.txt_Email);
+            this.groupBox1.Controls.Add(this.txt_dni);
+            this.groupBox1.Controls.Add(this.txt_nombre);
+            this.groupBox1.Location = new System.Drawing.Point(15, 8);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(619, 86);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Filtro de busqueda";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(212, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(44, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Apellido";
+            // 
+            // txt_apellido
+            // 
+            this.txt_apellido.Location = new System.Drawing.Point(262, 25);
+            this.txt_apellido.Name = "txt_apellido";
+            this.txt_apellido.Size = new System.Drawing.Size(100, 20);
+            this.txt_apellido.TabIndex = 8;
             // 
             // btn_limpiar
             // 
@@ -204,42 +240,6 @@
             this.txt_nombre.Size = new System.Drawing.Size(100, 20);
             this.txt_nombre.TabIndex = 0;
             this.txt_nombre.TextChanged += new System.EventHandler(this.txt_nombre_TextChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.txt_apellido);
-            this.groupBox1.Controls.Add(this.btn_limpiar);
-            this.groupBox1.Controls.Add(this.btn_buscar);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.txt_Email);
-            this.groupBox1.Controls.Add(this.txt_dni);
-            this.groupBox1.Controls.Add(this.txt_nombre);
-            this.groupBox1.Location = new System.Drawing.Point(15, 8);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(619, 86);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Filtro de busqueda";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(212, 29);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Apellido";
-            // 
-            // txt_apellido
-            // 
-            this.txt_apellido.Location = new System.Drawing.Point(262, 25);
-            this.txt_apellido.Name = "txt_apellido";
-            this.txt_apellido.Size = new System.Drawing.Size(100, 20);
-            this.txt_apellido.TabIndex = 8;
             // 
             // ListarClientes
             // 

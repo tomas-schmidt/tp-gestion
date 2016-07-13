@@ -79,7 +79,7 @@ namespace WindowsFormsApplication1
                 {
                     Convert.ToDouble(txtbox.Text);
                 }
-                catch //(System.FormatException)
+                catch (System.FormatException)
                 {
                     mensajeError += "El campo " + txtbox.Name + " debe ser numerico\n";
                 }
