@@ -1408,10 +1408,7 @@ CREATE TABLE C_HASHTAG.[FECHA_DEL_SISTEMA](
 )
 
 -- Cargo la fecha en la que inicia el sistema
-/*DECLARE @fecha datetime
-SET @fecha = CAST('20150101' AS datetime)
-EXEC C_HASHTAG.SetFecha @fecha
-GO*/
+
 insert into C_HASHTAG.FECHA_DEL_SISTEMA
 (Fecha) values
 (CAST('20161231' AS datetime))

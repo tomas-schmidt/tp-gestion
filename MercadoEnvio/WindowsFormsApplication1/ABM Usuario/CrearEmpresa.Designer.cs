@@ -82,7 +82,7 @@
             this.btn_crearEmpesa.Location = new System.Drawing.Point(152, 261);
             this.btn_crearEmpesa.Name = "btn_crearEmpesa";
             this.btn_crearEmpesa.Size = new System.Drawing.Size(213, 23);
-            this.btn_crearEmpesa.TabIndex = 60;
+            this.btn_crearEmpesa.TabIndex = 47;
             this.btn_crearEmpesa.Text = "Crear empresa";
             this.btn_crearEmpesa.UseVisualStyleBackColor = true;
             this.btn_crearEmpesa.Click += new System.EventHandler(this.btn_crearEmpesa_Click);
@@ -313,7 +313,7 @@
             this.txt_nombreContacto.Location = new System.Drawing.Point(357, 216);
             this.txt_nombreContacto.Name = "txt_nombreContacto";
             this.txt_nombreContacto.Size = new System.Drawing.Size(100, 20);
-            this.txt_nombreContacto.TabIndex = 62;
+            this.txt_nombreContacto.TabIndex = 46;
             // 
             // CrearEmpresa
             // 

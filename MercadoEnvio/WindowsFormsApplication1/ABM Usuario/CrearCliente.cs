@@ -45,6 +45,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 txt_telefono,
                 txt_nroCalle,
                 txt_nroDoc,
+                txt_username,
+                txt_password
             }));
 
             validador.textBoxsNumericos(new List<TextBox>(new[] {
