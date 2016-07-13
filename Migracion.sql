@@ -1434,26 +1434,6 @@ INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Empresa', 1)
 --inserto rol que pide el enunciado para probar todas las funcionalidades
 INSERT INTO C_HASHTAG.Rol (Nombre_Rol, Habilitado) VALUES ('Rol Especial', 1)
 
-/*TRIGGER
-
-CREATE TRIGGER C_HASHTAG.Rol_Inhabilitado
-ON  C_HASHTAG.Rol
-AFTER UPDATE
-AS 
-BEGIN TRAN
-SET NOCOUNT ON;
-      If Update(Habilitado)
-      Begin
-           DELETE ru
-		   FROM C_HASHTAG.Rol_Usuario ru
-			INNER JOIN C_HASHTAG.Rol r
-			ON r.Id_Rol = ru.Id_Rol
-		   WHERE  r.Habilitado=0
-      End
-SET NOCOUNT OFF
-COMMIT TRAN
-GO
-*/
 
 /****************************************************************/
 --							Funcionalidad
@@ -1610,6 +1590,7 @@ INSERT INTO C_HASHTAG.Usuario
 		1 --sin reputacion
 		FROM gd_esquema.Maestra
 		where Publ_Empresa_Cuit IS NOT NULL
+
 
 /****************************************************************/
 --							Cliente
@@ -2006,9 +1987,7 @@ INSERT INTO C_HASHTAG.Compra
 		Calificacion_Codigo
 		FROM gd_esquema.Maestra
 		WHERE Compra_Cantidad IS NOT NULL and Calificacion_Codigo is not null
-		--and Compra_Fecha >= (select Fecha_Inicial from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
-		--and Compra_Fecha <= (select Fecha_Final from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
-
+		
 /****************************************************************/
 --							Factura
 /****************************************************************/
@@ -2035,9 +2014,7 @@ INSERT INTO C_HASHTAG.Factura
 		Factura_Total
 		FROM gd_esquema.Maestra
 		WHERE Factura_Fecha is NOT NULL
-		--and Factura_Fecha >= (select Fecha_Inicial from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
-		--and Factura_Fecha <= (select Fecha_Final from C_HASHTAG.Publicacion where Id_Publicacion = Publicacion_Cod)
-
+		
 SET IDENTITY_INSERT C_HASHTAG.Factura OFF
 
 CREATE NONCLUSTERED INDEX indiceFactura

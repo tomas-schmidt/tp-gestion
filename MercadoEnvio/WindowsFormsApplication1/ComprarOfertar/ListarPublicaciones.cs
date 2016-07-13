@@ -100,20 +100,21 @@ namespace WindowsFormsApplication1.ComprarOfertar
                         dataGridView1.Rows[n].Cells[4].Value = item2["Id_Publicacion"].ToString();
                         dataGridView1.Rows[n].Cells[3].Value = "Ver";
                         dataGridView1.Rows[n].Cells[5].Value = item2["Id_Visibilidad"].ToString();
-                    }
+                        dataGridView1.Rows[n].Visible = false;
+                }
 
                     dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Ascending);
                     this.RemoveDuplicate(dataGridView1);
 
                     double rows = ((dataGridView1.Rows.Count));
                     double paginas = Math.Ceiling(rows / 10);
-                    if (rows > 0)
+                    /*(if (rows > 0)
                     {
                         for (int j = 0; j < rows; j++)
                         {
                             dataGridView1.Rows[j].Visible = false;
                         }
-                    }
+                    }*/
 
                     if (paginas > 0)
                     {
@@ -123,11 +124,6 @@ namespace WindowsFormsApplication1.ComprarOfertar
                         }
                         cb_pags.SelectedItem = cb_pags.Items[0] ;
                     }
-
-                    
-                
-                    
-   
             }
                 
             

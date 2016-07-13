@@ -73,19 +73,31 @@ namespace WindowsFormsApplication1
         private string validarTextBoxDecimales()
         {
             string mensajeError = "";
+        
             foreach (TextBox txtbox in textBoxDecimales)
             {
-                try
+                double variable = 0;
+                double.TryParse(txtbox.Text, out variable);
+
+                if (variable != 0)
                 {
-                    Convert.ToDouble(txtbox.Text);
+                    if (Convert.ToDouble(txtbox.Text) <= 0)
+                    {
+                        mensajeError += "El campo " + txtbox.Name + " debe ser mayor a 0\n";
+
+                    }
                 }
-                catch (System.FormatException)
+
+                if (variable == 0)
                 {
-                    mensajeError += "El campo " /*+ txtbox.Name*/ + " debe ser numerico\n";
+                    mensajeError += "El campo " + txtbox.Name + " debe ser numerico\n";
                 }
             }
-            
             return mensajeError;
+            
+
+            
+            
 
         }
     }

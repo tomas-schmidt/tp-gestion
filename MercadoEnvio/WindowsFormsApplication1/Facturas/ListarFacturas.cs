@@ -94,19 +94,20 @@ namespace WindowsFormsApplication1.Facturas
                 dataGridView1.Rows[n].Cells[0].Value = item["Id_Factura"].ToString();
                 dataGridView1.Rows[n].Cells[1].Value = item["Fecha"].ToString();
                 dataGridView1.Rows[n].Cells[2].Value = item["Total"].ToString();
+                dataGridView1.Rows[n].Visible = false;
             }
 
             //cb_pags.Items = 0;
 
             double rows = ((dataGridView1.Rows.Count));
             double paginas = Math.Ceiling(rows / 10);
-            if (rows > 0)
+            /*if (rows > 0)
             {
                 for (int j = 0; j < rows; j++)
                 {
                     dataGridView1.Rows[j].Visible = false;
                 }
-            }
+            }*/
 
             if (paginas > 0)
             {
