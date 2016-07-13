@@ -1264,7 +1264,6 @@ go
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.modificarCompra
 	@Monto numeric(18,2),
-	@Visibilidad nvarchar(255),
 	@Preguntas bit,
 	@Stock numeric(18,0),
 	@Estado nvarchar(255),
@@ -1278,7 +1277,7 @@ as
 		return
 	end
 
-	if (@Monto < 0 or @Stock  <= 0 or @Descripcion is null or @Visibilidad is null)
+	if (@Monto < 0 or @Stock  <= 0 or @Descripcion is null)
 	begin
 		RAISERROR('Debe ingresar bien los parametros', 16, 1)
 		return
@@ -1287,7 +1286,7 @@ as
 	begin transaction
 
 		update C_HASHTAG.Publicacion
-		set Monto = @Monto, Id_Visibilidad = (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad), Id_Estado = (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado),
+		set Monto = @Monto, Id_Estado = (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado),
 		Preguntas = @Preguntas, Stock = @Stock, Descripcion = @Descripcion, Envio = @Envio
 		where Id_Publicacion = @Id_Publicacion
 
@@ -1299,7 +1298,6 @@ go
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.modificarSubasta
 	@Monto numeric(18,2),
-	@Visibilidad nvarchar(255),
 	@Preguntas bit,
 	@Estado nvarchar(255),
 	@Descripcion nvarchar(255),
@@ -1312,7 +1310,7 @@ as
 		return
 	end
 
-	if (@Monto < 0 or @Descripcion is null or @Visibilidad is null)
+	if (@Monto < 0 or @Descripcion is null )
 	begin
 		RAISERROR('Debe ingresar bien los parametros', 16, 1)
 		return
@@ -1321,7 +1319,7 @@ as
 	begin transaction
 
 		update C_HASHTAG.Publicacion
-		set Monto = @Monto, Id_Visibilidad = (select top 1 Id_Visibilidad from C_HASHTAG.Visibilidad v where v.Visibilidad_Desc = @Visibilidad), Id_Estado = (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado),
+		set Monto = @Monto, Id_Estado = (select top 1 e.Id_Estado from C_HASHTAG.Estado e where e.Descripcion = @Estado),
 		Preguntas = @Preguntas, Descripcion = @Descripcion, Envio = @Envio
 		where Id_Publicacion = @Id_Publicacion
 

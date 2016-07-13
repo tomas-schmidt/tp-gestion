@@ -152,7 +152,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 spModificarPublicacion.Parameters.Add("@Id_Publicacion", SqlDbType.Int).Value = idPublicacion;
                 spModificarPublicacion.Parameters.Add("@Monto", SqlDbType.Float).Value = txt_monto.Text;
                 spModificarPublicacion.Parameters.Add("@Stock", SqlDbType.Int).Value = Convert.ToDouble(txt_Stock.Text);
-                spModificarPublicacion.Parameters.Add("@Visibilidad", SqlDbType.VarChar).Value = (string)comboBox1.Items[si1];
                 spModificarPublicacion.Parameters.Add("@Preguntas", SqlDbType.Bit).Value = checkBox1.CheckState;
                 spModificarPublicacion.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = txt_descripcion.Text;
                 spModificarPublicacion.Parameters.Add("@Estado", SqlDbType.VarChar).Value = (string)comboBox2.Items[si2];
