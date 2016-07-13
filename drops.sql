@@ -61,8 +61,6 @@ DROP PROCEDURE C_HASHTAG.eliminarRubrosDePublicacion
 DROP PROCEDURE C_HASHTAG.modificarReputacion
 
 
-
-
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario
 DROP TABLE C_HASHTAG.Rubro_Publicacion

@@ -37,6 +37,18 @@ namespace WindowsFormsApplication1.Facturas
 
             var result = new DateTime(y, m, d);
             dateTimePicker_mayor.Value = result;
+
+            int date2 = 20170101;
+
+            int d2 = date2 % 100;
+            int m2 = (date2 / 100) % 100;
+            int y2 = date2 / 10000;
+
+            var result2 = new DateTime(y2, m2, d2);
+
+
+            dateTimePicker_menor.Value = result2;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
