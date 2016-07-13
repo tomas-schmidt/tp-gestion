@@ -44,7 +44,7 @@ namespace WindowsFormsApplication1
 
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
 
         }

@@ -126,7 +126,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
             }
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
         }
 

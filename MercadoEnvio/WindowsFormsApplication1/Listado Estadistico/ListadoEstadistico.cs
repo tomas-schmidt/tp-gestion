@@ -194,7 +194,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
             }
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
         }
 
@@ -231,7 +231,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
             }
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
 
         }
@@ -267,7 +267,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
             }
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
         }
 
@@ -303,7 +303,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
             }
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
         }
 

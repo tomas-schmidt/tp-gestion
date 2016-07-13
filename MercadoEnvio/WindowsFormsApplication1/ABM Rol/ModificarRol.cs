@@ -74,7 +74,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
             catch (SqlException excepcion)
             {
-                MessageBox.Show("Hubo un error en la base: " + excepcion.Message);
+                MessageBox.Show(excepcion.Message);
             }
         
         }
