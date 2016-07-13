@@ -670,6 +670,12 @@ as
 		return
 	end
 
+	if (@Stock  > 300)
+	begin
+		RAISERROR('El stock puede ser como máximo de 300', 16, 1)
+		return
+	end
+
 	begin transaction
 		declare @fecha datetime, @Id_Publicacion int
 		set @fecha = C_HASHTAG.obtenerFecha()
@@ -1303,6 +1309,12 @@ as
 	if (@Monto < 0 or @Stock  <= 0 or @Descripcion is null)
 	begin
 		RAISERROR('Debe ingresar bien los parametros', 16, 1)
+		return
+	end
+
+	if (@Stock  > 300)
+	begin
+		RAISERROR('El stock puede ser como máximo de 300', 16, 1)
 		return
 	end
 
