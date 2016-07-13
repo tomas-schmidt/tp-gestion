@@ -59,6 +59,7 @@ DROP PROCEDURE C_HASHTAG.modificarCompra
 DROP PROCEDURE C_HASHTAG.modificarSubasta
 DROP PROCEDURE C_HASHTAG.eliminarRubrosDePublicacion
 DROP PROCEDURE C_HASHTAG.modificarReputacion
+DROP PROCEDURE C_HASHTAG.obtenerTodasVisibilidades
 
 
 --Drops tablas

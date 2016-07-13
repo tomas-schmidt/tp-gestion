@@ -556,6 +556,15 @@ AS
 GO
 
 /****************************************************************
+ *							ObtenerTodasVisibilidades
+ ****************************************************************/
+CREATE PROCEDURE C_HASHTAG.obtenerTodasVisibilidades
+AS
+	SELECT *
+		FROM Visibilidad
+GO
+
+/****************************************************************
  *							cambiarEstadoVisibilidad
  ****************************************************************/
 CREATE PROCEDURE C_HASHTAG.cambiarEstadoVisibilidad

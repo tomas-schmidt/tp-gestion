@@ -26,7 +26,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
         private void cargarTabla()
         {
             BaseDeDatos bd = new BaseDeDatos();
-            var spObtenerVisibilidades = bd.obtenerStoredProcedure("obtenerVisibilidades");
+            var spObtenerVisibilidades = bd.obtenerStoredProcedure("obtenerTodasVisibilidades");
 
             SqlDataAdapter sda = new SqlDataAdapter();
             sda.SelectCommand = spObtenerVisibilidades;
