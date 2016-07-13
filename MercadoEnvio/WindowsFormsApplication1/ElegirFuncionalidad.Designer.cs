@@ -43,16 +43,17 @@
             this.dataGridView_funcionalidades.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Funcionalidad,
             this.Column1});
-            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(18, 43);
+            this.dataGridView_funcionalidades.Location = new System.Drawing.Point(21, 43);
             this.dataGridView_funcionalidades.Name = "dataGridView_funcionalidades";
-            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(276, 172);
+            this.dataGridView_funcionalidades.ReadOnly = true;
+            this.dataGridView_funcionalidades.Size = new System.Drawing.Size(294, 172);
             this.dataGridView_funcionalidades.TabIndex = 0;
             this.dataGridView_funcionalidades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_funcionalidades_CellContentClick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 13);
+            this.label1.Location = new System.Drawing.Point(12, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(99, 13);
             this.label1.TabIndex = 1;
@@ -60,13 +61,14 @@
             // 
             // Funcionalidad
             // 
-            this.Funcionalidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Funcionalidad.HeaderText = "Funcionalidad";
             this.Funcionalidad.Name = "Funcionalidad";
             this.Funcionalidad.ReadOnly = true;
+            this.Funcionalidad.Width = 133;
             // 
             // Column1
             // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column1.HeaderText = "Seleccionar";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
@@ -75,7 +77,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 235);
+            this.ClientSize = new System.Drawing.Size(337, 235);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_funcionalidades);
             this.Name = "ElegirFuncionalidad";

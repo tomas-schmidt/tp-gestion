@@ -49,7 +49,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(26, 437);
+            this.checkBox2.Location = new System.Drawing.Point(26, 406);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(93, 17);
             this.checkBox2.TabIndex = 38;
@@ -117,7 +117,7 @@
             // 
             // btn_generarSubasta
             // 
-            this.btn_generarSubasta.Location = new System.Drawing.Point(113, 470);
+            this.btn_generarSubasta.Location = new System.Drawing.Point(113, 439);
             this.btn_generarSubasta.Name = "btn_generarSubasta";
             this.btn_generarSubasta.Size = new System.Drawing.Size(265, 23);
             this.btn_generarSubasta.TabIndex = 33;
@@ -139,7 +139,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(26, 400);
+            this.checkBox1.Location = new System.Drawing.Point(26, 369);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(114, 17);
             this.checkBox1.TabIndex = 31;
@@ -149,10 +149,9 @@
             // 
             // txt_descripcion
             // 
-            this.txt_descripcion.Location = new System.Drawing.Point(92, 331);
-            this.txt_descripcion.Multiline = true;
+            this.txt_descripcion.Location = new System.Drawing.Point(92, 327);
             this.txt_descripcion.Name = "txt_descripcion";
-            this.txt_descripcion.Size = new System.Drawing.Size(367, 44);
+            this.txt_descripcion.Size = new System.Drawing.Size(367, 20);
             this.txt_descripcion.TabIndex = 30;
             this.txt_descripcion.TextChanged += new System.EventHandler(this.txt_descripcion_TextChanged);
             // 
@@ -167,7 +166,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 338);
+            this.label4.Location = new System.Drawing.Point(23, 330);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 28;
@@ -198,7 +197,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(514, 508);
+            this.ClientSize = new System.Drawing.Size(514, 475);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridView1);

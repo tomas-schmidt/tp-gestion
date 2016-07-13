@@ -322,5 +322,10 @@ namespace WindowsFormsApplication1.Listado_Estadistico
                 MessageBox.Show("Debe ser un año");
             }
         }
+
+        private void cb_trimestre_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

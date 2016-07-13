@@ -48,7 +48,7 @@
             // 
             // btn_generarSubasta
             // 
-            this.btn_generarSubasta.Location = new System.Drawing.Point(116, 473);
+            this.btn_generarSubasta.Location = new System.Drawing.Point(116, 447);
             this.btn_generarSubasta.Name = "btn_generarSubasta";
             this.btn_generarSubasta.Size = new System.Drawing.Size(293, 23);
             this.btn_generarSubasta.TabIndex = 20;
@@ -69,7 +69,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(29, 403);
+            this.checkBox1.Location = new System.Drawing.Point(29, 377);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(114, 17);
             this.checkBox1.TabIndex = 18;
@@ -79,9 +79,8 @@
             // txt_descripcion
             // 
             this.txt_descripcion.Location = new System.Drawing.Point(95, 334);
-            this.txt_descripcion.Multiline = true;
             this.txt_descripcion.Name = "txt_descripcion";
-            this.txt_descripcion.Size = new System.Drawing.Size(395, 44);
+            this.txt_descripcion.Size = new System.Drawing.Size(395, 20);
             this.txt_descripcion.TabIndex = 17;
             // 
             // txt_montoInicial
@@ -175,7 +174,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(29, 440);
+            this.checkBox2.Location = new System.Drawing.Point(29, 414);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(93, 17);
             this.checkBox2.TabIndex = 25;
@@ -186,7 +185,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 510);
+            this.ClientSize = new System.Drawing.Size(528, 486);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dataGridView1);

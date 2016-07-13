@@ -186,6 +186,7 @@
             this.cb_trimestre.Name = "cb_trimestre";
             this.cb_trimestre.Size = new System.Drawing.Size(88, 21);
             this.cb_trimestre.TabIndex = 4;
+            this.cb_trimestre.SelectedIndexChanged += new System.EventHandler(this.cb_trimestre_SelectedIndexChanged);
             // 
             // txt_anio
             // 

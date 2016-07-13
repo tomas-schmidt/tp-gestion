@@ -34,19 +34,24 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cb_pags = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.cb_pags);
             this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(26, 24);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(502, 211);
+            this.groupBox1.Size = new System.Drawing.Size(487, 238);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Compras concretadas";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // dataGridView1
             // 
@@ -90,16 +95,36 @@
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(198, 210);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(40, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Página";
+            // 
+            // cb_pags
+            // 
+            this.cb_pags.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_pags.FormattingEnabled = true;
+            this.cb_pags.Location = new System.Drawing.Point(241, 205);
+            this.cb_pags.Name = "cb_pags";
+            this.cb_pags.Size = new System.Drawing.Size(46, 21);
+            this.cb_pags.TabIndex = 5;
+            this.cb_pags.SelectedIndexChanged += new System.EventHandler(this.cb_pags_SelectedIndexChanged);
+            // 
             // ComprasConcretadas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 262);
+            this.ClientSize = new System.Drawing.Size(513, 262);
             this.Controls.Add(this.groupBox1);
             this.Name = "ComprasConcretadas";
             this.Text = "Compras concretadas";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -113,5 +138,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cb_pags;
     }
 }

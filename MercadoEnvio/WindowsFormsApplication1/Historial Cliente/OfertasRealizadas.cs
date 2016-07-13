@@ -39,6 +39,47 @@ namespace WindowsFormsApplication1.Historial_Cliente
                 dataGridView1.Rows[n].Cells[1].Value = item["Monto_Ofertado"].ToString();
                 dataGridView1.Rows[n].Cells[2].Value = item["Fecha"].ToString();
             }
+
+            double rows = ((dataGridView1.Rows.Count));
+            double paginas = Math.Ceiling(rows / 10);
+            if (rows > 0)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    dataGridView1.Rows[j].Visible = false;
+                }
+            }
+
+            if (paginas > 0)
+            {
+                for (int i = 1; i <= paginas; i++)
+                {
+                    cb_pags.Items.Add(i);
+                }
+                cb_pags.SelectedItem = cb_pags.Items[0];
+            }
+        }
+
+        private void cb_pags_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int rows = ((dataGridView1.Rows.Count));
+
+            if (rows > 0)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    dataGridView1.Rows[j].Visible = false;
+                }
+            }
+
+            int pag = (((Convert.ToInt32(cb_pags.SelectedIndex)) + 1) * 10);
+            for (int i = pag - 10; i < pag; i++)
+            {
+                if (dataGridView1.Rows.Count > i)
+                {
+                    dataGridView1.Rows[i].Visible = true;
+                }
+            }
         }
     }
 }

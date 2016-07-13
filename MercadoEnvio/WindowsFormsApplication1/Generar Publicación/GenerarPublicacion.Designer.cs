@@ -45,7 +45,7 @@
             // 
             // btn_generarSubasta
             // 
-            this.btn_generarSubasta.Location = new System.Drawing.Point(52, 100);
+            this.btn_generarSubasta.Location = new System.Drawing.Point(52, 97);
             this.btn_generarSubasta.Name = "btn_generarSubasta";
             this.btn_generarSubasta.Size = new System.Drawing.Size(172, 35);
             this.btn_generarSubasta.TabIndex = 1;

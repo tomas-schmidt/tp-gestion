@@ -1015,6 +1015,7 @@ go
 	on (co.Id_Calif = ca.Id_Calificacion)
 	where Id_User = @Id_User
 	group by Cant_Estrellas
+	order by 1
 go
 
 /****************************************************************
@@ -1027,7 +1028,7 @@ go
 	join C_HASHTAG.Publicacion p
 	on (c.Id_Publicacion = p.Id_Publicacion)
 	where c.Id_User = @Id_User
-	order by Id_Compra desc
+	order by 4 desc
 go
 
 /****************************************************************
@@ -1040,7 +1041,7 @@ go
 	join C_HASHTAG.Publicacion p
 	on (o.Id_Publicacion = p.Id_Publicacion)
 	where o.Id_User = @Id_User
-	order by Id_Oferta desc
+	order by 3 desc
 go
 
 
@@ -1806,11 +1807,6 @@ CREATE TABLE C_HASHTAG.Visibilidad
 	Habilitado bit 
 )
 
-/*Gratis no provee servicio de envío.
-Para las restantes publicaciones independientemente de cual sea su visibilidad, se
-debe elegir si dicha publicación brindará o no el servicio de envío sobre el producto
-comprado.*/
-
 
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
 	VALUES ('Platino', 0.10, 0.05, 180.00, 1)
@@ -1827,14 +1823,6 @@ INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comisio
 INSERT INTO C_HASHTAG.Visibilidad (Visibilidad_Desc, Comision_Prod_Vend, Comision_Envio_Prod, Comision_Tipo_Public, Habilitado)
 	VALUES ('Gratis', 0.00, 0.00, 0, 1) 
 
-/*
-HAY QUE IMPLEMENTAR:
-todo usuario nuevo en la plataforma (aquellos agregados post-migración)
-tendrán el beneficio de tener por única vez una publicación sin
-costo de comisión de publicación (aplicable para aquellas que no sean
-gratuitas), la cual corresponderá a la primera publicación que registren en
-la plataforma. Esta característica no es aplicable a los datos migrados.
-*/
 
 /****************************************************************/
 --							Tipo Publicacion

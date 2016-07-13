@@ -58,8 +58,11 @@ namespace WindowsFormsApplication1.Facturas
 
         protected override void interactuar()
         {
+            dataGridView1.Rows.Clear();
+            cb_pags.Items.Clear();
+
             string consulta;
-            consulta = "select f.* from C_HASHTAG.Factura f join C_HASHTAG.Item i on (i.Id_Factura = f.Id_Factura) join C_HASHTAG.Publicacion p on (p.Id_Publicacion = f.Id_Publicacion) where p.Id_User = " + idUserActual + " and f.Fecha < @FechaMaxima and f.Fecha > @FechaMinima";
+            consulta = "select distinct f.* from C_HASHTAG.Factura f join C_HASHTAG.Item i on (i.Id_Factura = f.Id_Factura) join C_HASHTAG.Publicacion p on (p.Id_Publicacion = f.Id_Publicacion) where p.Id_User = " + idUserActual + " and f.Fecha < @FechaMaxima and f.Fecha > @FechaMinima";
 
             if (txt_mayor.Text != "")
             {
@@ -74,7 +77,7 @@ namespace WindowsFormsApplication1.Facturas
                 consulta = consulta + " and i.Descripcion like '%" + txt_descripcion.Text + "%'";
             }
 
-            consulta = consulta + " order by Id_Factura desc";
+            consulta = consulta + " order by Fecha desc";
 
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerFacturas = bd.obtenerConsulta(consulta);
@@ -92,18 +95,64 @@ namespace WindowsFormsApplication1.Facturas
                 dataGridView1.Rows[n].Cells[1].Value = item["Fecha"].ToString();
                 dataGridView1.Rows[n].Cells[2].Value = item["Total"].ToString();
             }
+
+            //cb_pags.Items = 0;
+
+            double rows = ((dataGridView1.Rows.Count));
+            double paginas = Math.Ceiling(rows / 10);
+            if (rows > 0)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    dataGridView1.Rows[j].Visible = false;
+                }
+            }
+
+            if (paginas > 0)
+            {
+                for (int i = 1; i <= paginas; i++)
+                {
+                    cb_pags.Items.Add(i);
+                }
+                cb_pags.SelectedItem = cb_pags.Items[0];
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            dataGridView1.Rows.Clear();
             txt_descripcion.Clear();
             txt_mayor.Clear();
             txt_menor.Clear();
+            cb_pags.Items.Clear();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void cb_pags_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int rows = ((dataGridView1.Rows.Count));
+
+            if (rows > 0)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    dataGridView1.Rows[j].Visible = false;
+                }
+            }
+
+            int pag = (((Convert.ToInt32(cb_pags.SelectedIndex)) + 1) * 10);
+            for (int i = pag - 10; i < pag; i++)
+            {
+                if (dataGridView1.Rows.Count > i)
+                {
+                    dataGridView1.Rows[i].Visible = true;
+                }
+            }
         }
 
     }

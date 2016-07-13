@@ -33,16 +33,20 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cb_pags = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.cb_pags);
             this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 21);
+            this.groupBox1.Location = new System.Drawing.Point(12, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(502, 211);
+            this.groupBox1.Size = new System.Drawing.Size(483, 229);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ofertas realizadas";
@@ -56,7 +60,7 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView1.Location = new System.Drawing.Point(19, 29);
+            this.dataGridView1.Location = new System.Drawing.Point(18, 24);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(445, 166);
@@ -81,16 +85,36 @@
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(192, 201);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(40, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Página";
+            // 
+            // cb_pags
+            // 
+            this.cb_pags.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_pags.FormattingEnabled = true;
+            this.cb_pags.Location = new System.Drawing.Point(235, 196);
+            this.cb_pags.Name = "cb_pags";
+            this.cb_pags.Size = new System.Drawing.Size(46, 21);
+            this.cb_pags.TabIndex = 7;
+            this.cb_pags.SelectedIndexChanged += new System.EventHandler(this.cb_pags_SelectedIndexChanged);
+            // 
             // OfertasRealizadas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(524, 250);
+            this.ClientSize = new System.Drawing.Size(508, 250);
             this.Controls.Add(this.groupBox1);
             this.Name = "OfertasRealizadas";
             this.Text = "Ofertas Realizadas";
             this.Load += new System.EventHandler(this.OfertasRealizadas_Load);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -103,5 +127,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cb_pags;
     }
 }

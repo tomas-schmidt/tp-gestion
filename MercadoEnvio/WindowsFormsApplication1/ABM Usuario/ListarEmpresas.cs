@@ -93,6 +93,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void btn_limpiar_Click(object sender, EventArgs e)
         {
+            dataGridView1.Rows.Clear();
             txt_Cuit.Clear();
             txt_Email.Clear();
             txt_razonSocial.Clear();
