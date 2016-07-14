@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -72,25 +73,13 @@ namespace WindowsFormsApplication1
 
         private string validarTextBoxDecimales()
         {
+            Regex regexNumerica = new Regex("^[0-9]*(,[0-9]+)?$");
             string mensajeError = "";
-        
             foreach (TextBox txtbox in textBoxDecimales)
             {
-                double variable = 0;
-                double.TryParse(txtbox.Text, out variable);
-
-                if (variable != 0)
+                if (!regexNumerica.IsMatch(txtbox.Text))
                 {
-                    if ((Double.Parse(txtbox.Text))<0)
-                    {
-                        mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico mayor o igual a 0\n";
-
-                    }
-                }
-
-                if (variable == 0)
-                {
-                    mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico mayor o igual a 0\n";
+                    mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico mayor a 0\n";
                 }
             }
             return mensajeError;

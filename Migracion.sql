@@ -863,6 +863,7 @@ GO
 	join C_HASHTAG.Visibilidad v
 	on (v.Id_Visibilidad = p.Id_Visibilidad)
 	where Id_Publicacion = @Id_Publicacion
+
 		set @SubTotal = (@Stock * @Comision_Prod_Vend * @Monto)
 
 	set @TotalEnvio = 0
@@ -1527,6 +1528,7 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,5)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,4)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,6)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,7)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,9)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,10)
 
 --Inserto funcionalidades de la empresa
