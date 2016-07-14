@@ -81,9 +81,9 @@ namespace WindowsFormsApplication1
 
                 if (variable != 0)
                 {
-                    if ((Convert.ToDouble(txtbox.Text) < 0))
+                    if ((Double.Parse(txtbox.Text))<0)
                     {
-                        mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico mayor a  o igual a 0\n";
+                        mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico mayor o igual a 0\n";
 
                     }
                 }

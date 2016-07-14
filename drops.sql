@@ -60,7 +60,7 @@ DROP PROCEDURE C_HASHTAG.modificarSubasta
 DROP PROCEDURE C_HASHTAG.eliminarRubrosDePublicacion
 DROP PROCEDURE C_HASHTAG.modificarReputacion
 DROP PROCEDURE C_HASHTAG.obtenerTodasVisibilidades
-
+DROP PROCEDURE C_HASHTAG.pausarPublicaciones
 
 --Drops tablas
 DROP TABLE C_HASHTAG.Rol_Usuario
@@ -89,3 +89,11 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 DROP SCHEMA C_HASHTAG
 
 
+select * from C_HASHTAG.Usuario
+where Username like 'usuario.cliente.51469458'
+
+select * from C_HASHTAG.Cliente
+where Id_User = 12
+
+select * from C_HASHTAG.Publicacion
+order by Id_Publicacion desc

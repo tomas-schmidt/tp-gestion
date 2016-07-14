@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.dataGridView_roles = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_roles)).BeginInit();
             this.SuspendLayout();
@@ -47,9 +47,19 @@
             this.Column3});
             this.dataGridView_roles.Location = new System.Drawing.Point(18, 35);
             this.dataGridView_roles.Name = "dataGridView_roles";
-            this.dataGridView_roles.Size = new System.Drawing.Size(246, 197);
+            this.dataGridView_roles.Size = new System.Drawing.Size(269, 197);
             this.dataGridView_roles.TabIndex = 0;
             this.dataGridView_roles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_roles_CellContentClick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Elegir Rol";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Column1
             // 
@@ -59,20 +69,10 @@
             // 
             // Column2
             // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column2.HeaderText = "Nombre";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Elegir Rol";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.Column2.Width = 126;
             // 
             // Column3
             // 
@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 256);
+            this.ClientSize = new System.Drawing.Size(310, 246);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView_roles);
             this.Name = "RolesUsuario";

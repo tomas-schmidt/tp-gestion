@@ -113,7 +113,8 @@ AS
 	UPDATE C_HASHTAG.Rol
 		SET Habilitado = 0
 		WHERE Id_Rol = @Id_Rol
-
+	
+	-- le saco el rol a todos los usuario que lo posean
 	delete C_HASHTAG.Rol_Usuario
 		where Id_Rol = @Id_Rol
 GO
@@ -375,9 +376,7 @@ AS
 		
 		if ((select Habilitado from C_HASHTAG.Usuario where Id_User = @Id_User) = 0)
 		begin
-			update C_HASHTAG.Publicacion
-			set Id_Estado =  3 --pausada
-			where Id_User = @Id_User and Id_Estado = 2
+			exec C_HASHTAG.pausarPublicaciones @Id_User
 		end
 
 		else
@@ -387,6 +386,18 @@ AS
 			where Id_User = @Id_User and Id_Estado = 3
 		end
 GO
+
+
+/****************************************************************
+ *							pausarPublicaciones
+ ****************************************************************/
+ CREATE PROCEDURE C_HASHTAG.pausarPublicaciones @Id_User int
+ as
+	update C_HASHTAG.Publicacion
+			set Id_Estado =  3 --pausada
+			where Id_User = @Id_User and Id_Estado = 2
+go
+
 
 /****************************************************************
  *							ObtenerEmpresaYUsername
@@ -473,10 +484,27 @@ GO
 CREATE PROCEDURE C_HASHTAG.cambiarEstadoCliente
 	@Id_Cliente int
 AS 
-		UPDATE u SET u.Habilitado = ~(u.Habilitado)
-		from C_HASHTAG.Usuario u join C_HASHTAG.Cliente c
-		on(u.Id_User = c.Id_User)
-		where c.Id_Cliente = @Id_Cliente
+		declare @Id_User int
+
+		set @Id_User = (select u.Id_User from C_HASHTAG.Usuario u join C_HASHTAG.Cliente c
+					on (c.Id_User = u.Id_User) where c.Id_Cliente = @Id_Cliente)
+
+		UPDATE C_HASHTAG.Usuario
+		SET Habilitado = ~(Habilitado)
+		where Id_User = @Id_User
+
+		if ((select Habilitado from C_HASHTAG.Usuario where Id_User = @Id_User) = 0)
+		begin
+			exec C_HASHTAG.pausarPublicaciones @Id_User
+		end
+
+		else
+		begin
+			update C_HASHTAG.Publicacion
+			set Id_Estado =  2 --activa
+			where Id_User = @Id_User and Id_Estado = 3
+		end
+GO
 GO
 
 /****************************************************************
@@ -1496,6 +1524,7 @@ INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (1,10)
 
 --Inserto funcionalidades del cliente
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,5)
+INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,4)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,6)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,7)
 INSERT INTO C_HASHTAG.Funcionalidad_Rol (Id_Rol, Id_Funcionalidad) VALUES (2,10)
