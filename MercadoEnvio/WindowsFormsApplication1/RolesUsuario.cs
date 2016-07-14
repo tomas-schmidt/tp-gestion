@@ -37,6 +37,7 @@ namespace WindowsFormsApplication1
                 int n = dataGridView_roles.Rows.Add();
                 dataGridView_roles.Rows[n].Cells[0].Value = "Acceder Como:";
                 dataGridView_roles.Rows[n].Cells[1].Value = item["Nombre_Rol"].ToString();
+                dataGridView_roles.Rows[n].Cells[2].Value = item[0].ToString(); //idrol
             }
 
         }
@@ -56,14 +57,18 @@ namespace WindowsFormsApplication1
         {
             if (e.ColumnIndex == 0 && (e.RowIndex != -1))
             {
-                BaseDeDatos bd = new BaseDeDatos();
+                ElegirFuncionalidad ef = new ElegirFuncionalidad(Convert.ToInt32(dataGridView_roles.Rows[e.RowIndex].Cells[2].Value.ToString()), this.iduser);
+                ef.Show();
+
+                
+                /*BaseDeDatos bd = new BaseDeDatos();
                 var spObtenerRolesDeUsuario = bd.obtenerStoredProcedure("ObtenerRolesDeUsuario");
                 spObtenerRolesDeUsuario.Parameters.Add("@Id_User", SqlDbType.VarChar).Value = iduser;
                 var reader = spObtenerRolesDeUsuario.ExecuteReader();
-                for(int i=0;i<=e.RowIndex;i++)
+                //for(int i=0;i<=e.RowIndex;i++)
                 reader.Read();
                 ElegirFuncionalidad ef = new ElegirFuncionalidad(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[3]));
-                ef.Show();
+                ef.Show();*/
             }
         }
     }
