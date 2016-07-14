@@ -88,12 +88,3 @@ DROP TABLE C_HASHTAG.FECHA_DEL_SISTEMA
 --Drop esquema
 DROP SCHEMA C_HASHTAG
 
-
-select * from C_HASHTAG.Usuario
-where Username like 'usuario.cliente.51469458'
-
-select * from C_HASHTAG.Cliente
-where Id_User = 12
-
-select * from C_HASHTAG.Publicacion
-order by Id_Publicacion desc
