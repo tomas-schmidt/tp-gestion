@@ -113,6 +113,9 @@ AS
 	UPDATE C_HASHTAG.Rol
 		SET Habilitado = 0
 		WHERE Id_Rol = @Id_Rol
+
+	delete C_HASHTAG.Rol_Usuario
+		where Id_Rol = @Id_Rol
 GO
 
 /****************************************************************
@@ -135,8 +138,20 @@ CREATE PROCEDURE C_HASHTAG.actualizarYBorrarFuncionalidadesRol
     @Habilitado bit
 AS
 	UPDATE C_HASHTAG.Rol
-		SET Nombre_Rol = @Nombre, Habilitado = @Habilitado
+		SET Nombre_Rol = @Nombre
 		WHERE Id_Rol = @Id_Rol
+
+	if(@Habilitado = 1)
+	begin
+		UPDATE C_HASHTAG.Rol
+		SET Habilitado = @Habilitado
+		WHERE Id_Rol = @Id_Rol
+	end
+
+	if(@Habilitado = 0)
+	begin
+		exec C_HASHTAG.bajaRol @Id_Rol
+	end
 		
 	DELETE C_HASHTAG.Funcionalidad_Rol
 		WHERE Id_Rol = @Id_Rol
@@ -2162,4 +2177,3 @@ INSERT INTO C_HASHTAG.Rol_Usuario(Id_User, Id_Rol) VALUES
 	deallocate usuariosCreados
 
 /*******SETEO UNA REPUTACION A LOS USUARIOS MIGRADOS***************/
-
