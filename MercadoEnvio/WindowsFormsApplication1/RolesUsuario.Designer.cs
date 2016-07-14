@@ -39,6 +39,7 @@
             // 
             this.dataGridView_roles.AllowUserToAddRows = false;
             this.dataGridView_roles.AllowUserToDeleteRows = false;
+
             this.dataGridView_roles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_roles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -54,16 +55,16 @@
             this.Column1.HeaderText = "Acceder como";
             this.Column1.Name = "Column1";
             this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
+            //
             // Column2
-            // 
+            //
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column2.HeaderText = "Nombre";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(18, 9);
             this.label1.Name = "label1";

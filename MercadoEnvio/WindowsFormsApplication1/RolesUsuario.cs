@@ -21,6 +21,7 @@ namespace WindowsFormsApplication1
             this.iduser = idusuario;
         }
 
+        
         private void cargarTabla()
         {
             BaseDeDatos bd = new BaseDeDatos();
@@ -59,6 +60,7 @@ namespace WindowsFormsApplication1
                 var spObtenerRolesDeUsuario = bd.obtenerStoredProcedure("ObtenerRolesDeUsuario");
                 spObtenerRolesDeUsuario.Parameters.Add("@Id_User", SqlDbType.VarChar).Value = iduser;
                 var reader = spObtenerRolesDeUsuario.ExecuteReader();
+                for(int i=0;i<=e.RowIndex;i++)
                 reader.Read();
                 ElegirFuncionalidad ef = new ElegirFuncionalidad(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[3]));
                 ef.Show();

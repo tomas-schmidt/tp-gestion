@@ -45,8 +45,19 @@ namespace WindowsFormsApplication1
                 var reader = spLogin.ExecuteReader();
                 reader.Read();
                 int iduser = Convert.ToInt32(reader[0]);
+                int cantRoles = Convert.ToInt32(reader[1]);
                 RolesUsuario f = new RolesUsuario(iduser);
-                f.Show();
+                if (cantRoles > 1)
+                    f.Show();
+                else {
+                    var spObtenerRolesDeUsuario = bd.obtenerStoredProcedure("ObtenerRolesDeUsuario");
+                    spObtenerRolesDeUsuario.Parameters.Add("@Id_User", SqlDbType.VarChar).Value = iduser;
+                    reader = spObtenerRolesDeUsuario.ExecuteReader();
+                    reader.Read();
+                    ElegirFuncionalidad ef = new ElegirFuncionalidad(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[3]));
+                    ef.Show();
+
+                }
 
             }
             catch (SqlException excepcion)

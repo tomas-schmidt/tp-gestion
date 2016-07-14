@@ -164,9 +164,9 @@ AS
 				FROM Usuario u
 				WHERE u.Username = @Username
 
-		-- Devuelvo Id_User
-		SELECT Id_User
-			FROM Usuario
+		-- Devuelvo Id_User y Cantidad de Roles
+		SELECT Id_User, (SELECT COUNT (*) FROM Rol_Usuario r WHERE r.Id_User=u.Id_User)
+			FROM Usuario u
 			WHERE Username = @Username AND Contraseña = @Contraseña
 	END
 	ELSE
