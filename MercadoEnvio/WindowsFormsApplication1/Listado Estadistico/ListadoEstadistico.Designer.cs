@@ -140,7 +140,7 @@
             // 
             // btn_mayorCantFacturas
             // 
-            this.btn_mayorCantFacturas.Location = new System.Drawing.Point(453, 99);
+            this.btn_mayorCantFacturas.Location = new System.Drawing.Point(453, 98);
             this.btn_mayorCantFacturas.Name = "btn_mayorCantFacturas";
             this.btn_mayorCantFacturas.Size = new System.Drawing.Size(110, 23);
             this.btn_mayorCantFacturas.TabIndex = 8;
@@ -150,7 +150,7 @@
             // 
             // btn_mayorProdsComprados
             // 
-            this.btn_mayorProdsComprados.Location = new System.Drawing.Point(453, 99);
+            this.btn_mayorProdsComprados.Location = new System.Drawing.Point(453, 98);
             this.btn_mayorProdsComprados.Name = "btn_mayorProdsComprados";
             this.btn_mayorProdsComprados.Size = new System.Drawing.Size(110, 23);
             this.btn_mayorProdsComprados.TabIndex = 7;
@@ -160,7 +160,7 @@
             // 
             // btn_prodsNoVendidos
             // 
-            this.btn_prodsNoVendidos.Location = new System.Drawing.Point(453, 99);
+            this.btn_prodsNoVendidos.Location = new System.Drawing.Point(453, 98);
             this.btn_prodsNoVendidos.Name = "btn_prodsNoVendidos";
             this.btn_prodsNoVendidos.Size = new System.Drawing.Size(110, 23);
             this.btn_prodsNoVendidos.TabIndex = 6;

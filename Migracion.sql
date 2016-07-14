@@ -1247,7 +1247,7 @@ AS
 		RETURN
 	END
 
-	SELECT TOP 5 u.Username, sum(c.Monto) as 'MontoTotal'
+	SELECT TOP 5 u.Username, sum(c.Monto * c.Cantidad) as 'MontoTotal'
 	from C_HASHTAG.Usuario u
 	join C_HASHTAG.Publicacion p on (u.Id_User = p.Id_User)
 	join C_HASHTAG.Compra c on (c.Id_Publicacion = p.Id_Publicacion)
