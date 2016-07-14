@@ -77,7 +77,7 @@ namespace WindowsFormsApplication1.Facturas
                 consulta = consulta + " and i.Descripcion like '%" + txt_descripcion.Text + "%'";
             }
 
-            consulta = consulta + " order by Fecha desc";
+            consulta = consulta + " order by Fecha desc, Id_Factura desc";
 
             BaseDeDatos bd = new BaseDeDatos();
             var spObtenerFacturas = bd.obtenerConsulta(consulta);

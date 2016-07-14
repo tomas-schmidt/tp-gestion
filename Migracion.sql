@@ -1038,12 +1038,12 @@ go
  ****************************************************************/
  CREATE PROCEDURE C_HASHTAG.obtenerCompras @Id_User int
  as
-	select p.Descripcion, c.Monto, c.Cantidad, c.Fecha
+	select p.Descripcion, c.Monto, c.Cantidad, c.Fecha, c.Id_Compra
 	from C_HASHTAG.Compra c
 	join C_HASHTAG.Publicacion p
 	on (c.Id_Publicacion = p.Id_Publicacion)
 	where c.Id_User = @Id_User
-	order by 4 desc
+	order by 4 desc, 5 desc
 go
 
 /****************************************************************
@@ -1051,12 +1051,12 @@ go
  ****************************************************************/
  CREATE PROCEDURE C_HASHTAG.obtenerOfertas @Id_User int
  as
-	select p.Descripcion, o.Monto_Ofertado, o.Fecha
+	select p.Descripcion, o.Monto_Ofertado, o.Fecha, o.Id_Oferta
 	from C_HASHTAG.Oferta o
 	join C_HASHTAG.Publicacion p
 	on (o.Id_Publicacion = p.Id_Publicacion)
 	where o.Id_User = @Id_User
-	order by 3 desc
+	order by 3 desc, 4 desc
 go
 
 

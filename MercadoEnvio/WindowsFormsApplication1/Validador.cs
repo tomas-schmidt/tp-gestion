@@ -49,7 +49,7 @@ namespace WindowsFormsApplication1
             {
                 if (txtbox.Text == "")
                 {
-                    mensajeError += "El campo " + txtbox.Name + " no puede estar vacio\n";
+                    mensajeError += "El campo " + removertxt(txtbox.Name) + " no puede estar vacio\n";
                 }
             }
             return mensajeError;
@@ -63,7 +63,7 @@ namespace WindowsFormsApplication1
             {
                 if (!regexNumerica.IsMatch(txtbox.Text))
                 {
-                    mensajeError += "El campo " + txtbox.Name + " debe ser numerico mayor a 0\n";
+                    mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico mayor a 0\n";
                 }
             }
 
@@ -83,22 +83,22 @@ namespace WindowsFormsApplication1
                 {
                     if (Convert.ToDouble(txtbox.Text) <= 0)
                     {
-                        mensajeError += "El campo " + txtbox.Name + " debe ser mayor a 0\n";
+                        mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser mayor a 0\n";
 
                     }
                 }
 
                 if (variable == 0)
                 {
-                    mensajeError += "El campo " + txtbox.Name + " debe ser numerico\n";
+                    mensajeError += "El campo " + removertxt(txtbox.Name) + " debe ser numerico\n";
                 }
             }
             return mensajeError;
-            
-
-            
-            
-
+        }
+        
+        private string removertxt (string texto)
+        {
+            return texto.Replace("txt_", "");
         }
     }
 }
