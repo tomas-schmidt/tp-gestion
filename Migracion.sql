@@ -152,14 +152,8 @@ AS
 	-- Verifico si las credenciales son correctas
 	IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username AND Contraseña = @Contraseña) = 1
 	BEGIN
-		-- Verifico si el usuario esta lockeado
-		IF (SELECT Intentos_Fallidos FROM Usuario WHERE Username = @Username) >= 3
-		BEGIN
-			RAISERROR('El usuario se encuentra bloqueado por acumulacion de intentos fallidos', 16, 1)
-			RETURN
-		END
-		
 		IF (SELECT Habilitado FROM Usuario WHERE Username = @Username) = 0
+		-- si el usuario está deshabilitado
 		BEGIN
 			RAISERROR('El usuario se encuentra deshabilitado', 16, 1)
 			RETURN
@@ -176,17 +170,20 @@ AS
 			WHERE Username = @Username AND Contraseña = @Contraseña
 	END
 	ELSE
+	-- Si no existe tal usuario con tal contraseña
 	BEGIN
-		-- Verifico si existe el usuario
-		IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username) = 1
+		-- Verifico si existe el usuario y si está habilitado
+		IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username AND Habilitado=1) = 1
 		BEGIN
-			-- Si existe incremento intentos fallidos
+			-- Si es así incremento intentos fallidos
 			UPDATE Usuario 
-				SET Intentos_Fallidos=
-					(SELECT Intentos_Fallidos + 1
-						FROM Usuario u
-						WHERE u.Username = @Username)
+				SET Intentos_Fallidos=Intentos_Fallidos+1
 				WHERE Username = @Username
+			-- Si dicho usuario tiene 3 intentos fallidos acumulados se lo deshabilita y se resetean los fallidos a 0
+			UPDATE Usuario
+				SET Habilitado=0, Intentos_Fallidos=0
+				WHERE Username =@Username AND Intentos_Fallidos>=3
+				
 		END
 		RAISERROR('Username y/o password incorrectos', 16, 1)
 	END
